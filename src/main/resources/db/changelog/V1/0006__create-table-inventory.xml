@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+
+    <changeSet id="0006" author="1">
+        <sql>
+            CREATE TABLE `inventory` (
+            `id` bigint NOT NULL AUTO_INCREMENT,
+            `deleted` bit(1) NOT NULL DEFAULT b'0',
+            `name` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+            `folder_id` bigint NOT NULL,
+            `unit_id` bigint NOT NULL,
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `IDX_inventory_name` (`name`) USING BTREE,
+            KEY `IDX_inventory_deleted` (`deleted`),
+            KEY `IDX_inventory_folder_id` (`folder_id`),
+            KEY `IDX_inventory_unit` (`unit_id`),
+            CONSTRAINT `folder` FOREIGN KEY (`folder_id`) REFERENCES `inventory_folder` (`id`),
+            CONSTRAINT `unit` FOREIGN KEY (`unit_id`) REFERENCES `units` (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Справочник Инвентаря'
+        </sql>
+        <rollback>
+            <sql>
+                drop table inventory;
+            </sql>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

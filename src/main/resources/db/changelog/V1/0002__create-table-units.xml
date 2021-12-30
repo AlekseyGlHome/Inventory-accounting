@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+
+    <changeSet id="0002" author="1">
+        <sql>
+            CREATE TABLE `units` (
+            `id` bigint NOT NULL AUTO_INCREMENT,
+            `deleted` bit(1) NOT NULL DEFAULT b'0',
+            `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `IDX_units_name` (`name`) USING BTREE,
+            KEY `IDX_units_deleted` (`deleted`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Справочник единиц измерения'
+        </sql>
+        <rollback>
+            <sql>
+                drop table units;
+            </sql>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

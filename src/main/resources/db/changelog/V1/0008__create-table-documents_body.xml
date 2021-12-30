@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+
+    <changeSet id="0008" author="1">
+        <sql>
+            CREATE TABLE `documents_body` (
+            `id` bigint NOT NULL AUTO_INCREMENT,
+            `amount` decimal(15,4) DEFAULT NULL COMMENT 'Сумма',
+            `deleted` bit(1) NOT NULL DEFAULT b'0',
+            `price` decimal(15,4) DEFAULT NULL COMMENT 'Цена',
+            `quantity` decimal(15,2) DEFAULT NULL COMMENT 'Количество',
+            `document_header_id` bigint DEFAULT NULL COMMENT 'id шапки документа',
+            `inventory_id` bigint DEFAULT NULL COMMENT 'id инвентаря',
+            `receipt_document_id` bigint DEFAULT NULL COMMENT 'id шапки окумента прихода',
+            `serial_document_body_id` bigint DEFAULT NULL COMMENT 'id строки в документе прихода',
+            PRIMARY KEY (`id`),
+            KEY `IDX_documents_body_document_header_id` (`document_header_id`) /*!80000 INVISIBLE */,
+            KEY `IDX_documents_body_inventory_id` (`inventory_id`),
+            KEY `IDX_documents_body_deleted` (`deleted`),
+            KEY `IDX_documents_body_receipt_document_id` (`receipt_document_id`),
+            KEY `IDX_documents_body_serial_document_body_id` (`serial_document_body_id`),
+            CONSTRAINT `bod` FOREIGN KEY (`document_header_id`) REFERENCES `documents_header` (`id`),
+            CONSTRAINT `inv` FOREIGN KEY (`inventory_id`) REFERENCES `inventory` (`id`),
+            CONSTRAINT `rec` FOREIGN KEY (`receipt_document_id`) REFERENCES `documents_header` (`id`),
+            CONSTRAINT `ser` FOREIGN KEY (`serial_document_body_id`) REFERENCES `documents_body` (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Табличная часть документа'
+        </sql>
+        <rollback>
+            <sql>
+                drop table documents_body;
+            </sql>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

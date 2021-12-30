@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+
+    <changeSet id="0007" author="1">
+        <sql>
+            CREATE TABLE `documents_header` (
+            `id` bigint NOT NULL AUTO_INCREMENT,
+            `amount` decimal(15,4) DEFAULT NULL COMMENT 'Сумма документа',
+            `comment` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+            `date` date DEFAULT NULL COMMENT 'Дата документа',
+            `deleted` bit(1) NOT NULL DEFAULT b'0',
+            `document_number` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'Номер
+            документа',
+            `registered` bit(1) NOT NULL COMMENT 'Регистрация',
+            `partner_id` bigint DEFAULT NULL COMMENT 'id партнера',
+            `user_id` bigint DEFAULT NULL COMMENT 'id пользователя',
+            `warehouse_id` bigint DEFAULT NULL COMMENT 'id склада получателя',
+            `warehouse_recipient_id` bigint DEFAULT NULL COMMENT 'id склада получателя',
+            `type_dok` int DEFAULT NULL COMMENT 'тип документа',
+            PRIMARY KEY (`id`),
+            KEY `IDX_documents_header_dokument_number` (`document_number`),
+            KEY `IDX_documents_header_warehouse_id` (`warehouse_id`),
+            KEY `IDX_documents_header_warehouse_recipient_id` (`warehouse_recipient_id`),
+            KEY `IDX_documents_header_partner_id` (`partner_id`),
+            KEY `IDX_documents_header_registered` (`registered`),
+            KEY `IDX_documents_header_date` (`date`),
+            KEY `IDX_documents_header_deleted` (`deleted`),
+            KEY `IDX_documents_header_type_dok` (`type_dok`),
+            KEY `IDX_documents_header_user` (`user_id`),
+            CONSTRAINT `partner` FOREIGN KEY (`partner_id`) REFERENCES `partners` (`id`),
+            CONSTRAINT `user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+            CONSTRAINT `warehous` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouses` (`id`),
+            CONSTRAINT `warexous_rec` FOREIGN KEY (`warehouse_recipient_id`) REFERENCES `warehouses` (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Заголовок документа'
+        </sql>
+        <rollback>
+            <sql>
+                drop table documents_header;
+            </sql>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
