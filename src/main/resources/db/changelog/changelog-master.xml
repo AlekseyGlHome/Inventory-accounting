@@ -13,5 +13,6 @@
     <include file="db/changelog/V1/0006__create-table-inventory.xml"/>
     <include file="db/changelog/V1/0007__create-table-documents_header.xml"/>
     <include file="db/changelog/V1/0008__create-table-documents_body.xml"/>
-    <include file="db/changelog/V1/0009__adding-test-data.xml"/>
+    <include file="db/changelog/V1/0009__create-table-movements.xml"/>
+    <include file="db/changelog/V1/0010__adding-test-data.xml"/>
 </databaseChangeLog>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+    <changeSet id="0010" author="AlekseyGl">
+        <sql>
+            INSERT INTO warehouses (id,company,deleted,name,person) VALUES
+                (1,'ИП Науменко И.А.',0,'Кафе "Харчевня"',NULL),
+                (2,'ООО "Мизер"',0,'Кафе Парк-Кафе',NULL),
+                (3,'ИП Науменко И.а.',0,'Магазин Продукты',NULL);
+
+            INSERT INTO inventory_folder (id,deleted,name) VALUES
+                (1,0,'Стаканы'),
+                (2,0,'Тарелки'),
+                (3,0,'Бытовая техника'),
+                (4,0,'Столы');
+
+            INSERT INTO units (id,deleted,name) VALUES
+                (1,0,'шт'),
+                (2,0,'кг');
+
+            INSERT INTO inventory (id,deleted,name,folder_id,unit_id) VALUES
+                (1,0,'Cстакан 50гр',1,1),
+                (2,0,'Cтакан пивной 500мл',1,1),
+                (3,0,'Cтакан пивной 300мл',1,1),
+                (4,0,'Тарелка глубокая',2,1),
+                (5,0,'Тарелка десертная',2,1),
+                (6,0,'Холодильник Индезит',3,1),
+                (7,0,'Телевизор Philips',3,1),
+                (8,0,'Электро печь 3кВт',3,1);
+
+            INSERT INTO users (id,deleted,name,password) VALUES
+                (1,0,'Admin',NULL),
+                (2,0,'User1',NULL),
+                (3,0,'User2',NULL);
+
+            INSERT INTO partners (id,deleted,name) VALUES
+                (1,0,'ООО Рога и Копыта'),
+                (2,0,'ИП Иванов Иван Иванович'),
+                (3,0,'ООО Тандер');
+
+            INSERT INTO documents_header (id,amount,comment,`date`,deleted,document_number,registered,partner_id,user_id,warehouse_id,warehouse_recipient_id,type_dok) VALUES
+                (1,500,NULL,'2001-01-20',0,'1',0,1,2,1,NULL,1),
+                (2,500,NULL,'2015-12-20',0,'56',1,2,1,2,NULL,1);
+
+            INSERT INTO documents_body (id,amount,deleted,price,quantity,document_header_id,inventory_id,receipt_document_id,serial_document_body_id) VALUES
+                (1,250,0,25,10,1,3,NULL,NULL),
+                (2,250,0,50,5,1,4,NULL,NULL),
+                (3,500,0,500,1,2,7,NULL,NULL);
+
+            INSERT INTO movements (id,amount,`date`,price,quantity,document_header_id,inventory_id,receipt_document_id,serial_docu_body_id,warehouse_id,serial_document_body_id) VALUES
+                (1,500,'2015-12-20',500,1,2,4,NULL,NULL,2,1);
+        </sql>
+        <rollback>
+            <sql>
+                delete from warehouses;
+                delete from units;
+                delete from users;
+                delete from partners;
+                delete from inventory_folder;
+                delete from inventory;
+                delete from documents_header;
+                delete from documents_body;
+                delete from movements;
+            </sql>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

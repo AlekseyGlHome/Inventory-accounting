@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="0009" author="AlekseyGl">
+        <sql>
+            CREATE TABLE `movements` (
+            `id` bigint NOT NULL AUTO_INCREMENT,
+            `amount` decimal(15,4) DEFAULT NULL COMMENT 'Сумма',
+            `date` date DEFAULT NULL COMMENT 'Дата движения',
+            `price` decimal(15,4) DEFAULT NULL COMMENT 'Цена',
+            `quantity` decimal(15,2) DEFAULT NULL COMMENT 'Количество',
+            `document_header_id` bigint NOT NULL COMMENT 'id шапки документа',
+            `inventory_id` bigint NOT NULL COMMENT 'id инвентаря',
+            `receipt_document_id` bigint DEFAULT NULL COMMENT 'id документа прихода',
+            `serial_docu_body_id` bigint DEFAULT NULL COMMENT 'id строки в теле документа прихода',
+            `warehouse_id` bigint NOT NULL COMMENT 'id склада',
+            `serial_document_body_id` bigint NOT NULL COMMENT 'id строки в теле документа',
+            PRIMARY KEY (`id`),
+            KEY `movements_document_header_id_IDX` (`document_header_id`) USING BTREE,
+            KEY `movements_inventory_id_IDX` (`inventory_id`) USING BTREE,
+            KEY `movements_warehouse_id_IDX` (`warehouse_id`) USING BTREE,
+            KEY `movements_date_IDX` (`date`) USING BTREE,
+            KEY `movements_FK_2` (`receipt_document_id`),
+            KEY `movements_FK_3` (`serial_docu_body_id`),
+            KEY `movements_FK_5` (`serial_document_body_id`),
+            CONSTRAINT `movements_FK` FOREIGN KEY (`document_header_id`) REFERENCES `documents_header` (`id`),
+            CONSTRAINT `movements_FK_1` FOREIGN KEY (`inventory_id`) REFERENCES `inventory` (`id`),
+            CONSTRAINT `movements_FK_2` FOREIGN KEY (`receipt_document_id`) REFERENCES `documents_header` (`id`),
+            CONSTRAINT `movements_FK_3` FOREIGN KEY (`serial_docu_body_id`) REFERENCES `documents_body` (`id`),
+            CONSTRAINT `movements_FK_4` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouses` (`id`),
+            CONSTRAINT `movements_FK_5` FOREIGN KEY (`serial_document_body_id`) REFERENCES `documents_body` (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Движение документов'
+        </sql>
+        <rollback>
+            drop table movements;
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

@@ -6,7 +6,7 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
 
 
-    <changeSet id="0006" author="1">
+    <changeSet id="0006" author="v">
         <sql>
             CREATE TABLE `inventory` (
             `id` bigint NOT NULL AUTO_INCREMENT,

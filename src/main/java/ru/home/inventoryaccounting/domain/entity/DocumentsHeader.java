@@ -59,7 +59,7 @@ public class DocumentsHeader {
     private Integer typeDok;
 
     @OneToMany(mappedBy = "documentHeader", fetch = FetchType.LAZY)
-    private DocumentsBody documentsBody;
+    private Collection<DocumentsBody> documentsBody;
 
     @OneToMany(mappedBy = "receiptDocument",fetch = FetchType.LAZY)
     private Collection<DocumentsBody> expenseDocuments = new ArrayList<>();
