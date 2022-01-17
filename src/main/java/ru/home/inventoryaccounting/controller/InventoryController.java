@@ -38,6 +38,5 @@ public class InventoryController {
         } catch (NotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
-
     }
 }
