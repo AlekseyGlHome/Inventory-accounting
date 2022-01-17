@@ -9,7 +9,6 @@ import ru.home.inventoryaccounting.domain.entity.InventoryFolder;
 @RequiredArgsConstructor
 public class InventoryFolderMapper {
 
-
     public InventoryFolderDTO inventiryFolderToDTO(InventoryFolder inventoryFolder) {
         return InventoryFolderDTO.builder().id(inventoryFolder.getId())
                 .deleted(inventoryFolder.getDeleted())
