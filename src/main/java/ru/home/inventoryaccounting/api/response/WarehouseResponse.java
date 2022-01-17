@@ -1,7 +1,7 @@
 package ru.home.inventoryaccounting.api.response;
 
 import lombok.*;
-import ru.home.inventoryaccounting.domain.DTO.InventoryDTO;
+import ru.home.inventoryaccounting.domain.DTO.WarehouseDTO;
 
 import java.util.Collection;
 
@@ -10,7 +10,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class InventoryResponse {
+public class WarehouseResponse {
     private long numberOfRecord;
-    private Collection<InventoryDTO> inventories;
+    private Collection<WarehouseDTO> warehouses;
 }

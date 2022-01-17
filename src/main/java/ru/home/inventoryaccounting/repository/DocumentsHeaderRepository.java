@@ -6,4 +6,5 @@ import ru.home.inventoryaccounting.domain.entity.DocumentsHeader;
 
 @Repository
 public interface DocumentsHeaderRepository extends JpaRepository<DocumentsHeader, Long> {
+
 }

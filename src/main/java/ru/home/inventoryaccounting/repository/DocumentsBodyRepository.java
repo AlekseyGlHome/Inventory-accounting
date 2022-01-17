@@ -6,4 +6,5 @@ import ru.home.inventoryaccounting.domain.entity.DocumentsBody;
 
 @Repository
 public interface DocumentsBodyRepository extends JpaRepository<DocumentsBody, Long> {
+
 }

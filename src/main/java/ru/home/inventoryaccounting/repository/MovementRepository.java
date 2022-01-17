@@ -6,4 +6,5 @@ import ru.home.inventoryaccounting.domain.entity.Movement;
 
 @Repository
 public interface MovementRepository extends JpaRepository<Movement, Long> {
+
 }
