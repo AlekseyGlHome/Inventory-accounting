@@ -1,7 +1,6 @@
 package ru.home.inventoryaccounting.domain.mapper;
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import ru.home.inventoryaccounting.domain.DTO.InventoryFolderDTO;
 import ru.home.inventoryaccounting.domain.entity.InventoryFolder;
@@ -10,9 +9,11 @@ import ru.home.inventoryaccounting.domain.entity.InventoryFolder;
 @RequiredArgsConstructor
 public class InventoryFolderMapper {
 
-    private final ModelMapper mapper;
 
-    public InventoryFolderDTO inventiryFolderToDTO(InventoryFolder inventoryFolder){
-        return mapper.map(inventoryFolder,InventoryFolderDTO.class);
+    public InventoryFolderDTO inventiryFolderToDTO(InventoryFolder inventoryFolder) {
+        return InventoryFolderDTO.builder().id(inventoryFolder.getId())
+                .deleted(inventoryFolder.getDeleted())
+                .name(inventoryFolder.getName())
+                .build();
     }
 }

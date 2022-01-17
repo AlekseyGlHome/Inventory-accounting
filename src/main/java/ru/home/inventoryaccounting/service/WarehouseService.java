@@ -35,7 +35,6 @@ public class WarehouseService {
         } else {
             warehouses = warehouseRepository.findByDeletedFalse(pageRequest);
         }
-
         return new WarehouseResponse(warehouses.getTotalElements(), getWarehouseDTOS(warehouses));
     }
 

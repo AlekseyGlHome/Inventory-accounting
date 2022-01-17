@@ -9,9 +9,14 @@ import ru.home.inventoryaccounting.domain.entity.Warehouse;
 @Component
 @RequiredArgsConstructor
 public class WarehouseMapper {
-    private final ModelMapper mapper;
 
-    public WarehouseDTO warehouseToDTO(Warehouse warehouse){
-        return mapper.map(warehouse,WarehouseDTO.class);
+    public WarehouseDTO warehouseToDTO(Warehouse warehouse) {
+        return WarehouseDTO.builder()
+                .id(warehouse.getId())
+                .name(warehouse.getName())
+                .deleted(warehouse.getDeleted())
+                .company(warehouse.getCompany())
+                .person(warehouse.getPerson())
+                .build();
     }
 }
