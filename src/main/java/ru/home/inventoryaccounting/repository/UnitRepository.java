@@ -11,7 +11,8 @@ import ru.home.inventoryaccounting.domain.entity.Unit;
 public interface UnitRepository extends JpaRepository<Unit, Long> {
 
     @Query("select u from Unit u where u.deleted = false order by u.name")
-    Page<Unit> findByDeletedFalse(Pageable pageable);
+    @Override
+    Page<Unit> findAll(Pageable pageable);
 
     @Query("select u from Unit u where u.deleted=false and u.name like %:query% order by u.name")
     Page<Unit> findByNameLike(Pageable pageable, String query);
