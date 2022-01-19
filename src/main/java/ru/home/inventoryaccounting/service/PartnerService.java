@@ -4,12 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.home.inventoryaccounting.api.response.PartnerResponse;
-import ru.home.inventoryaccounting.api.response.UnitResponse;
+import ru.home.inventoryaccounting.api.response.DTOResponse;
 import ru.home.inventoryaccounting.domain.DTO.PartnerDTO;
-import ru.home.inventoryaccounting.domain.DTO.UnitDTO;
 import ru.home.inventoryaccounting.domain.entity.Partner;
-import ru.home.inventoryaccounting.domain.entity.Unit;
 import ru.home.inventoryaccounting.domain.mapper.PartnerMapper;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.PartnerRepository;
@@ -31,7 +28,7 @@ public class PartnerService {
                 .orElseThrow(() -> new NotFoundException("Запись с Id: " + id + " не найдена."));
     }
 
-    public PartnerResponse findByQueryString(int offset, int limit, String query) {
+    public DTOResponse<PartnerDTO> findByQueryString(int offset, int limit, String query) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<Partner> partners;
 
@@ -41,7 +38,7 @@ public class PartnerService {
             partners = partnerRepository.findAll(pageRequest);
         }
 
-        return new PartnerResponse(partners.getTotalElements(), getPartnerDTOS(partners));
+        return new DTOResponse<>(partners.getTotalElements(), getPartnerDTOS(partners));
     }
 
     private List<PartnerDTO> getPartnerDTOS(Page<Partner> units) {

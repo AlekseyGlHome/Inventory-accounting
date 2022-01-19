@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class InventoryDTO {
+public class InventoryDTO implements DTOInterface{
     private long id;
     private boolean deleted;
     private String name;

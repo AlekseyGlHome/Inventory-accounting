@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.home.inventoryaccounting.api.response.InventoryResponse;
+import ru.home.inventoryaccounting.api.response.DTOResponse;
 import ru.home.inventoryaccounting.domain.DTO.InventoryDTO;
 import ru.home.inventoryaccounting.domain.entity.Inventory;
 import ru.home.inventoryaccounting.domain.mapper.InventoryMapper;
@@ -24,11 +24,11 @@ public class InventoryService {
 
     public InventoryDTO findById(long id) throws NotFoundException {
         Optional<Inventory> inventory = inventoryRepository.findById(id);
-        return inventory.map(inventoryMapper::InventoryToDTO)
+        return inventory.map(inventoryMapper::inventoryToDTO)
                 .orElseThrow(() -> new NotFoundException("Запись с Id: " + id + " не найдена."));
     }
 
-    public InventoryResponse findByQueryString(int offset, int limit, String query, long folderId) {
+    public DTOResponse<InventoryDTO> findByQueryString(int offset, int limit, String query, long folderId) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<Inventory> inventories;
         if ((!query.isEmpty() || !query.isBlank()) && (folderId == 0)) {
@@ -38,16 +38,16 @@ public class InventoryService {
         } else if ((!query.isEmpty() || !query.isBlank()) && (folderId > 0)) {
             inventories = inventoryRepository.findByNameLikeAndFolder_IdEquals(pageRequest, query, folderId);
         } else {
-            inventories = inventoryRepository.findByDeletedFalse(pageRequest);
+            inventories = inventoryRepository.findAll(pageRequest);
         }
 
-        return new InventoryResponse(inventories.getTotalElements(), getInventoryDTOS(inventories));
+        return new DTOResponse<>(inventories.getTotalElements(), getInventoryDTOS(inventories));
     }
 
 
     private List<InventoryDTO> getInventoryDTOS(Page<Inventory> inventories) {
         return inventories.getContent().stream()
-                .map(inventoryMapper::InventoryToDTO)
+                .map(inventoryMapper::inventoryToDTO)
                 .collect(Collectors.toList());
     }
 

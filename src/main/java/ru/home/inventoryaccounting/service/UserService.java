@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.home.inventoryaccounting.api.response.UserResponse;
+import ru.home.inventoryaccounting.api.response.DTOResponse;
 import ru.home.inventoryaccounting.domain.DTO.UserDTO;
 import ru.home.inventoryaccounting.domain.entity.User;
 import ru.home.inventoryaccounting.domain.mapper.UserMapper;
@@ -28,7 +28,7 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("Запись с Id: " + id + " не найдена."));
     }
 
-    public UserResponse findByQueryString(int offset, int limit, String query) {
+    public DTOResponse<UserDTO> findByQueryString(int offset, int limit, String query) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<User> users;
         if (!query.isEmpty() || !query.isBlank()) {
@@ -37,7 +37,7 @@ public class UserService {
             users = userRepository.findAll(pageRequest);
         }
 
-        return new UserResponse(users.getTotalElements(), getUserDTOS(users));
+        return new DTOResponse<>(users.getTotalElements(), getUserDTOS(users));
     }
 
     public UserDTO findByName(int offset, int limit, String name) throws NotFoundException {

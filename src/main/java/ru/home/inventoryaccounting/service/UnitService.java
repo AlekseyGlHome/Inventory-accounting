@@ -4,12 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.home.inventoryaccounting.api.response.UnitResponse;
-import ru.home.inventoryaccounting.api.response.UserResponse;
+import ru.home.inventoryaccounting.api.response.DTOResponse;
 import ru.home.inventoryaccounting.domain.DTO.UnitDTO;
-import ru.home.inventoryaccounting.domain.DTO.UserDTO;
 import ru.home.inventoryaccounting.domain.entity.Unit;
-import ru.home.inventoryaccounting.domain.entity.User;
 import ru.home.inventoryaccounting.domain.mapper.UnitMapper;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.UnitRepository;
@@ -31,7 +28,7 @@ public class UnitService {
                 .orElseThrow(() -> new NotFoundException("Запись с Id: " + id + " не найдена."));
     }
 
-    public UnitResponse findByQueryString(int offset, int limit, String query) {
+    public DTOResponse<UnitDTO> findByQueryString(int offset, int limit, String query) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<Unit> units;
 
@@ -41,7 +38,7 @@ public class UnitService {
             units = unitRepository.findAll(pageRequest);
         }
 
-        return new UnitResponse(units.getTotalElements(), getUnitDTOS(units));
+        return new DTOResponse<>(units.getTotalElements(), getUnitDTOS(units));
     }
 
     private List<UnitDTO> getUnitDTOS(Page<Unit> units) {

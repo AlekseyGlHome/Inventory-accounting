@@ -12,12 +12,12 @@ public class InventoryMapper {
     private final InventoryFolderMapper inventoryFolderMapper;
     private final UnitMapper unitMapper;
 
-    public InventoryDTO InventoryToDTO(Inventory inventory) {
+    public InventoryDTO inventoryToDTO(Inventory inventory) {
         return InventoryDTO.builder()
                 .id(inventory.getId())
                 .name(inventory.getName())
                 .deleted(inventory.getDeleted())
-                .folder(inventoryFolderMapper.inventiryFolderToDTO(inventory.getFolder()))
+                .folder(inventoryFolderMapper.inventoryFolderToDTO(inventory.getFolder()))
                 .unit(unitMapper.unitToDTO(inventory.getUnit()))
                 .build();
     }

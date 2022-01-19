@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.home.inventoryaccounting.api.response.WarehouseResponse;
+import ru.home.inventoryaccounting.api.response.DTOResponse;
 import ru.home.inventoryaccounting.domain.DTO.WarehouseDTO;
 import ru.home.inventoryaccounting.domain.entity.Warehouse;
 import ru.home.inventoryaccounting.domain.mapper.WarehouseMapper;
@@ -27,7 +27,7 @@ public class WarehouseService {
         return warehouse.map(warehouseMapper::warehouseToDTO).orElseThrow(() -> new NotFoundException("Запись с Id: " + id + " не найдена."));
     }
 
-    public WarehouseResponse findByQueryString(int offset, int limit, String query) {
+    public DTOResponse<WarehouseDTO> findByQueryString(int offset, int limit, String query) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<Warehouse> warehouses;
         if (!query.isEmpty() || !query.isBlank()) {
@@ -35,7 +35,7 @@ public class WarehouseService {
         } else {
             warehouses = warehouseRepository.findByDeletedFalse(pageRequest);
         }
-        return new WarehouseResponse(warehouses.getTotalElements(), getWarehouseDTOS(warehouses));
+        return new DTOResponse<>(warehouses.getTotalElements(), getWarehouseDTOS(warehouses));
     }
 
     private List<WarehouseDTO> getWarehouseDTOS(Page<Warehouse> warehouse) {

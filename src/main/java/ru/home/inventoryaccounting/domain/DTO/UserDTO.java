@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class UserDTO {
+public class UserDTO implements DTOInterface{
     private Long id;
     private Boolean deleted;
     private String name;

@@ -11,7 +11,8 @@ import ru.home.inventoryaccounting.domain.entity.InventoryFolder;
 public interface InventoryFolderRepository extends JpaRepository<InventoryFolder, Long> {
 
     @Query("select i from InventoryFolder i where i.deleted = false order by i.name")
-    Page<InventoryFolder> findByDeletedFalse(Pageable pageable);
+    @Override
+    Page<InventoryFolder> findAll(Pageable pageable);
 
     @Query("select i from InventoryFolder i where i.deleted=false and i.name like %:query% order by i.name")
     Page<InventoryFolder> findByNameLike(Pageable pageable, String query);

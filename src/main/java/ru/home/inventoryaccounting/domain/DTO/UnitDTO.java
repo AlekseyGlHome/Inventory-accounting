@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UnitDTO {
+public class UnitDTO implements DTOInterface{
     private Long id;
     private Boolean deleted;
     private String name;

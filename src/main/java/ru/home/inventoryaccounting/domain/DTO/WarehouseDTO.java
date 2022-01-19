@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class WarehouseDTO {
+public class WarehouseDTO implements DTOInterface{
     private Long id;
     private String company;
     private Boolean deleted;
