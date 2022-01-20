@@ -10,7 +10,8 @@ import ru.home.inventoryaccounting.domain.entity.InventoryFolder;
 public class InventoryFolderMapper {
 
     public InventoryFolderDTO inventoryFolderToDTO(InventoryFolder inventoryFolder) {
-        return InventoryFolderDTO.builder().id(inventoryFolder.getId())
+        return InventoryFolderDTO.builder()
+                .id(inventoryFolder.getId())
                 .deleted(inventoryFolder.getDeleted())
                 .name(inventoryFolder.getName())
                 .build();

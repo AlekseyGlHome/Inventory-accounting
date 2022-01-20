@@ -10,7 +10,8 @@ import ru.home.inventoryaccounting.domain.entity.Unit;
 public class UnitMapper {
 
     public UnitDTO unitToDTO(Unit unit) {
-        return UnitDTO.builder().id(unit.getId())
+        return UnitDTO.builder()
+                .id(unit.getId())
                 .deleted(unit.getDeleted())
                 .name(unit.getName())
                 .build();

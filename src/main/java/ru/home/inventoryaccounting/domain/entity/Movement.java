@@ -26,7 +26,7 @@ public class Movement {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "document_header_id", nullable = false)
-    private DocumentsHeader documentHeader;
+    private DocumentHeader documentHeader;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "inventory_id", nullable = false)
@@ -34,11 +34,11 @@ public class Movement {
 
     @ManyToOne
     @JoinColumn(name = "receipt_document_id")
-    private DocumentsHeader receiptDocument;
+    private DocumentHeader receiptDocument;
 
     @ManyToOne
     @JoinColumn(name = "serial_docu_body_id")
-    private DocumentsBody serialDocuBody;
+    private DocumentBody serialDocuBody;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "warehouse_id", nullable = false)
@@ -46,13 +46,13 @@ public class Movement {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "serial_document_body_id", nullable = false)
-    private DocumentsBody serialDocumentBody;
+    private DocumentBody serialDocumentBody;
 
-    public DocumentsBody getSerialDocumentBody() {
+    public DocumentBody getSerialDocumentBody() {
         return serialDocumentBody;
     }
 
-    public void setSerialDocumentBody(DocumentsBody serialDocumentBody) {
+    public void setSerialDocumentBody(DocumentBody serialDocumentBody) {
         this.serialDocumentBody = serialDocumentBody;
     }
 
@@ -64,19 +64,19 @@ public class Movement {
         this.warehouse = warehouse;
     }
 
-    public DocumentsBody getSerialDocuBody() {
+    public DocumentBody getSerialDocuBody() {
         return serialDocuBody;
     }
 
-    public void setSerialDocuBody(DocumentsBody serialDocuBody) {
+    public void setSerialDocuBody(DocumentBody serialDocuBody) {
         this.serialDocuBody = serialDocuBody;
     }
 
-    public DocumentsHeader getReceiptDocument() {
+    public DocumentHeader getReceiptDocument() {
         return receiptDocument;
     }
 
-    public void setReceiptDocument(DocumentsHeader receiptDocument) {
+    public void setReceiptDocument(DocumentHeader receiptDocument) {
         this.receiptDocument = receiptDocument;
     }
 
@@ -88,11 +88,11 @@ public class Movement {
         this.inventory = inventory;
     }
 
-    public DocumentsHeader getDocumentHeader() {
+    public DocumentHeader getDocumentHeader() {
         return documentHeader;
     }
 
-    public void setDocumentHeader(DocumentsHeader documentHeader) {
+    public void setDocumentHeader(DocumentHeader documentHeader) {
         this.documentHeader = documentHeader;
     }
 

@@ -15,7 +15,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @Entity
 @Table(name = "documents_header")
-public class DocumentsHeader {
+public class DocumentHeader {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -59,9 +59,9 @@ public class DocumentsHeader {
     private Integer typeDok;
 
     @OneToMany(mappedBy = "documentHeader", fetch = FetchType.LAZY)
-    private Collection<DocumentsBody> documentsBody;
+    private Collection<DocumentBody> documentBody;
 
     @OneToMany(mappedBy = "receiptDocument",fetch = FetchType.LAZY)
-    private Collection<DocumentsBody> expenseDocuments = new ArrayList<>();
+    private Collection<DocumentBody> expenseDocuments = new ArrayList<>();
 
 }

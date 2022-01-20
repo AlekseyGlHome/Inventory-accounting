@@ -15,6 +15,7 @@
     <description>Inventory accounting at the enterprise</description>
     <properties>
         <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
         <dependency>
@@ -46,6 +47,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <version>2.3.10.RELEASE</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -58,6 +60,11 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
             <version>2.6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
