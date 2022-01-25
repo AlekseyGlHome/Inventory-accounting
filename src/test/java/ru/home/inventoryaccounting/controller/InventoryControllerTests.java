@@ -55,7 +55,7 @@ public class InventoryControllerTests {
         dtoList.add(inventoryDTO);
         response.setData(dtoList);
         String json = mapper.writeValueAsString(response);
-        Mockito.when(inventoryService.findByQueryString(0, 10, "", 0)).thenReturn(response);
+        Mockito.when(inventoryService.findByNameLikeAndFolderId(0, 10, "", 0)).thenReturn(response);
         mockMvc.perform(get("/inventory?offset=0&limit=10&query=&folderId=")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
@@ -63,6 +63,5 @@ public class InventoryControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("numberOfRecord").value("1"))
                 .andExpect(content().string(containsString(json)));
-
     }
 }

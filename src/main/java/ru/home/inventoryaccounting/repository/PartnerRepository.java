@@ -10,10 +10,12 @@ import ru.home.inventoryaccounting.domain.entity.Partner;
 @Repository
 public interface PartnerRepository extends JpaRepository<Partner, Long> {
 
+    // выбрать всех неудаленных партнеров
     @Query("select p from Partner p where p.deleted = false order by p.name")
     @Override
     Page<Partner> findAll(Pageable pageable);
 
+    // выбрать всех неудаленных партнеров и вхождению в наименование
     @Query("select p from Partner p where p.deleted=false and p.name like %:query% order by p.name")
     Page<Partner> findByNameLike(Pageable pageable, String query);
 

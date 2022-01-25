@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.home.inventoryaccounting.api.response.DTOResponse;
 import ru.home.inventoryaccounting.domain.DTO.InventoryDTO;
+import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.service.InventoryService;
 
@@ -19,13 +20,18 @@ public class InventoryController {
     private final InventoryService inventoryService;
 
     @GetMapping("/inventory")
-    public ResponseEntity<DTOResponse<InventoryDTO>> getInventoryByFilter(
+    public ResponseEntity getInventoryByFilter(
             @RequestParam(name = "offset", defaultValue = "0") int offset,
             @RequestParam(name = "limit", defaultValue = "10") int limit,
             @RequestParam(name = "query", defaultValue = "") String query,
             @RequestParam(name = "folderId", defaultValue = "0") long folderId) {
 
-        DTOResponse<InventoryDTO> inventoryResponse = inventoryService.findByQueryString(offset, limit, query, folderId);
+        DTOResponse<InventoryDTO> inventoryResponse;
+        try {
+            inventoryResponse = inventoryService.findByNameLikeAndFolderId(offset, limit, query, folderId);
+        } catch (InvalidRequestParameteException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
         return ResponseEntity.ok(inventoryResponse);
     }
 
