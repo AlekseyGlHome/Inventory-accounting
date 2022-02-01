@@ -12,9 +12,7 @@ import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.WarehouseRepository;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +30,8 @@ public class WarehouseService {
      */
     public WarehouseDTO findById(long id) throws NotFoundException {
         Optional<Warehouse> warehouse = warehouseRepository.findById(id);
-        return warehouse.map(warehouseMapper::warehouseToDTO).orElseThrow(() -> new NotFoundException("Запись с Id: " + id + " не найдена."));
+        return warehouse.map(warehouseMapper::convertToDTO)
+                .orElseThrow(() -> new NotFoundException("Запись с Id: " + id + " не найдена."));
     }
 
     /**
@@ -44,7 +43,8 @@ public class WarehouseService {
      * @return DTOResponse&lt;WarehouseDTO&gt;
      * @throws InvalidRequestParameteException
      */
-    public DTOResponse<WarehouseDTO> findByQueryString(int offset, int limit, String query) throws InvalidRequestParameteException {
+    public DTOResponse<WarehouseDTO> findByQueryString(int offset, int limit,
+                                                       String query) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<Warehouse> warehouses;
         if (!query.isEmpty() || !query.isBlank()) {
@@ -52,7 +52,8 @@ public class WarehouseService {
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
-        return new DTOResponse<>(warehouses.getTotalElements(), getWarehouseDTOS(warehouses));
+        return new DTOResponse<>(warehouses.getTotalElements(),
+                warehouseMapper.convertCollectionToDTO(warehouses.getContent()));
     }
 
     /**
@@ -66,14 +67,8 @@ public class WarehouseService {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<Warehouse> warehouses;
         warehouses = warehouseRepository.findAll(pageRequest);
-        return new DTOResponse<>(warehouses.getTotalElements(), getWarehouseDTOS(warehouses));
-    }
-
-    //Преобразовать List<Warehouse> в List<WarehouseDTO>
-    private List<WarehouseDTO> getWarehouseDTOS(Page<Warehouse> warehouse) {
-        return warehouse.getContent().stream()
-                .map(warehouseMapper::warehouseToDTO)
-                .collect(Collectors.toList());
+        return new DTOResponse<>(warehouses.getTotalElements(),
+                warehouseMapper.convertCollectionToDTO(warehouses.getContent()));
     }
 
     // создать страницу пагинации

@@ -12,9 +12,7 @@ import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.PartnerRepository;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +30,7 @@ public class PartnerService {
      */
     public PartnerDTO findById(long id) throws NotFoundException {
         Optional<Partner> partner = partnerRepository.findById(id);
-        return partner.map(partnerMapper::partnerToDTO)
+        return partner.map(partnerMapper::convertToDTO)
                 .orElseThrow(() -> new NotFoundException("Запись с Id: " + id + " не найдена."));
     }
 
@@ -46,7 +44,8 @@ public class PartnerService {
      * @return DTOResponse&lt;UnitDTO&gt;
      * @throws InvalidRequestParameteException
      */
-    public DTOResponse<PartnerDTO> findByQueryString(int offset, int limit, String query) throws InvalidRequestParameteException {
+    public DTOResponse<PartnerDTO> findByQueryString(int offset, int limit,
+                                                     String query) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<Partner> partners;
 
@@ -56,7 +55,8 @@ public class PartnerService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
 
-        return new DTOResponse<>(partners.getTotalElements(), getPartnerDTOS(partners));
+        return new DTOResponse<>(partners.getTotalElements(),
+                partnerMapper.convertCollectionToDTO(partners.getContent()));
     }
 
     /**
@@ -70,15 +70,11 @@ public class PartnerService {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<Partner> partners;
         partners = partnerRepository.findAll(pageRequest);
-        return new DTOResponse<>(partners.getTotalElements(), getPartnerDTOS(partners));
+        return new DTOResponse<>(partners.getTotalElements(),
+                partnerMapper.convertCollectionToDTO(partners.getContent()));
     }
 
-    // Преобразовать List<Partner> в List<PartnerDTO>
-    private List<PartnerDTO> getPartnerDTOS(Page<Partner> units) {
-        return units.getContent().stream()
-                .map(partnerMapper::partnerToDTO)
-                .collect(Collectors.toList());
-    }
+
 
     // создать страницу пагинации
     private PageRequest getPageRequest(int offset, int limit) {

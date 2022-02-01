@@ -12,9 +12,7 @@ import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.UserRepository;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +30,7 @@ public class UserService {
      */
     public UserDTO findById(long id) throws NotFoundException {
         Optional<User> user = userRepository.findById(id);
-        return user.map(userMapper::userToDTO)
+        return user.map(userMapper::convertToDTO)
                 .orElseThrow(() -> new NotFoundException("Запись с Id: " + id + " не найдена."));
     }
 
@@ -45,7 +43,8 @@ public class UserService {
      * @return DTOResponse&lt;UserDTO&gt;
      * @throws InvalidRequestParameteException
      */
-    public DTOResponse<UserDTO> findByQueryString(int offset, int limit, String query) throws InvalidRequestParameteException {
+    public DTOResponse<UserDTO> findByQueryString(int offset, int limit,
+                                                  String query) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<User> users;
         if (!query.isEmpty() || !query.isBlank()) {
@@ -54,7 +53,7 @@ public class UserService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
 
-        return new DTOResponse<>(users.getTotalElements(), getUserDTOS(users));
+        return new DTOResponse<>(users.getTotalElements(), userMapper.convertCollectionToDTO(users.getContent()));
     }
 
     /**
@@ -68,7 +67,7 @@ public class UserService {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<User> users;
         users = userRepository.findAll(pageRequest);
-        return new DTOResponse<>(users.getTotalElements(), getUserDTOS(users));
+        return new DTOResponse<>(users.getTotalElements(), userMapper.convertCollectionToDTO(users.getContent()));
     }
 
     /**
@@ -82,15 +81,8 @@ public class UserService {
      */
     public UserDTO findByName(int offset, int limit, String name) throws NotFoundException {
         Optional<User> user = userRepository.findByName(name);
-        return user.map(userMapper::userToDTO)
+        return user.map(userMapper::convertToDTO)
                 .orElseThrow(() -> new NotFoundException("Запись с Name: " + name + " не найдена."));
-    }
-
-    // Преобразовать List<User> в List<UserDTO>
-    private List<UserDTO> getUserDTOS(Page<User> users) {
-        return users.getContent().stream()
-                .map(userMapper::userToDTO)
-                .collect(Collectors.toList());
     }
 
     // создать страницу пагинации

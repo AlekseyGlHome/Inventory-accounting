@@ -18,6 +18,7 @@ public class DocumentBodyDTO implements DTOInterface{
     private BigDecimal price;
     private BigDecimal quantity;
     private InventoryDTO inventory;
+    private DocumentHeaderDTO documentHeader;
     private long receiptDocument;
     private long serialDocumentBody;
 }

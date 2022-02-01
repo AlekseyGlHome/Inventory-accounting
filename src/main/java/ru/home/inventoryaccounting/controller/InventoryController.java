@@ -3,10 +3,8 @@ package ru.home.inventoryaccounting.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.home.inventoryaccounting.api.request.InventoryRequest;
 import ru.home.inventoryaccounting.api.response.DTOResponse;
 import ru.home.inventoryaccounting.domain.DTO.InventoryDTO;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
@@ -20,15 +18,11 @@ public class InventoryController {
     private final InventoryService inventoryService;
 
     @GetMapping("/inventory")
-    public ResponseEntity getInventoryByFilter(
-            @RequestParam(name = "offset", defaultValue = "0") int offset,
-            @RequestParam(name = "limit", defaultValue = "10") int limit,
-            @RequestParam(name = "query", defaultValue = "") String query,
-            @RequestParam(name = "folderId", defaultValue = "0") long folderId) {
+    public ResponseEntity getInventoryByFilter(@RequestBody InventoryRequest inventoryRequest) {
 
         DTOResponse<InventoryDTO> inventoryResponse;
         try {
-            inventoryResponse = inventoryService.findByNameLikeAndFolderId(offset, limit, query, folderId);
+            inventoryResponse = inventoryService.selectQuery(inventoryRequest);
         } catch (InvalidRequestParameteException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

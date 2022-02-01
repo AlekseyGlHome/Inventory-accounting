@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import ru.home.inventoryaccounting.api.request.InventoryRequest;
 import ru.home.inventoryaccounting.api.response.DTOResponse;
 import ru.home.inventoryaccounting.domain.DTO.InventoryDTO;
 import ru.home.inventoryaccounting.domain.entity.Inventory;
@@ -12,9 +13,7 @@ import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.InventoryRepository;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,20 +31,21 @@ public class InventoryService {
      */
     public InventoryDTO findById(long id) throws NotFoundException {
         Optional<Inventory> inventory = inventoryRepository.findById(id);
-        return inventory.map(inventoryMapper::inventoryToDTO)
+        return inventory.map(inventoryMapper::convertToDTO)
                 .orElseThrow(() -> new NotFoundException("Запись с Id: " + id + " не найдена."));
     }
 
     /**
      * выбрать инвентарь по входждению в наименование
      *
-     * @param offset   - номер страницы
-     * @param limit    - количество элементов на странице
-     * @param query    - строка поиска
+     * @param offset - номер страницы
+     * @param limit  - количество элементов на странице
+     * @param query  - строка поиска
      * @return DTOResponse&lt;InventoryDTO&gt;
      * @throws InvalidRequestParameteException
      */
-    public DTOResponse<InventoryDTO> findByNameLike(int offset, int limit, String query) throws InvalidRequestParameteException {
+    public DTOResponse<InventoryDTO> findByNameLike(int offset, int limit,
+                                                    String query) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<Inventory> inventories;
         if (!query.isEmpty() || !query.isBlank()) {
@@ -54,7 +54,8 @@ public class InventoryService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
 
-        return new DTOResponse<>(inventories.getTotalElements(), getInventoryDTOS(inventories));
+        return new DTOResponse<>(inventories.getTotalElements(),
+                inventoryMapper.convertCollectionToDTO(inventories.getContent()));
     }
 
     /**
@@ -67,7 +68,9 @@ public class InventoryService {
      * @return DTOResponse&lt;InventoryDTO&gt;
      * @throws InvalidRequestParameteException
      */
-    public DTOResponse<InventoryDTO> findByNameLikeAndFolderId(int offset, int limit, String query, long folderId) throws InvalidRequestParameteException {
+    public DTOResponse<InventoryDTO> findByNameLikeAndFolderId(int offset, int limit,
+                                                               String query,
+                                                               long folderId) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<Inventory> inventories;
         if ((!query.isEmpty() || !query.isBlank()) && (folderId > 0)) {
@@ -76,7 +79,8 @@ public class InventoryService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
 
-        return new DTOResponse<>(inventories.getTotalElements(), getInventoryDTOS(inventories));
+        return new DTOResponse<>(inventories.getTotalElements(),
+                inventoryMapper.convertCollectionToDTO(inventories.getContent()));
     }
 
     /**
@@ -88,16 +92,18 @@ public class InventoryService {
      * @return DTOResponse&lt;InventoryDTO&gt;
      * @throws InvalidRequestParameteException
      */
-    public DTOResponse<InventoryDTO> findByFolderId(int offset, int limit, long folderId) throws InvalidRequestParameteException {
+    public DTOResponse<InventoryDTO> findByFolderId(int offset, int limit,
+                                                    long folderId) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<Inventory> inventories;
-        if  (folderId > 0) {
+        if (folderId > 0) {
             inventories = inventoryRepository.findByFolderId(pageRequest, folderId);
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
 
-        return new DTOResponse<>(inventories.getTotalElements(), getInventoryDTOS(inventories));
+        return new DTOResponse<>(inventories.getTotalElements(),
+                inventoryMapper.convertCollectionToDTO(inventories.getContent()));
     }
 
     /**
@@ -111,14 +117,15 @@ public class InventoryService {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<Inventory> inventories;
         inventories = inventoryRepository.findAll(pageRequest);
-        return new DTOResponse<>(inventories.getTotalElements(), getInventoryDTOS(inventories));
+        return new DTOResponse<>(inventories.getTotalElements(),
+                inventoryMapper.convertCollectionToDTO(inventories.getContent()));
     }
 
-    // Преобразовать List<Inventory> в List<InventoryDTO>
-    private List<InventoryDTO> getInventoryDTOS(Page<Inventory> inventories) {
-        return inventories.getContent().stream()
-                .map(inventoryMapper::inventoryToDTO)
-                .collect(Collectors.toList());
+    public DTOResponse<InventoryDTO> selectQuery(InventoryRequest inventoryRequest) throws InvalidRequestParameteException {
+
+        //if (query)
+        return null;
+
     }
 
     // создать страницу пагинации

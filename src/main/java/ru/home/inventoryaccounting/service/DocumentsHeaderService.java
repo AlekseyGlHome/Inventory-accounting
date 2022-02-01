@@ -13,9 +13,7 @@ import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.DocumentsHeaderRepository;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +31,7 @@ public class DocumentsHeaderService {
      */
     public DocumentHeaderDTO findById(long id) throws NotFoundException {
         Optional<DocumentHeader> documentsHeader = documentsHeaderRepository.findById(id);
-        return documentsHeader.map(documentHeaderMapper::documentHeaderToDTO)
+        return documentsHeader.map(documentHeaderMapper::convertToDTO)
                 .orElseThrow(() -> new NotFoundException("Запись с Id: " + id + " не найдена."));
     }
 
@@ -55,7 +53,8 @@ public class DocumentsHeaderService {
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
-        return new DTOResponse<>(documentHeaders.getTotalElements(), getDocumentHeaderDTOS(documentHeaders));
+        return new DTOResponse<>(documentHeaders.getTotalElements(),
+                documentHeaderMapper.convertCollectionToDTO(documentHeaders.getContent()));
     }
 
     /**
@@ -80,7 +79,8 @@ public class DocumentsHeaderService {
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
-        return new DTOResponse<>(documentHeaders.getTotalElements(), getDocumentHeaderDTOS(documentHeaders));
+        return new DTOResponse<>(documentHeaders.getTotalElements(),
+                documentHeaderMapper.convertCollectionToDTO(documentHeaders.getContent()));
     }
 
     /**
@@ -108,7 +108,8 @@ public class DocumentsHeaderService {
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
-        return new DTOResponse<>(documentHeaders.getTotalElements(), getDocumentHeaderDTOS(documentHeaders));
+        return new DTOResponse<>(documentHeaders.getTotalElements(),
+                documentHeaderMapper.convertCollectionToDTO(documentHeaders.getContent()));
     }
 
     /**
@@ -133,7 +134,8 @@ public class DocumentsHeaderService {
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
-        return new DTOResponse<>(documentHeaders.getTotalElements(), getDocumentHeaderDTOS(documentHeaders));
+        return new DTOResponse<>(documentHeaders.getTotalElements(),
+                documentHeaderMapper.convertCollectionToDTO(documentHeaders.getContent()));
     }
 
     /**
@@ -151,7 +153,8 @@ public class DocumentsHeaderService {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<DocumentHeader> documentHeaders;
         documentHeaders = documentsHeaderRepository.findByDate(dateStart, dateEnd, pageRequest);
-        return new DTOResponse<>(documentHeaders.getTotalElements(), getDocumentHeaderDTOS(documentHeaders));
+        return new DTOResponse<>(documentHeaders.getTotalElements(),
+                documentHeaderMapper.convertCollectionToDTO(documentHeaders.getContent()));
     }
 
     /**
@@ -176,7 +179,8 @@ public class DocumentsHeaderService {
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
-        return new DTOResponse<>(documentHeaders.getTotalElements(), getDocumentHeaderDTOS(documentHeaders));
+        return new DTOResponse<>(documentHeaders.getTotalElements(),
+                documentHeaderMapper.convertCollectionToDTO(documentHeaders.getContent()));
     }
 
     /**
@@ -204,15 +208,8 @@ public class DocumentsHeaderService {
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
-        return new DTOResponse<>(documentHeaders.getTotalElements(), getDocumentHeaderDTOS(documentHeaders));
-    }
-
-
-    // Преобразовать List<DocumentHeader> в List<DocumentHeaderDTO>
-    private List<DocumentHeaderDTO> getDocumentHeaderDTOS(Page<DocumentHeader> documentHeaders) {
-        return documentHeaders.getContent().stream()
-                .map(documentHeaderMapper::documentHeaderToDTO)
-                .collect(Collectors.toList());
+        return new DTOResponse<>(documentHeaders.getTotalElements(),
+                documentHeaderMapper.convertCollectionToDTO(documentHeaders.getContent()));
     }
 
     // создать страницу пагинации

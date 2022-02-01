@@ -1,6 +1,5 @@
 package ru.home.inventoryaccounting.service;
 
-import liquibase.pro.packaged.ag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,9 +12,7 @@ import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.UnitRepository;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +30,7 @@ public class UnitService {
      */
     public UnitDTO findById(long id) throws NotFoundException {
         Optional<Unit> unit = unitRepository.findById(id);
-        return unit.map(unitMapper::unitToDTO)
+        return unit.map(unitMapper::convertToDTO)
                 .orElseThrow(() -> new NotFoundException("Запись с Id: " + id + " не найдена."));
     }
 
@@ -56,7 +53,7 @@ public class UnitService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
 
-        return new DTOResponse<>(units.getTotalElements(), getUnitDTOS(units));
+        return new DTOResponse<>(units.getTotalElements(), unitMapper.convertCollectionToDTO(units.getContent()));
     }
 
     /**
@@ -70,14 +67,7 @@ public class UnitService {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<Unit> units;
         units = unitRepository.findAll(pageRequest);
-        return new DTOResponse<>(units.getTotalElements(), getUnitDTOS(units));
-    }
-
-    // Преобразовать List<Unit> в List<UnitDTO>
-    private List<UnitDTO> getUnitDTOS(Page<Unit> units) {
-        return units.getContent().stream()
-                .map(unitMapper::unitToDTO)
-                .collect(Collectors.toList());
+        return new DTOResponse<>(units.getTotalElements(), unitMapper.convertCollectionToDTO(units.getContent()));
     }
 
     // создать страницу пагинации
