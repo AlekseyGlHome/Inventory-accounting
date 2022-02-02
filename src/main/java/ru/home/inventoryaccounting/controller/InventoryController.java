@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.home.inventoryaccounting.api.request.InventoryRequest;
+import ru.home.inventoryaccounting.api.request.InventoryUpdateRequest;
 import ru.home.inventoryaccounting.api.response.DTOResponse;
 import ru.home.inventoryaccounting.domain.DTO.InventoryDTO;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
@@ -18,7 +19,7 @@ public class InventoryController {
     private final InventoryService inventoryService;
 
     @GetMapping("/inventory")
-    public ResponseEntity getInventoryByFilter(@RequestBody InventoryRequest inventoryRequest) {
+    public ResponseEntity<Object> getByAllOrFilter(@RequestBody InventoryRequest inventoryRequest) {
 
         DTOResponse<InventoryDTO> inventoryResponse;
         try {
@@ -30,7 +31,7 @@ public class InventoryController {
     }
 
     @GetMapping("/inventory/{id}")
-    public ResponseEntity<Object> getInventoryById(@PathVariable long id) {
+    public ResponseEntity<Object> getById(@PathVariable long id) {
         InventoryDTO inventoryDTO;
         try {
             inventoryDTO = inventoryService.findById(id);
@@ -39,4 +40,20 @@ public class InventoryController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
     }
+
+    @PostMapping("/inventory/{id}")
+    public ResponseEntity<InventoryDTO> update(@PathVariable long id,
+                                               @RequestBody InventoryUpdateRequest request) {
+
+        //TODO  обновление
+        return ResponseEntity.ok(new InventoryDTO());
+    }
+
+    @PostMapping("/inventory")
+    public ResponseEntity<InventoryDTO> add(@RequestBody InventoryUpdateRequest request) {
+
+        //TODO  добавление нового
+        return ResponseEntity.ok(new InventoryDTO());
+    }
+
 }

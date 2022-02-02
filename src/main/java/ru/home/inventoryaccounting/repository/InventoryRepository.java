@@ -2,6 +2,7 @@ package ru.home.inventoryaccounting.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -11,7 +12,7 @@ import ru.home.inventoryaccounting.domain.entity.Inventory;
 public interface InventoryRepository extends JpaRepository<Inventory, Long> {
 
     // выбрать весь неудаленный инвентарь
-    @Query("select i from Inventory i where i.deleted = false order by i.name")
+    @Query("select i from Inventory i where i.deleted = false")
     @Override
     Page<Inventory> findAll(Pageable pageable);
 

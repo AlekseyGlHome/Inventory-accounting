@@ -3,6 +3,7 @@ package ru.home.inventoryaccounting.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.home.inventoryaccounting.api.request.InventoryRequest;
 import ru.home.inventoryaccounting.api.response.DTOResponse;
@@ -38,18 +39,17 @@ public class InventoryService {
     /**
      * выбрать инвентарь по входждению в наименование
      *
-     * @param offset - номер страницы
-     * @param limit  - количество элементов на странице
-     * @param query  - строка поиска
+     * @param request - параметры
      * @return DTOResponse&lt;InventoryDTO&gt;
      * @throws InvalidRequestParameteException
      */
-    public DTOResponse<InventoryDTO> findByNameLike(int offset, int limit,
-                                                    String query) throws InvalidRequestParameteException {
-        PageRequest pageRequest = getPageRequest(offset, limit);
+    public DTOResponse<InventoryDTO> findByNameLike(InventoryRequest request)
+            throws InvalidRequestParameteException {
+
+        PageRequest pageRequest = getPageRequest(request);
         Page<Inventory> inventories;
-        if (!query.isEmpty() || !query.isBlank()) {
-            inventories = inventoryRepository.findByNameLike(pageRequest, query);
+        if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
+            inventories = inventoryRepository.findByNameLike(pageRequest, request.getQuery());
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
@@ -61,20 +61,16 @@ public class InventoryService {
     /**
      * выбрать инвентарь по входждению в наименование и идентификатору папки
      *
-     * @param offset   - номер страницы
-     * @param limit    - количество элементов на странице
-     * @param query    - строка поиска
-     * @param folderId - идентификатор папки
+     * @param request - параметры
      * @return DTOResponse&lt;InventoryDTO&gt;
      * @throws InvalidRequestParameteException
      */
-    public DTOResponse<InventoryDTO> findByNameLikeAndFolderId(int offset, int limit,
-                                                               String query,
-                                                               long folderId) throws InvalidRequestParameteException {
-        PageRequest pageRequest = getPageRequest(offset, limit);
+    public DTOResponse<InventoryDTO> findByNameLikeAndFolderId(InventoryRequest request)
+            throws InvalidRequestParameteException {
+        PageRequest pageRequest = getPageRequest(request);
         Page<Inventory> inventories;
-        if ((!query.isEmpty() || !query.isBlank()) && (folderId > 0)) {
-            inventories = inventoryRepository.findByNameLikeAndFolderId(pageRequest, query, folderId);
+        if ((!request.getQuery().isEmpty() || !request.getQuery().isBlank()) && (request.getFolderId() > 0)) {
+            inventories = inventoryRepository.findByNameLikeAndFolderId(pageRequest, request.getQuery(), request.getFolderId());
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
@@ -86,18 +82,15 @@ public class InventoryService {
     /**
      * выбрать инвентарь по идентификатору папки
      *
-     * @param offset   - номер страницы
-     * @param limit    - количество элементов на странице
-     * @param folderId - идентификатор папки
+     * @param request - Параметры
      * @return DTOResponse&lt;InventoryDTO&gt;
      * @throws InvalidRequestParameteException
      */
-    public DTOResponse<InventoryDTO> findByFolderId(int offset, int limit,
-                                                    long folderId) throws InvalidRequestParameteException {
-        PageRequest pageRequest = getPageRequest(offset, limit);
+    public DTOResponse<InventoryDTO> findByFolderId(InventoryRequest request) throws InvalidRequestParameteException {
+        PageRequest pageRequest = getPageRequest(request);
         Page<Inventory> inventories;
-        if (folderId > 0) {
-            inventories = inventoryRepository.findByFolderId(pageRequest, folderId);
+        if (request.getFolderId() > 0) {
+            inventories = inventoryRepository.findByFolderId(pageRequest, request.getFolderId());
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
@@ -109,29 +102,40 @@ public class InventoryService {
     /**
      * выбрать весь инвентарь
      *
-     * @param offset - номер страницы
-     * @param limit  - количество элементов на страницы
+     * @param request - параметры
      * @return DTOResponse&lt;InventoryDTO&gt;
      */
-    public DTOResponse<InventoryDTO> findAll(int offset, int limit) {
-        PageRequest pageRequest = getPageRequest(offset, limit);
+    public DTOResponse<InventoryDTO> findAll(InventoryRequest request) {
+        PageRequest pageRequest = getPageRequest(request);
         Page<Inventory> inventories;
+
+
         inventories = inventoryRepository.findAll(pageRequest);
         return new DTOResponse<>(inventories.getTotalElements(),
                 inventoryMapper.convertCollectionToDTO(inventories.getContent()));
     }
 
-    public DTOResponse<InventoryDTO> selectQuery(InventoryRequest inventoryRequest) throws InvalidRequestParameteException {
+    public DTOResponse<InventoryDTO> selectQuery(InventoryRequest request) throws InvalidRequestParameteException {
+        //
 
-        //if (query)
-        return null;
-
+        if ((!request.getQuery().isEmpty() || !request.getQuery().isBlank()) && (request.getFolderId() == 0)) {
+            return findByNameLike(request);
+        } else if ((request.getQuery().isEmpty() || request.getQuery().isBlank()) && (request.getFolderId() > 0)) {
+            return findByFolderId(request);
+        } else if ((!request.getQuery().isEmpty() || !request.getQuery().isBlank()) && (request.getFolderId() > 0)) {
+            return findByNameLikeAndFolderId(request);
+        }
+        return findAll(request);
     }
 
     // создать страницу пагинации
-    private PageRequest getPageRequest(int offset, int limit) {
-        int numberPage = offset / limit;
+    private PageRequest getPageRequest(InventoryRequest request) {
+        int numberPage = request.getOffset() / request.getLimit();
 
-        return PageRequest.of(numberPage, limit);
+        if (request.isSortAscending()) {
+            return PageRequest.of(numberPage, request.getLimit(), Sort.by(request.getSortingName()).ascending());
+        }
+        return PageRequest.of(numberPage, request.getLimit(), Sort.by(request.getSortingName()).descending());
+
     }
 }
