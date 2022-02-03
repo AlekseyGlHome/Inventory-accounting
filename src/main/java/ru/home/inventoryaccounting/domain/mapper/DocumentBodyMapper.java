@@ -29,7 +29,7 @@ public class DocumentBodyMapper implements MaperInterfaceForDocBody<DocumentBody
                 .deleted(documentBody.getDeleted())
                 .price(documentBody.getPrice())
                 .quantity(documentBody.getQuantity())
-                .inventory(inventoryMapper.convertToDTO(documentBody.getInventory()))
+                .inventory(inventoryMapper.mapToInventoryDto(documentBody.getInventory()))
                 .receiptDocument(documentBody.getReceiptDocument().getId())
                 .serialDocumentBody(documentBody.getSerialDocumentBody().getId())
                 .documentHeader(documentHeaderDTO)

@@ -10,38 +10,43 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class InventoryMapper implements MaperInterface<Inventory, InventoryDTO> {
+public class InventoryMapper {
 
     private final InventoryFolderMapper inventoryFolderMapper;
     private final UnitMapper unitMapper;
 
     /**
-     * Преобразовать Inventory в InventoryDTO
-     *
-     * @param inventory - элемент Inventory
-     * @return InventoryDTO
+     * Из Entity в DTO
      */
-    @Override
-    public InventoryDTO convertToDTO(Inventory inventory) {
+    public InventoryDTO mapToInventoryDto(Inventory inventory) {
         return InventoryDTO.builder()
                 .id(inventory.getId())
                 .name(inventory.getName())
                 .deleted(inventory.getDeleted())
-                .folder(inventoryFolderMapper.convertToDTO(inventory.getFolder()))
-                .unit(unitMapper.convertToDTO(inventory.getUnit()))
+                .folder(inventoryFolderMapper.mapToInventoryFolderDto(inventory.getFolder()))
+                .unit(unitMapper.mapToUnitDto(inventory.getUnit()))
                 .build();
     }
 
     /**
-     * Преобразовать коллекцию Inventory в коллекцию InventoryDTO
-     *
-     * @param inventories - колекция Inventory
-     * @return Collection&lt;InventoryDTO&gt;
+     * Из DTO в Entity
      */
-    @Override
+    public Inventory mapToInventory(InventoryDTO inventoryDTO) {
+        Inventory inventory = new Inventory();
+        inventory.setId(inventoryDTO.getId());
+        inventory.setName(inventoryDTO.getName());
+        inventory.setDeleted(inventoryDTO.isDeleted());
+        inventory.setFolder(inventoryFolderMapper.mapToInventoryFolder(inventoryDTO.getFolder()));
+        inventory.setUnit(unitMapper.mapToUnit(inventoryDTO.getUnit()));
+        return inventory;
+    }
+
+    /**
+     * Преобразовать коллекцию Entity в DTO
+     */
     public Collection<InventoryDTO> convertCollectionToDTO(Collection<Inventory> inventories) {
         return inventories.stream()
-                .map(this::convertToDTO)
+                .map(this::mapToInventoryDto)
                 .collect(Collectors.toList());
     }
 

@@ -1,27 +1,21 @@
 package ru.home.inventoryaccounting.domain.mapper;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import ru.home.inventoryaccounting.domain.DTO.InventoryFolderDTO;
 import ru.home.inventoryaccounting.domain.entity.InventoryFolder;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class InventoryFolderMapper implements MaperInterface<InventoryFolder, InventoryFolderDTO> {
+public class InventoryFolderMapper {
 
     /**
-     * Преобразовать DocumentBody в DocumentBodyDTO
-     *
-     * @param inventoryFolder - элемент DocumentBody
-     * @return InventoryFolderDTO
+     * Из Entity в DTO
      */
-    @Override
-    public InventoryFolderDTO convertToDTO(InventoryFolder inventoryFolder) {
+    public InventoryFolderDTO mapToInventoryFolderDto(InventoryFolder inventoryFolder) {
         return InventoryFolderDTO.builder()
                 .id(inventoryFolder.getId())
                 .deleted(inventoryFolder.getDeleted())
@@ -30,15 +24,22 @@ public class InventoryFolderMapper implements MaperInterface<InventoryFolder, In
     }
 
     /**
-     * Преобразовать коллекцию InventoryFolder в коллекцию InventoryFolderDTO
-     *
-     * @param inventoryFolders - колекция DocumentBody
-     * @return Collection&lt;DocumentBodyDTO&gt;
+     * Из DTO в Entity
      */
-    @Override
+    public InventoryFolder mapToInventoryFolder(InventoryFolderDTO inventoryFolderDTO) {
+        InventoryFolder inventoryFolder = new InventoryFolder();
+        inventoryFolder.setId(inventoryFolderDTO.getId());
+        inventoryFolder.setName(inventoryFolderDTO.getName());
+        inventoryFolder.setDeleted(inventoryFolderDTO.getDeleted());
+        return inventoryFolder;
+    }
+
+    /**
+     * Преобразовать коллекцию Entity в DTO
+     */
     public Collection<InventoryFolderDTO> convertCollectionToDTO(Collection<InventoryFolder> inventoryFolders) {
         return inventoryFolders.stream()
-                .map(this::convertToDTO)
+                .map(this::mapToInventoryFolderDto)
                 .collect(Collectors.toList());
     }
 }

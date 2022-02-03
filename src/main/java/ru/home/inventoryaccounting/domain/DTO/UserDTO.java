@@ -9,5 +9,5 @@ public class UserDTO implements DTOInterface{
     private Long id;
     private Boolean deleted;
     private String name;
-
+    private String password;
 }

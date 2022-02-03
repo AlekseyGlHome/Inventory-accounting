@@ -11,15 +11,15 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.home.inventoryaccounting.api.request.InventoryRequest;
+import ru.home.inventoryaccounting.api.request.ParameterRequest;
 import ru.home.inventoryaccounting.api.response.DTOResponse;
 import ru.home.inventoryaccounting.domain.DTO.InventoryDTO;
 import ru.home.inventoryaccounting.domain.DTO.InventoryFolderDTO;
 import ru.home.inventoryaccounting.domain.DTO.UnitDTO;
+import ru.home.inventoryaccounting.domain.enums.SortingDirection;
 import ru.home.inventoryaccounting.service.InventoryService;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
@@ -57,7 +57,7 @@ public class InventoryControllerTests {
         dtoList.add(inventoryDTO);
         response.setData(dtoList);
         String json = mapper.writeValueAsString(response);
-        Mockito.when(inventoryService.findByNameLikeAndFolderId(new InventoryRequest(0,10,"",0, new String[]{"name"},true))).thenReturn(response);
+        Mockito.when(inventoryService.findByNameLikeAndFolderId(new ParameterRequest(0,10,"",0, new String[]{"name"}, SortingDirection.ASC))).thenReturn(response);
         mockMvc.perform(get("/inventory?offset=0&limit=10&query=&folderId=")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))

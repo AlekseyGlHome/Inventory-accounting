@@ -31,8 +31,8 @@ public class InventoryFolderService {
      */
     public InventoryFolderDTO findById(long id) throws NotFoundException {
         Optional<InventoryFolder> inventoryFolder = inventoryFolderRepository.findById(id);
-        return inventoryFolder.map(inventoryFolderMapper::convertToDTO)
-                .orElseThrow(() -> new NotFoundException("Запись с Id: " + id + " не найдена."));
+        return inventoryFolder.map(inventoryFolderMapper::mapToInventoryFolderDto)
+                .orElseThrow(() -> new NotFoundException("Папка инвентаря с Id: " + id + " не найдена."));
     }
 
     /**

@@ -8,8 +8,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.home.inventoryaccounting.domain.entity.Inventory;
 
+import java.util.Optional;
+
 @Repository
 public interface InventoryRepository extends JpaRepository<Inventory, Long> {
+
+    @Query("select i from Inventory i where i.deleted = false and i.id = :id")
+    @Override
+    Optional<Inventory> findById(Long id);
 
     // выбрать весь неудаленный инвентарь
     @Query("select i from Inventory i where i.deleted = false")

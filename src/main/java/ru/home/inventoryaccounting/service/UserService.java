@@ -31,7 +31,7 @@ public class UserService {
     public UserDTO findById(long id) throws NotFoundException {
         Optional<User> user = userRepository.findById(id);
         return user.map(userMapper::convertToDTO)
-                .orElseThrow(() -> new NotFoundException("Запись с Id: " + id + " не найдена."));
+                .orElseThrow(() -> new NotFoundException("Пользователь с Id: " + id + " не найден."));
     }
 
     /**

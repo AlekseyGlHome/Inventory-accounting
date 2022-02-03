@@ -31,7 +31,7 @@ public class PartnerService {
     public PartnerDTO findById(long id) throws NotFoundException {
         Optional<Partner> partner = partnerRepository.findById(id);
         return partner.map(partnerMapper::convertToDTO)
-                .orElseThrow(() -> new NotFoundException("Запись с Id: " + id + " не найдена."));
+                .orElseThrow(() -> new NotFoundException("Партнер с Id: " + id + " не найден."));
     }
 
 

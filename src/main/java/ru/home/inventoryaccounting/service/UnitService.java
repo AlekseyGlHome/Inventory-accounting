@@ -18,8 +18,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UnitService {
 
-    UnitMapper unitMapper;
-    UnitRepository unitRepository;
+    private final UnitMapper unitMapper;
+    private final UnitRepository unitRepository;
 
     /**
      * выбор единицы измерения по идентификатору
@@ -30,8 +30,8 @@ public class UnitService {
      */
     public UnitDTO findById(long id) throws NotFoundException {
         Optional<Unit> unit = unitRepository.findById(id);
-        return unit.map(unitMapper::convertToDTO)
-                .orElseThrow(() -> new NotFoundException("Запись с Id: " + id + " не найдена."));
+        return unit.map(unitMapper::mapToUnitDto)
+                .orElseThrow(() -> new NotFoundException("Единица измерения с Id: " + id + " не найдена."));
     }
 
     /**

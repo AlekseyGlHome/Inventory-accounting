@@ -25,13 +25,13 @@ public class WarehouseService {
      * выбор склада по идентификатору
      *
      * @param id - идентификатор склада
-     * @return WarehouseDTO
+     * @return Warehouse
      * @throws NotFoundException
      */
     public WarehouseDTO findById(long id) throws NotFoundException {
         Optional<Warehouse> warehouse = warehouseRepository.findById(id);
         return warehouse.map(warehouseMapper::convertToDTO)
-                .orElseThrow(() -> new NotFoundException("Запись с Id: " + id + " не найдена."));
+                .orElseThrow(() -> new NotFoundException("Слад с Id: " + id + " не найден."));
     }
 
     /**

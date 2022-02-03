@@ -32,7 +32,7 @@ public class DocumentsHeaderService {
     public DocumentHeaderDTO findById(long id) throws NotFoundException {
         Optional<DocumentHeader> documentsHeader = documentsHeaderRepository.findById(id);
         return documentsHeader.map(documentHeaderMapper::convertToDTO)
-                .orElseThrow(() -> new NotFoundException("Запись с Id: " + id + " не найдена."));
+                .orElseThrow(() -> new NotFoundException("Доумент с Id: " + id + " не найден."));
     }
 
     /**
