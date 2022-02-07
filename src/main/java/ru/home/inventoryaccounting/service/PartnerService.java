@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.home.inventoryaccounting.api.response.DTOResponse;
 import ru.home.inventoryaccounting.domain.DTO.PartnerDTO;
-import ru.home.inventoryaccounting.domain.entity.Partner;
+import ru.home.inventoryaccounting.domain.entity.PartnerEntity;
 import ru.home.inventoryaccounting.domain.mapper.PartnerMapper;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
@@ -29,7 +29,7 @@ public class PartnerService {
      * @throws NotFoundException
      */
     public PartnerDTO findById(long id) throws NotFoundException {
-        Optional<Partner> partner = partnerRepository.findById(id);
+        Optional<PartnerEntity> partner = partnerRepository.findById(id);
         return partner.map(partnerMapper::convertToDTO)
                 .orElseThrow(() -> new NotFoundException("Партнер с Id: " + id + " не найден."));
     }
@@ -47,7 +47,7 @@ public class PartnerService {
     public DTOResponse<PartnerDTO> findByQueryString(int offset, int limit,
                                                      String query) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
-        Page<Partner> partners;
+        Page<PartnerEntity> partners;
 
         if (!query.isEmpty() || !query.isBlank()) {
             partners = partnerRepository.findByNameLike(pageRequest, query);
@@ -68,7 +68,7 @@ public class PartnerService {
      */
     public DTOResponse<PartnerDTO> findAll(int offset, int limit, String query) {
         PageRequest pageRequest = getPageRequest(offset, limit);
-        Page<Partner> partners;
+        Page<PartnerEntity> partners;
         partners = partnerRepository.findAll(pageRequest);
         return new DTOResponse<>(partners.getTotalElements(),
                 partnerMapper.convertCollectionToDTO(partners.getContent()));

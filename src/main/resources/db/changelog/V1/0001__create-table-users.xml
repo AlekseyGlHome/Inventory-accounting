@@ -8,19 +8,19 @@
 
     <changeSet id="0001" author="AlekseyGl">
         <sql>
-            CREATE TABLE `users` (
+            CREATE TABLE `user` (
             `id` bigint NOT NULL AUTO_INCREMENT,
             `deleted` bit(1) NOT NULL DEFAULT b'0',
             `name` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
             `password` varchar(250) DEFAULT NULL,
             PRIMARY KEY (`id`),
-            UNIQUE KEY `IDX_users_name` (`name`) USING BTREE,
-            KEY `IDX_users_deleted` (`deleted`)
+            UNIQUE KEY `IDX_user_name` (`name`) USING BTREE,
+            KEY `IDX_user_deleted` (`deleted`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Пользователи'
         </sql>
         <rollback>
             <sql>
-                drop table users;
+                drop table user;
             </sql>
         </rollback>
     </changeSet>

@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.home.inventoryaccounting.api.response.DTOResponse;
 import ru.home.inventoryaccounting.domain.DTO.InventoryFolderDTO;
-import ru.home.inventoryaccounting.domain.entity.InventoryFolder;
+import ru.home.inventoryaccounting.domain.entity.InventoryFolderEntity;
 import ru.home.inventoryaccounting.domain.mapper.InventoryFolderMapper;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
@@ -30,7 +30,7 @@ public class InventoryFolderService {
      * @throws NotFoundException
      */
     public InventoryFolderDTO findById(long id) throws NotFoundException {
-        Optional<InventoryFolder> inventoryFolder = inventoryFolderRepository.findById(id);
+        Optional<InventoryFolderEntity> inventoryFolder = inventoryFolderRepository.findById(id);
         return inventoryFolder.map(inventoryFolderMapper::mapToInventoryFolderDto)
                 .orElseThrow(() -> new NotFoundException("Папка инвентаря с Id: " + id + " не найдена."));
     }
@@ -46,7 +46,7 @@ public class InventoryFolderService {
      */
     public DTOResponse<InventoryFolderDTO> findByQueryString(int offset, int limit, String query) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
-        Page<InventoryFolder> inventoryFolders;
+        Page<InventoryFolderEntity> inventoryFolders;
         if (!query.isEmpty() || !query.isBlank()) {
             inventoryFolders = inventoryFolderRepository.findByNameLike(pageRequest, query);
         } else {
@@ -65,7 +65,7 @@ public class InventoryFolderService {
      */
     public DTOResponse<InventoryFolderDTO> findAll(int offset, int limit) {
         PageRequest pageRequest = getPageRequest(offset, limit);
-        Page<InventoryFolder> inventoryFolders;
+        Page<InventoryFolderEntity> inventoryFolders;
         inventoryFolders = inventoryFolderRepository.findAll(pageRequest);
         return new DTOResponse<>(inventoryFolders.getTotalElements(),
                 inventoryFolderMapper.convertCollectionToDTO(inventoryFolders.getContent()));

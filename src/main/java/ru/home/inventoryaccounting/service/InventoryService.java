@@ -9,7 +9,7 @@ import ru.home.inventoryaccounting.api.request.ParameterRequest;
 import ru.home.inventoryaccounting.api.request.InventoryUpdateRequest;
 import ru.home.inventoryaccounting.api.response.DTOResponse;
 import ru.home.inventoryaccounting.domain.DTO.InventoryDTO;
-import ru.home.inventoryaccounting.domain.entity.Inventory;
+import ru.home.inventoryaccounting.domain.entity.InventoryEntity;
 import ru.home.inventoryaccounting.domain.enums.SortingDirection;
 import ru.home.inventoryaccounting.domain.mapper.InventoryFolderMapper;
 import ru.home.inventoryaccounting.domain.mapper.InventoryMapper;
@@ -35,7 +35,7 @@ public class InventoryService {
      * выбор инвентарь по идентификатору
      */
     public InventoryDTO findById(long id) throws NotFoundException {
-        Optional<Inventory> inventory = inventoryRepository.findById(id);
+        Optional<InventoryEntity> inventory = inventoryRepository.findById(id);
         return inventory.map(inventoryMapper::mapToInventoryDto)
                 .orElseThrow(() -> new NotFoundException("Инвентарь с Id: " + id + " не найден."));
     }
@@ -46,7 +46,7 @@ public class InventoryService {
     public DTOResponse<InventoryDTO> findByNameLike(ParameterRequest request)
             throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(request);
-        Page<Inventory> inventories;
+        Page<InventoryEntity> inventories;
         if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
             inventories = inventoryRepository.findByNameLike(pageRequest, request.getQuery());
         } else {
@@ -62,7 +62,7 @@ public class InventoryService {
     public DTOResponse<InventoryDTO> findByNameLikeAndFolderId(ParameterRequest request)
             throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(request);
-        Page<Inventory> inventories;
+        Page<InventoryEntity> inventories;
         if ((!request.getQuery().isEmpty() || !request.getQuery().isBlank()) && (request.getFolderId() > 0)) {
             inventories = inventoryRepository.findByNameLikeAndFolderId(pageRequest, request.getQuery(), request.getFolderId());
         } else {
@@ -77,7 +77,7 @@ public class InventoryService {
      */
     public DTOResponse<InventoryDTO> findByFolderId(ParameterRequest request) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(request);
-        Page<Inventory> inventories;
+        Page<InventoryEntity> inventories;
         if (request.getFolderId() > 0) {
             inventories = inventoryRepository.findByFolderId(pageRequest, request.getFolderId());
         } else {
@@ -92,7 +92,7 @@ public class InventoryService {
      */
     public DTOResponse<InventoryDTO> findAll(ParameterRequest request) {
         PageRequest pageRequest = getPageRequest(request);
-        Page<Inventory> inventories;
+        Page<InventoryEntity> inventories;
         inventories = inventoryRepository.findAll(pageRequest);
         return new DTOResponse<>(inventories.getTotalElements(),
                 inventoryMapper.convertCollectionToDTO(inventories.getContent()));
@@ -128,23 +128,23 @@ public class InventoryService {
 
     // добавить карточку
     public InventoryDTO add(InventoryUpdateRequest request) throws NotFoundException {
-        Inventory inventory = fillInventory(new Inventory(),request);
-        return inventoryMapper.mapToInventoryDto(inventoryRepository.save(inventory));
+        InventoryEntity inventoryEntity = fillInventory(new InventoryEntity(),request);
+        return inventoryMapper.mapToInventoryDto(inventoryRepository.save(inventoryEntity));
     }
 
     // обновить карточку
     public InventoryDTO update(long id, InventoryUpdateRequest request) throws NotFoundException {
-        Inventory inventory = fillInventory(inventoryMapper.mapToInventory(findById(id)),request);
-        return inventoryMapper.mapToInventoryDto(inventoryRepository.save(inventory));
+        InventoryEntity inventoryEntity = fillInventory(inventoryMapper.mapToInventory(findById(id)),request);
+        return inventoryMapper.mapToInventoryDto(inventoryRepository.save(inventoryEntity));
     }
 
     // заполнить карточку инвентаря из запросса
-    private Inventory fillInventory(Inventory inventory,InventoryUpdateRequest request) throws NotFoundException {
-        inventory.setName(request.getName());
-        inventory.setDeleted(request.isDeleted());
-        inventory.setFolder(inventoryFolderMapper.mapToInventoryFolder(inventoryFolderService.findById(request.getFolderId())));
-        inventory.setUnit(unitMapper.mapToUnit(unitService.findById(request.getUnitId())));
-        return inventory;
+    private InventoryEntity fillInventory(InventoryEntity inventoryEntity, InventoryUpdateRequest request) throws NotFoundException {
+        inventoryEntity.setName(request.getName());
+        inventoryEntity.setDeleted(request.isDeleted());
+        inventoryEntity.setFolder(inventoryFolderMapper.mapToInventoryFolder(inventoryFolderService.findById(request.getFolderId())));
+        inventoryEntity.setUnit(unitMapper.mapToUnit(unitService.findById(request.getUnitId())));
+        return inventoryEntity;
     }
 
 

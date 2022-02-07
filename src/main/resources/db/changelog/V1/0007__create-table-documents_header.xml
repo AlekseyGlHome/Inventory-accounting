@@ -32,10 +32,10 @@
             KEY `IDX_documents_header_deleted` (`deleted`),
             KEY `IDX_documents_header_type_dok` (`type_dok`),
             KEY `IDX_documents_header_user` (`user_id`),
-            CONSTRAINT `partner` FOREIGN KEY (`partner_id`) REFERENCES `partners` (`id`),
-            CONSTRAINT `user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-            CONSTRAINT `warehous` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouses` (`id`),
-            CONSTRAINT `warexous_rec` FOREIGN KEY (`warehouse_recipient_id`) REFERENCES `warehouses` (`id`)
+            CONSTRAINT `partner` FOREIGN KEY (`partner_id`) REFERENCES `partner` (`id`),
+            CONSTRAINT `user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+            CONSTRAINT `warehous` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouse` (`id`),
+            CONSTRAINT `warexous_rec` FOREIGN KEY (`warehouse_recipient_id`) REFERENCES `warehouse` (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Заголовок документа'
         </sql>
         <rollback>

@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.home.inventoryaccounting.api.response.DTOResponse;
 import ru.home.inventoryaccounting.domain.DTO.UnitDTO;
-import ru.home.inventoryaccounting.domain.entity.Unit;
+import ru.home.inventoryaccounting.domain.entity.UnitEntity;
 import ru.home.inventoryaccounting.domain.mapper.UnitMapper;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
@@ -29,7 +29,7 @@ public class UnitService {
      * @throws NotFoundException
      */
     public UnitDTO findById(long id) throws NotFoundException {
-        Optional<Unit> unit = unitRepository.findById(id);
+        Optional<UnitEntity> unit = unitRepository.findById(id);
         return unit.map(unitMapper::mapToUnitDto)
                 .orElseThrow(() -> new NotFoundException("Единица измерения с Id: " + id + " не найдена."));
     }
@@ -45,7 +45,7 @@ public class UnitService {
      */
     public DTOResponse<UnitDTO> findByQueryString(int offset, int limit, String query) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
-        Page<Unit> units;
+        Page<UnitEntity> units;
 
         if (!query.isEmpty() || !query.isBlank()) {
             units = unitRepository.findByNameLike(pageRequest, query);
@@ -65,7 +65,7 @@ public class UnitService {
      */
     public DTOResponse<UnitDTO> findAll(int offset, int limit) {
         PageRequest pageRequest = getPageRequest(offset, limit);
-        Page<Unit> units;
+        Page<UnitEntity> units;
         units = unitRepository.findAll(pageRequest);
         return new DTOResponse<>(units.getTotalElements(), unitMapper.convertCollectionToDTO(units.getContent()));
     }

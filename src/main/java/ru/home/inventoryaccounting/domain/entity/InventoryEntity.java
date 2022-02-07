@@ -10,8 +10,8 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "units")
-public class Unit {
+@Table(name = "inventory")
+public class InventoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -20,7 +20,15 @@ public class Unit {
     @Column(name = "deleted", nullable = false)
     private Boolean deleted = false;
 
-    @Column(name = "name", nullable = false, length = 50)
+    @Column(name = "name", nullable = false, length = 250)
     private String name;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "folder_id", nullable = false)
+    private InventoryFolderEntity folder;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "unit_id", nullable = false)
+    private UnitEntity unit;
 
 }

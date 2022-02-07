@@ -5,19 +5,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "inventory_folder")
-public class InventoryFolder {
+@Table(name = "warehouse")
+public class WarehouseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @Column(name = "company", length = 150)
+    private String company;
 
     @Column(name = "deleted", nullable = false)
     private Boolean deleted = false;
@@ -25,7 +26,7 @@ public class InventoryFolder {
     @Column(name = "name", nullable = false, length = 250)
     private String name;
 
-    @OneToMany(mappedBy = "folder",fetch = FetchType.LAZY)
-    private Collection<Inventory> inventories = new ArrayList<>();
+    @Column(name = "person", length = 200)
+    private String person;
 
 }

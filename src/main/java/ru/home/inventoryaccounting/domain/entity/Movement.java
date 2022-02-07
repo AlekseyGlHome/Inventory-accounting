@@ -1,10 +1,17 @@
 package ru.home.inventoryaccounting.domain.entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@Getter
+@Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "movements")
 public class Movement {
     @Id
@@ -26,113 +33,25 @@ public class Movement {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "document_header_id", nullable = false)
-    private DocumentHeader documentHeader;
+    private DocumentHeaderEntity documentHeader;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "inventory_id", nullable = false)
-    private Inventory inventory;
+    private InventoryEntity inventory;
 
     @ManyToOne
     @JoinColumn(name = "receipt_document_id")
-    private DocumentHeader receiptDocument;
+    private DocumentHeaderEntity receiptDocument;
 
     @ManyToOne
     @JoinColumn(name = "serial_docu_body_id")
-    private DocumentBody serialDocuBody;
+    private DocumentBodyEntity serialDocuBody;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "warehouse_id", nullable = false)
-    private Warehouse warehouse;
+    private WarehouseEntity warehouse;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "serial_document_body_id", nullable = false)
-    private DocumentBody serialDocumentBody;
-
-    public DocumentBody getSerialDocumentBody() {
-        return serialDocumentBody;
-    }
-
-    public void setSerialDocumentBody(DocumentBody serialDocumentBody) {
-        this.serialDocumentBody = serialDocumentBody;
-    }
-
-    public Warehouse getWarehouse() {
-        return warehouse;
-    }
-
-    public void setWarehouse(Warehouse warehouse) {
-        this.warehouse = warehouse;
-    }
-
-    public DocumentBody getSerialDocuBody() {
-        return serialDocuBody;
-    }
-
-    public void setSerialDocuBody(DocumentBody serialDocuBody) {
-        this.serialDocuBody = serialDocuBody;
-    }
-
-    public DocumentHeader getReceiptDocument() {
-        return receiptDocument;
-    }
-
-    public void setReceiptDocument(DocumentHeader receiptDocument) {
-        this.receiptDocument = receiptDocument;
-    }
-
-    public Inventory getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
-    }
-
-    public DocumentHeader getDocumentHeader() {
-        return documentHeader;
-    }
-
-    public void setDocumentHeader(DocumentHeader documentHeader) {
-        this.documentHeader = documentHeader;
-    }
-
-    public BigDecimal getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(BigDecimal quantity) {
-        this.quantity = quantity;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private DocumentBodyEntity serialDocumentBody;
 }

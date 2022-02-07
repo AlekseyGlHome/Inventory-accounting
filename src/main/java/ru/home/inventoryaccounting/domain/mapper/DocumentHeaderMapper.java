@@ -3,14 +3,14 @@ package ru.home.inventoryaccounting.domain.mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.home.inventoryaccounting.domain.DTO.DocumentHeaderDTO;
-import ru.home.inventoryaccounting.domain.entity.DocumentHeader;
+import ru.home.inventoryaccounting.domain.entity.DocumentHeaderEntity;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class DocumentHeaderMapper implements MaperInterface<DocumentHeader, DocumentHeaderDTO> {
+public class DocumentHeaderMapper implements MaperInterface<DocumentHeaderEntity, DocumentHeaderDTO> {
 
     private final PartnerMapper partnerMapper;
     private final UserMapper userMapper;
@@ -20,38 +20,38 @@ public class DocumentHeaderMapper implements MaperInterface<DocumentHeader, Docu
     /**
      * Преобразовать DocumentHeader в DocumentHeaderDTO
      *
-     * @param documentHeader - элемент DocumentHeader
+     * @param documentHeaderEntity - элемент DocumentHeader
      * @return DocumentHeaderDTO
      */
     @Override
-    public DocumentHeaderDTO convertToDTO(DocumentHeader documentHeader) {
+    public DocumentHeaderDTO convertToDTO(DocumentHeaderEntity documentHeaderEntity) {
         DocumentHeaderDTO documentHeaderDTO = DocumentHeaderDTO.builder()
-                .id(documentHeader.getId())
-                .amount(documentHeader.getAmount())
-                .comment(documentHeader.getComment())
-                .date(documentHeader.getDate())
-                .deleted(documentHeader.getDeleted())
-                .documentNumber(documentHeader.getDocumentNumber())
-                .registered(documentHeader.getRegistered())
-                .partner(partnerMapper.convertToDTO(documentHeader.getPartner()))
-                .user(userMapper.convertToDTO(documentHeader.getUser()))
-                .warehouse(warehouseMapper.convertToDTO(documentHeader.getWarehouse()))
-                .warehouseRecipient(warehouseMapper.convertToDTO(documentHeader.getWarehouseRecipient()))
-                .typeDok(documentHeader.getTypeDok())
+                .id(documentHeaderEntity.getId())
+                .amount(documentHeaderEntity.getAmount())
+                .comment(documentHeaderEntity.getComment())
+                .date(documentHeaderEntity.getDate())
+                .deleted(documentHeaderEntity.getDeleted())
+                .documentNumber(documentHeaderEntity.getDocumentNumber())
+                .registered(documentHeaderEntity.getRegistered())
+                .partner(partnerMapper.convertToDTO(documentHeaderEntity.getPartner()))
+                .user(userMapper.convertToDTO(documentHeaderEntity.getUser()))
+                .warehouse(warehouseMapper.convertToDTO(documentHeaderEntity.getWarehouse()))
+                .warehouseRecipient(warehouseMapper.convertToDTO(documentHeaderEntity.getWarehouseRecipient()))
+                .typeDok(documentHeaderEntity.getTypeDok())
                 .build();
-        documentHeaderDTO.setDocumentBody(documentBodyMapper.convertCollectionToDTO(documentHeader.getDocumentBody(), documentHeaderDTO));
+        documentHeaderDTO.setDocumentBody(documentBodyMapper.convertCollectionToDTO(documentHeaderEntity.getDocumentBody(), documentHeaderDTO));
         return documentHeaderDTO;
     }
 
     /**
      * Преобразовать коллекцию DocumentHeader в коллекцию DocumentHeaderDTO
      *
-     * @param documentHeaders - элемент DocumentHeader
+     * @param documentHeaderEntities - элемент DocumentHeader
      * @return DocumentHeaderDTO
      */
     @Override
-    public Collection<DocumentHeaderDTO> convertCollectionToDTO(Collection<DocumentHeader> documentHeaders) {
-        return documentHeaders.stream()
+    public Collection<DocumentHeaderDTO> convertCollectionToDTO(Collection<DocumentHeaderEntity> documentHeaderEntities) {
+        return documentHeaderEntities.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }

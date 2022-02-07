@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.home.inventoryaccounting.api.response.DTOResponse;
 import ru.home.inventoryaccounting.domain.DTO.DocumentHeaderDTO;
-import ru.home.inventoryaccounting.domain.entity.DocumentHeader;
+import ru.home.inventoryaccounting.domain.entity.DocumentHeaderEntity;
 import ru.home.inventoryaccounting.domain.mapper.DocumentHeaderMapper;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
@@ -30,7 +30,7 @@ public class DocumentsHeaderService {
      * @throws NotFoundException
      */
     public DocumentHeaderDTO findById(long id) throws NotFoundException {
-        Optional<DocumentHeader> documentsHeader = documentsHeaderRepository.findById(id);
+        Optional<DocumentHeaderEntity> documentsHeader = documentsHeaderRepository.findById(id);
         return documentsHeader.map(documentHeaderMapper::convertToDTO)
                 .orElseThrow(() -> new NotFoundException("Доумент с Id: " + id + " не найден."));
     }
@@ -47,7 +47,7 @@ public class DocumentsHeaderService {
     public DTOResponse<DocumentHeaderDTO> findByDocumentNumber(int offset, int limit,
                                                                String numberStr) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
-        Page<DocumentHeader> documentHeaders;
+        Page<DocumentHeaderEntity> documentHeaders;
         if (!numberStr.isEmpty() || !numberStr.isBlank()) {
             documentHeaders = documentsHeaderRepository.findByDocumentNumber(numberStr, pageRequest);
         } else {
@@ -73,7 +73,7 @@ public class DocumentsHeaderService {
                                                                LocalDate dateEnd,
                                                                Integer tipDok) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
-        Page<DocumentHeader> documentHeaders;
+        Page<DocumentHeaderEntity> documentHeaders;
         if (tipDok > 0) {
             documentHeaders = documentsHeaderRepository.findByDateAndTypeDok(dateStart, dateEnd, tipDok, pageRequest);
         } else {
@@ -101,7 +101,7 @@ public class DocumentsHeaderService {
                                                                            Integer tipDok,
                                                                            long warehouseId) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
-        Page<DocumentHeader> documentHeaders;
+        Page<DocumentHeaderEntity> documentHeaders;
         if (tipDok > 0 && warehouseId > 0) {
             documentHeaders = documentsHeaderRepository
                     .findByDateAndTypeDokAndWarehouse(dateStart, dateEnd, tipDok, warehouseId, pageRequest);
@@ -128,7 +128,7 @@ public class DocumentsHeaderService {
                                                                LocalDate dateEnd,
                                                                long partnerId) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
-        Page<DocumentHeader> documentHeaders;
+        Page<DocumentHeaderEntity> documentHeaders;
         if (partnerId > 0) {
             documentHeaders = documentsHeaderRepository.findByDateAndPartner(dateStart, dateEnd, partnerId, pageRequest);
         } else {
@@ -151,7 +151,7 @@ public class DocumentsHeaderService {
                                                      LocalDate dateStart,
                                                      LocalDate dateEnd) {
         PageRequest pageRequest = getPageRequest(offset, limit);
-        Page<DocumentHeader> documentHeaders;
+        Page<DocumentHeaderEntity> documentHeaders;
         documentHeaders = documentsHeaderRepository.findByDate(dateStart, dateEnd, pageRequest);
         return new DTOResponse<>(documentHeaders.getTotalElements(),
                 documentHeaderMapper.convertCollectionToDTO(documentHeaders.getContent()));
@@ -173,7 +173,7 @@ public class DocumentsHeaderService {
                                                                  LocalDate dateEnd,
                                                                  long warehouseId) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
-        Page<DocumentHeader> documentHeaders;
+        Page<DocumentHeaderEntity> documentHeaders;
         if (warehouseId > 0) {
             documentHeaders = documentsHeaderRepository.findByDateAndWarehouse(dateStart, dateEnd, warehouseId, pageRequest);
         } else {
@@ -201,7 +201,7 @@ public class DocumentsHeaderService {
                                                                            long partnerId,
                                                                            long warehouseId) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
-        Page<DocumentHeader> documentHeaders;
+        Page<DocumentHeaderEntity> documentHeaders;
         if (warehouseId > 0 && partnerId > 0) {
             documentHeaders = documentsHeaderRepository
                     .findByDateAndPartnerAndWarehouse(dateStart, dateEnd, partnerId, warehouseId, pageRequest);

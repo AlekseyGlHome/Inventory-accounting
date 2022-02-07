@@ -8,18 +8,18 @@
 
     <changeSet id="0004" author="AlekseyGl">
         <sql>
-            CREATE TABLE `partners` (
+            CREATE TABLE `partner` (
             `id` bigint NOT NULL AUTO_INCREMENT,
             `deleted` bit(1) NOT NULL DEFAULT b'0',
             `name` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
             PRIMARY KEY (`id`),
             UNIQUE KEY `IDX_partners_name` (`name`) USING BTREE,
-            KEY `IDX_partners_deleted` (`deleted`)
+            KEY `IDX_partner_deleted` (`deleted`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Справочник Партнеры'
         </sql>
         <rollback>
             <sql>
-                drop table partners;
+                drop table partner;
             </sql>
         </rollback>
     </changeSet>

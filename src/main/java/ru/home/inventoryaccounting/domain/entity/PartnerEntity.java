@@ -1,6 +1,5 @@
 package ru.home.inventoryaccounting.domain.entity;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,8 +10,8 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "inventory")
-public class Inventory {
+@Table(name = "partner")
+public class PartnerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -23,13 +22,5 @@ public class Inventory {
 
     @Column(name = "name", nullable = false, length = 250)
     private String name;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "folder_id", nullable = false)
-    private InventoryFolder folder;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "unit_id", nullable = false)
-    private Unit unit;
 
 }

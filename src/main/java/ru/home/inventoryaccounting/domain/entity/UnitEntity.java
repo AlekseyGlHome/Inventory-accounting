@@ -10,8 +10,8 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "unit")
+public class UnitEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -20,10 +20,7 @@ public class User {
     @Column(name = "deleted", nullable = false)
     private Boolean deleted = false;
 
-    @Column(name = "name", nullable = false, length = 250)
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
-
-    @Column(name = "password", length = 250)
-    private String password;
 
 }

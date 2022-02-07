@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Entity
 @Table(name = "documents_body")
-public class DocumentBody {
+public class DocumentBodyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -32,19 +32,19 @@ public class DocumentBody {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "document_header_id")
-    private DocumentHeader documentHeader;
+    private DocumentHeaderEntity documentHeader;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inventory_id")
-    private Inventory inventory;
+    private InventoryEntity inventory;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receipt_document_id")
-    private DocumentHeader receiptDocument;
+    private DocumentHeaderEntity receiptDocument;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "serial_document_body_id")
-    private DocumentBody serialDocumentBody;
+    private DocumentBodyEntity serialDocumentBody;
 
 
 

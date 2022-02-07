@@ -4,34 +4,34 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.home.inventoryaccounting.domain.DTO.DocumentBodyDTO;
 import ru.home.inventoryaccounting.domain.DTO.DocumentHeaderDTO;
-import ru.home.inventoryaccounting.domain.entity.DocumentBody;
+import ru.home.inventoryaccounting.domain.entity.DocumentBodyEntity;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class DocumentBodyMapper implements MaperInterfaceForDocBody<DocumentBody, DocumentBodyDTO> {
+public class DocumentBodyMapper implements MaperInterfaceForDocBody<DocumentBodyEntity, DocumentBodyDTO> {
     private final InventoryMapper inventoryMapper;
 
     /**
      * Преобразовать DocumentBody в DocumentBodyDTO
      *
-     * @param documentBody      - элемент DocumentBody
+     * @param documentBodyEntity      - элемент DocumentBody
      * @param documentHeaderDTO - ссылка на владельца
      * @return DocumentBodyDTO
      */
     @Override
-    public DocumentBodyDTO convertToDTO(DocumentBody documentBody, DocumentHeaderDTO documentHeaderDTO) {
+    public DocumentBodyDTO convertToDTO(DocumentBodyEntity documentBodyEntity, DocumentHeaderDTO documentHeaderDTO) {
         return DocumentBodyDTO.builder()
-                .id(documentBody.getId())
-                .amount(documentBody.getAmount())
-                .deleted(documentBody.getDeleted())
-                .price(documentBody.getPrice())
-                .quantity(documentBody.getQuantity())
-                .inventory(inventoryMapper.mapToInventoryDto(documentBody.getInventory()))
-                .receiptDocument(documentBody.getReceiptDocument().getId())
-                .serialDocumentBody(documentBody.getSerialDocumentBody().getId())
+                .id(documentBodyEntity.getId())
+                .amount(documentBodyEntity.getAmount())
+                .deleted(documentBodyEntity.getDeleted())
+                .price(documentBodyEntity.getPrice())
+                .quantity(documentBodyEntity.getQuantity())
+                .inventory(inventoryMapper.mapToInventoryDto(documentBodyEntity.getInventory()))
+                .receiptDocument(documentBodyEntity.getReceiptDocument().getId())
+                .serialDocumentBody(documentBodyEntity.getSerialDocumentBody().getId())
                 .documentHeader(documentHeaderDTO)
                 .build();
     }
@@ -44,7 +44,7 @@ public class DocumentBodyMapper implements MaperInterfaceForDocBody<DocumentBody
      * @return Collection&lt;DocumentBodyDTO&gt;
      */
     @Override
-    public Collection<DocumentBodyDTO> convertCollectionToDTO(Collection<DocumentBody> collection,
+    public Collection<DocumentBodyDTO> convertCollectionToDTO(Collection<DocumentBodyEntity> collection,
                                                               DocumentHeaderDTO documentHeaderDTO) {
         return collection.stream()
                 .map((d) -> this.convertToDTO(d, documentHeaderDTO))

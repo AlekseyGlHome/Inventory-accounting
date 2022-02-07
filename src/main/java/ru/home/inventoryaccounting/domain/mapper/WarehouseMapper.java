@@ -1,33 +1,31 @@
 package ru.home.inventoryaccounting.domain.mapper;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import ru.home.inventoryaccounting.domain.DTO.WarehouseDTO;
-import ru.home.inventoryaccounting.domain.entity.Warehouse;
+import ru.home.inventoryaccounting.domain.entity.WarehouseEntity;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class WarehouseMapper implements MaperInterface<Warehouse, WarehouseDTO> {
+public class WarehouseMapper implements MaperInterface<WarehouseEntity, WarehouseDTO> {
 
     /**
      * Преобразовать Warehouse в WarehouseDTO
      *
-     * @param warehouse - элемент Warehouse
+     * @param warehouseEntity - элемент Warehouse
      * @return WarehouseDTO
      */
     @Override
-    public WarehouseDTO convertToDTO(Warehouse warehouse) {
+    public WarehouseDTO convertToDTO(WarehouseEntity warehouseEntity) {
         return WarehouseDTO.builder()
-                .id(warehouse.getId())
-                .name(warehouse.getName())
-                .deleted(warehouse.getDeleted())
-                .company(warehouse.getCompany())
-                .person(warehouse.getPerson())
+                .id(warehouseEntity.getId())
+                .name(warehouseEntity.getName())
+                .deleted(warehouseEntity.getDeleted())
+                .company(warehouseEntity.getCompany())
+                .person(warehouseEntity.getPerson())
                 .build();
     }
 
@@ -35,12 +33,12 @@ public class WarehouseMapper implements MaperInterface<Warehouse, WarehouseDTO> 
     /**
      * Преобразовать коллекцию Warehouse в коллекцию WarehouseDTO
      *
-     * @param warehouses - колекция Warehouse
+     * @param warehouseEntities - колекция Warehouse
      * @return Collection&lt;WarehouseDTO&gt;
      */
     @Override
-    public Collection<WarehouseDTO> convertCollectionToDTO(Collection<Warehouse> warehouses) {
-        return warehouses.stream()
+    public Collection<WarehouseDTO> convertCollectionToDTO(Collection<WarehouseEntity> warehouseEntities) {
+        return warehouseEntities.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }

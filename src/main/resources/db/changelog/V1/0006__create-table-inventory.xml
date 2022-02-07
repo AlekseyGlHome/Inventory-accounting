@@ -20,7 +20,7 @@
             KEY `IDX_inventory_folder_id` (`folder_id`),
             KEY `IDX_inventory_unit` (`unit_id`),
             CONSTRAINT `folder` FOREIGN KEY (`folder_id`) REFERENCES `inventory_folder` (`id`),
-            CONSTRAINT `unit` FOREIGN KEY (`unit_id`) REFERENCES `units` (`id`)
+            CONSTRAINT `unit` FOREIGN KEY (`unit_id`) REFERENCES `unit` (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Справочник Инвентаря'
         </sql>
         <rollback>

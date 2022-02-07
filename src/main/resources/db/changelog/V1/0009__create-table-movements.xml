@@ -31,7 +31,7 @@
             CONSTRAINT `movements_FK_1` FOREIGN KEY (`inventory_id`) REFERENCES `inventory` (`id`),
             CONSTRAINT `movements_FK_2` FOREIGN KEY (`receipt_document_id`) REFERENCES `documents_header` (`id`),
             CONSTRAINT `movements_FK_3` FOREIGN KEY (`serial_docu_body_id`) REFERENCES `documents_body` (`id`),
-            CONSTRAINT `movements_FK_4` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouses` (`id`),
+            CONSTRAINT `movements_FK_4` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouse` (`id`),
             CONSTRAINT `movements_FK_5` FOREIGN KEY (`serial_document_body_id`) REFERENCES `documents_body` (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Движение документов'
         </sql>

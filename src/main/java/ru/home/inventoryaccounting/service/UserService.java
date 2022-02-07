@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.home.inventoryaccounting.api.response.DTOResponse;
 import ru.home.inventoryaccounting.domain.DTO.UserDTO;
-import ru.home.inventoryaccounting.domain.entity.User;
+import ru.home.inventoryaccounting.domain.entity.UserEntity;
 import ru.home.inventoryaccounting.domain.mapper.UserMapper;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
@@ -29,7 +29,7 @@ public class UserService {
      * @throws NotFoundException
      */
     public UserDTO findById(long id) throws NotFoundException {
-        Optional<User> user = userRepository.findById(id);
+        Optional<UserEntity> user = userRepository.findById(id);
         return user.map(userMapper::convertToDTO)
                 .orElseThrow(() -> new NotFoundException("Пользователь с Id: " + id + " не найден."));
     }
@@ -46,7 +46,7 @@ public class UserService {
     public DTOResponse<UserDTO> findByQueryString(int offset, int limit,
                                                   String query) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
-        Page<User> users;
+        Page<UserEntity> users;
         if (!query.isEmpty() || !query.isBlank()) {
             users = userRepository.findByNameLike(pageRequest, query);
         } else {
@@ -65,7 +65,7 @@ public class UserService {
      */
     public DTOResponse<UserDTO> findAll(int offset, int limit) {
         PageRequest pageRequest = getPageRequest(offset, limit);
-        Page<User> users;
+        Page<UserEntity> users;
         users = userRepository.findAll(pageRequest);
         return new DTOResponse<>(users.getTotalElements(), userMapper.convertCollectionToDTO(users.getContent()));
     }
@@ -80,7 +80,7 @@ public class UserService {
      * @throws NotFoundException
      */
     public UserDTO findByName(int offset, int limit, String name) throws NotFoundException {
-        Optional<User> user = userRepository.findByName(name);
+        Optional<UserEntity> user = userRepository.findByName(name);
         return user.map(userMapper::convertToDTO)
                 .orElseThrow(() -> new NotFoundException("Запись с Name: " + name + " не найдена."));
     }

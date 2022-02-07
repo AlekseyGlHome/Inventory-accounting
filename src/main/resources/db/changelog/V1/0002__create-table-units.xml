@@ -8,18 +8,18 @@
 
     <changeSet id="0002" author="AlekseyGl">
         <sql>
-            CREATE TABLE `units` (
+            CREATE TABLE `unit` (
             `id` bigint NOT NULL AUTO_INCREMENT,
             `deleted` bit(1) NOT NULL DEFAULT b'0',
             `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
             PRIMARY KEY (`id`),
-            UNIQUE KEY `IDX_units_name` (`name`) USING BTREE,
-            KEY `IDX_units_deleted` (`deleted`)
+            UNIQUE KEY `IDX_unit_name` (`name`) USING BTREE,
+            KEY `IDX_unit_deleted` (`deleted`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Справочник единиц измерения'
         </sql>
         <rollback>
             <sql>
-                drop table units;
+                drop table unit;
             </sql>
         </rollback>
     </changeSet>

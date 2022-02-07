@@ -7,7 +7,7 @@
 
     <changeSet id="0010" author="AlekseyGl">
         <sql>
-            INSERT INTO warehouses (id,company,deleted,name,person) VALUES
+            INSERT INTO warehouse (id,company,deleted,name,person) VALUES
                 (1,'ИП Науменко И.А.',0,'Кафе "Харчевня"',NULL),
                 (2,'ООО "Мизер"',0,'Кафе Парк-Кафе',NULL),
                 (3,'ИП Науменко И.а.',0,'Магазин Продукты',NULL);
@@ -18,7 +18,7 @@
                 (3,0,'Бытовая техника'),
                 (4,0,'Столы');
 
-            INSERT INTO units (id,deleted,name) VALUES
+            INSERT INTO unit (id,deleted,name) VALUES
                 (1,0,'шт'),
                 (2,0,'кг');
 
@@ -32,12 +32,12 @@
                 (7,0,'Телевизор Philips',3,1),
                 (8,0,'Электро печь 3кВт',3,1);
 
-            INSERT INTO users (id,deleted,name,password) VALUES
+            INSERT INTO user (id,deleted,name,password) VALUES
                 (1,0,'Admin',NULL),
                 (2,0,'User1',NULL),
                 (3,0,'User2',NULL);
 
-            INSERT INTO partners (id,deleted,name) VALUES
+            INSERT INTO partner (id,deleted,name) VALUES
                 (1,0,'ООО Рога и Копыта'),
                 (2,0,'ИП Иванов Иван Иванович'),
                 (3,0,'ООО Тандер');
@@ -56,9 +56,9 @@
         </sql>
         <rollback>
             <sql>
-                delete from warehouses;
+                delete from warehouse;
                 delete from units;
-                delete from users;
+                delete from user;
                 delete from partners;
                 delete from inventory_folder;
                 delete from inventory;

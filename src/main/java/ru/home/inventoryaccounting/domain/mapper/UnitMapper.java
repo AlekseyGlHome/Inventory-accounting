@@ -3,7 +3,7 @@ package ru.home.inventoryaccounting.domain.mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.home.inventoryaccounting.domain.DTO.UnitDTO;
-import ru.home.inventoryaccounting.domain.entity.Unit;
+import ru.home.inventoryaccounting.domain.entity.UnitEntity;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -15,30 +15,30 @@ public class UnitMapper {
     /**
      * Из Entity в DTO
      */
-    public UnitDTO mapToUnitDto(Unit unit) {
+    public UnitDTO mapToUnitDto(UnitEntity unitEntity) {
         return UnitDTO.builder()
-                .id(unit.getId())
-                .deleted(unit.getDeleted())
-                .name(unit.getName())
+                .id(unitEntity.getId())
+                .deleted(unitEntity.getDeleted())
+                .name(unitEntity.getName())
                 .build();
     }
 
     /**
      * Из DTO в Entity
      */
-    public Unit mapToUnit(UnitDTO unitDTO){
-        Unit unit = new Unit();
-        unit.setId(unitDTO.getId());
-        unit.setName(unitDTO.getName());
-        unit.setDeleted(unitDTO.getDeleted());
-        return unit;
+    public UnitEntity mapToUnit(UnitDTO unitDTO){
+        UnitEntity unitEntity = new UnitEntity();
+        unitEntity.setId(unitDTO.getId());
+        unitEntity.setName(unitDTO.getName());
+        unitEntity.setDeleted(unitDTO.getDeleted());
+        return unitEntity;
     }
 
     /**
      * Преобразовать коллекцию Entity в DTO
      */
-    public Collection<UnitDTO> convertCollectionToDTO(Collection<Unit> units) {
-        return units.stream()
+    public Collection<UnitDTO> convertCollectionToDTO(Collection<UnitEntity> unitEntities) {
+        return unitEntities.stream()
                 .map(this::mapToUnitDto)
                 .collect(Collectors.toList());
     }

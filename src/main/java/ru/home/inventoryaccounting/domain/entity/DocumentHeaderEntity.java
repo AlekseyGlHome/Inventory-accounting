@@ -15,7 +15,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @Entity
 @Table(name = "documents_header")
-public class DocumentHeader {
+public class DocumentHeaderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -41,27 +41,27 @@ public class DocumentHeader {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "partner_id")
-    private Partner partner;
+    private PartnerEntity partner;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "warehouse_id")
-    private Warehouse warehouse;
+    private WarehouseEntity warehouse;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "warehouse_recipient_id")
-    private Warehouse warehouseRecipient;
+    private WarehouseEntity warehouseRecipient;
 
     @Column(name = "type_dok")
     private Integer typeDok;
 
     @OneToMany(mappedBy = "documentHeader", fetch = FetchType.LAZY)
-    private Collection<DocumentBody> documentBody;
+    private Collection<DocumentBodyEntity> documentBody;
 
     @OneToMany(mappedBy = "receiptDocument",fetch = FetchType.LAZY)
-    private Collection<DocumentBody> expenseDocuments = new ArrayList<>();
+    private Collection<DocumentBodyEntity> expenseDocuments = new ArrayList<>();
 
 }

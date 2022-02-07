@@ -8,20 +8,20 @@
 
     <changeSet id="0003" author="AlekseyGl">
         <sql>
-            CREATE TABLE `warehouses` (
+            CREATE TABLE `warehouse` (
             `id` bigint NOT NULL AUTO_INCREMENT,
             `company` varchar(150) DEFAULT NULL,
             `deleted` bit(1) NOT NULL DEFAULT b'0',
             `name` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
             `person` varchar(200) DEFAULT NULL,
             PRIMARY KEY (`id`),
-            UNIQUE KEY `IDX_warehouses_name` (`name`) USING BTREE,
-            KEY `IDX_warehouses_deleted` (`deleted`)
+            UNIQUE KEY `IDX_warehouse_name` (`name`) USING BTREE,
+            KEY `IDX_warehouse_deleted` (`deleted`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Справочник складов'
         </sql>
         <rollback>
             <sql>
-                drop table warehouses;
+                drop table warehouse;
             </sql>
         </rollback>
     </changeSet>

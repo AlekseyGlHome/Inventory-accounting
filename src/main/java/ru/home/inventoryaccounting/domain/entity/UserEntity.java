@@ -10,8 +10,8 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "partners")
-public class Partner {
+@Table(name = "user")
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -22,5 +22,8 @@ public class Partner {
 
     @Column(name = "name", nullable = false, length = 250)
     private String name;
+
+    @Column(name = "password", length = 250)
+    private String password;
 
 }
