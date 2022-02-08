@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.home.inventoryaccounting.api.response.DTOResponse;
+import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.WarehouseDto;
 import ru.home.inventoryaccounting.domain.entity.WarehouseEntity;
 import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
@@ -26,7 +26,6 @@ public class WarehouseService {
      *
      * @param id - идентификатор склада
      * @return Warehouse
-     * @throws NotFoundException
      */
     public WarehouseDto findById(long id) throws NotFoundException {
         Optional<WarehouseEntity> warehouse = warehouseRepository.findById(id);
@@ -41,9 +40,8 @@ public class WarehouseService {
      * @param limit  - количество элементов на странице
      * @param query  - строка поиска
      * @return DTOResponse&lt;WarehouseDTO&gt;
-     * @throws InvalidRequestParameteException
      */
-    public DTOResponse<WarehouseDto> findByQueryString(int offset, int limit,
+    public DtoResponse<WarehouseDto> findByQueryString(int offset, int limit,
                                                        String query) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<WarehouseEntity> warehouses;
@@ -52,7 +50,7 @@ public class WarehouseService {
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
-        return new DTOResponse<>(warehouses.getTotalElements(),
+        return new DtoResponse<>(warehouses.getTotalElements(),
                 mapperUtiliti.mapToCollectionWarehouseDto(warehouses.getContent()));
     }
 
@@ -63,11 +61,11 @@ public class WarehouseService {
      * @param limit  - количество элементов на странице
      * @return DTOResponse&lt;WarehouseDTO&gt;
      */
-    public DTOResponse<WarehouseDto> findAll(int offset, int limit) {
+    public DtoResponse<WarehouseDto> findAll(int offset, int limit) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<WarehouseEntity> warehouses;
         warehouses = warehouseRepository.findAll(pageRequest);
-        return new DTOResponse<>(warehouses.getTotalElements(),
+        return new DtoResponse<>(warehouses.getTotalElements(),
                 mapperUtiliti.mapToCollectionWarehouseDto(warehouses.getContent()));
     }
 

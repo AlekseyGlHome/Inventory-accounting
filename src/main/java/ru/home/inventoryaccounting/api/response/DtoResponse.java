@@ -10,7 +10,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DTOResponse <T extends DtoInterface>{
+public class DtoResponse<T extends DtoInterface>{
     private long numberOfRecord;
     private Collection<T> data;
 }

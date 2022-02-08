@@ -15,7 +15,7 @@
             `folder_id` bigint NOT NULL,
             `unit_id` bigint NOT NULL,
             PRIMARY KEY (`id`),
-            UNIQUE KEY `IDX_inventory_name` (`name`) USING BTREE,
+            KEY `IDX_inventory_name` (`name`),
             KEY `IDX_inventory_deleted` (`deleted`),
             KEY `IDX_inventory_folder_id` (`folder_id`),
             KEY `IDX_inventory_unit` (`unit_id`),

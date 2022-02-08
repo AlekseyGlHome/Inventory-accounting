@@ -6,7 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.home.inventoryaccounting.api.request.InventoryUpdateRequest;
 import ru.home.inventoryaccounting.api.request.ParameterRequest;
-import ru.home.inventoryaccounting.api.response.DTOResponse;
+import ru.home.inventoryaccounting.api.response.DeleteResponse;
+import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.InventoryDto;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
@@ -19,7 +20,7 @@ public class InventoryController {
     private final InventoryService inventoryService;
 
     @GetMapping("/inventory")
-    public ResponseEntity<Object> getByAllOrFilter(
+    public ResponseEntity<?> getByAllOrFilter(
             @RequestParam(name = "offset", defaultValue = "0") int offset,
             @RequestParam(name = "limit", defaultValue = "10") int limit,
             @RequestParam(name = "query", defaultValue = "") String query,
@@ -28,7 +29,7 @@ public class InventoryController {
             @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection) {
 
 
-        DTOResponse<InventoryDto> inventoryResponse;
+        DtoResponse<InventoryDto> inventoryResponse;
         ParameterRequest parameter = inventoryService.getRequestParameters(offset, limit, query,
                 folderId, sortColumns, sortingDirection);
         try {
@@ -73,6 +74,16 @@ public class InventoryController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
         return ResponseEntity.ok(inventoryDTO);
+    }
+
+    @DeleteMapping("/inventory/{id}")
+    public ResponseEntity<DeleteResponse> deleteById(@PathVariable long id){
+        try {
+            inventoryService.deleteById(id);
+        } catch (NotFoundException ex) {
+            return ResponseEntity.ok(new DeleteResponse(false, ex.getMessage()));
+        }
+        return ResponseEntity.ok(new DeleteResponse(true,"Запись удалена"));
     }
 
 }

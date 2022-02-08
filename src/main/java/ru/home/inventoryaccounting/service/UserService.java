@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.home.inventoryaccounting.api.response.DTOResponse;
+import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.UserDto;
 import ru.home.inventoryaccounting.domain.entity.UserEntity;
 import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
@@ -26,7 +26,6 @@ public class UserService {
      *
      * @param id - идентификатор склада
      * @return UserDTO
-     * @throws NotFoundException
      */
     public UserDto findById(long id) throws NotFoundException {
         Optional<UserEntity> user = userRepository.findById(id);
@@ -41,9 +40,8 @@ public class UserService {
      * @param limit  - количество элементов на странице
      * @param query  - строка поиска
      * @return DTOResponse&lt;UserDTO&gt;
-     * @throws InvalidRequestParameteException
      */
-    public DTOResponse<UserDto> findByQueryString(int offset, int limit,
+    public DtoResponse<UserDto> findByQueryString(int offset, int limit,
                                                   String query) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<UserEntity> users;
@@ -53,7 +51,7 @@ public class UserService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
 
-        return new DTOResponse<>(users.getTotalElements(), mapperUtiliti.mapToCollectionUserDto(users.getContent()));
+        return new DtoResponse<>(users.getTotalElements(), mapperUtiliti.mapToCollectionUserDto(users.getContent()));
     }
 
     /**
@@ -63,11 +61,11 @@ public class UserService {
      * @param limit  - количество элементов на странице
      * @return DTOResponse&lt;UserDTO&gt;
      */
-    public DTOResponse<UserDto> findAll(int offset, int limit) {
+    public DtoResponse<UserDto> findAll(int offset, int limit) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<UserEntity> users;
         users = userRepository.findAll(pageRequest);
-        return new DTOResponse<>(users.getTotalElements(), mapperUtiliti.mapToCollectionUserDto(users.getContent()));
+        return new DtoResponse<>(users.getTotalElements(), mapperUtiliti.mapToCollectionUserDto(users.getContent()));
     }
 
     /**
@@ -77,7 +75,6 @@ public class UserService {
      * @param limit  - количество элементов на странице
      * @param name   - строка поиска
      * @return DTOResponse&lt;UserDTO&gt;
-     * @throws NotFoundException
      */
     public UserDto findByName(int offset, int limit, String name) throws NotFoundException {
         Optional<UserEntity> user = userRepository.findByName(name);

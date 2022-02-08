@@ -1,12 +1,16 @@
 package ru.home.inventoryaccounting.domain.mapper;
 
 
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 import ru.home.inventoryaccounting.domain.dto.*;
 import ru.home.inventoryaccounting.domain.entity.*;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+@Component
+@NoArgsConstructor
 public class MapperUtiliti {
 
     /**

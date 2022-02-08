@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.home.inventoryaccounting.api.response.DTOResponse;
+import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.InventoryFolderDto;
 import ru.home.inventoryaccounting.domain.entity.InventoryFolderEntity;
 import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
@@ -27,7 +27,6 @@ public class InventoryFolderService {
      *
      * @param id - идентификатор
      * @return InventoryFolderDTO
-     * @throws NotFoundException
      */
     public InventoryFolderDto findById(long id) throws NotFoundException {
         Optional<InventoryFolderEntity> inventoryFolder = inventoryFolderRepository.findById(id);
@@ -42,9 +41,8 @@ public class InventoryFolderService {
      * @param limit    - количество элементов на странице
      * @param query    - строка поиска
      * @return DTOResponse&lt;InventoryFolderDTO&gt;
-     * @throws InvalidRequestParameteException
      */
-    public DTOResponse<InventoryFolderDto> findByQueryString(int offset, int limit, String query) throws InvalidRequestParameteException {
+    public DtoResponse<InventoryFolderDto> findByQueryString(int offset, int limit, String query) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<InventoryFolderEntity> inventoryFolders;
         if (!query.isEmpty() || !query.isBlank()) {
@@ -52,7 +50,7 @@ public class InventoryFolderService {
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
-        return new DTOResponse<>(inventoryFolders.getTotalElements(),
+        return new DtoResponse<>(inventoryFolders.getTotalElements(),
                 mapperUtiliti.mapToCollectionInventoryFolderDto(inventoryFolders.getContent()));
     }
 
@@ -63,11 +61,11 @@ public class InventoryFolderService {
      * @param limit  - количество элементов на страницы
      * @return DTOResponse&lt;InventoryFolderDTO&gt;
      */
-    public DTOResponse<InventoryFolderDto> findAll(int offset, int limit) {
+    public DtoResponse<InventoryFolderDto> findAll(int offset, int limit) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<InventoryFolderEntity> inventoryFolders;
         inventoryFolders = inventoryFolderRepository.findAll(pageRequest);
-        return new DTOResponse<>(inventoryFolders.getTotalElements(),
+        return new DtoResponse<>(inventoryFolders.getTotalElements(),
                 mapperUtiliti.mapToCollectionInventoryFolderDto(inventoryFolders.getContent()));
     }
 

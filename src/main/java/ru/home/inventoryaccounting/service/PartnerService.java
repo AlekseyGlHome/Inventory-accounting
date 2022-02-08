@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.home.inventoryaccounting.api.response.DTOResponse;
+import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.PartnerDto;
 import ru.home.inventoryaccounting.domain.entity.PartnerEntity;
 import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
@@ -26,7 +26,6 @@ public class PartnerService {
      *
      * @param id - идентификатор
      * @return PartnerDTO
-     * @throws NotFoundException
      */
     public PartnerDto findById(long id) throws NotFoundException {
         Optional<PartnerEntity> partner = partnerRepository.findById(id);
@@ -42,9 +41,8 @@ public class PartnerService {
      * @param limit  - количество элементов на странице
      * @param query  - строка поиска
      * @return DTOResponse&lt;UnitDTO&gt;
-     * @throws InvalidRequestParameteException
      */
-    public DTOResponse<PartnerDto> findByQueryString(int offset, int limit,
+    public DtoResponse<PartnerDto> findByQueryString(int offset, int limit,
                                                      String query) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<PartnerEntity> partners;
@@ -55,7 +53,7 @@ public class PartnerService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
 
-        return new DTOResponse<>(partners.getTotalElements(),
+        return new DtoResponse<>(partners.getTotalElements(),
                 mapperUtiliti.mapToCollectionPartnerDto(partners.getContent()));
     }
 
@@ -66,11 +64,11 @@ public class PartnerService {
      * @param limit  - количество элементов на странице
      * @return DTOResponse&lt;PartnerDTO&gt;
      */
-    public DTOResponse<PartnerDto> findAll(int offset, int limit, String query) {
+    public DtoResponse<PartnerDto> findAll(int offset, int limit, String query) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<PartnerEntity> partners;
         partners = partnerRepository.findAll(pageRequest);
-        return new DTOResponse<>(partners.getTotalElements(),
+        return new DtoResponse<>(partners.getTotalElements(),
                 mapperUtiliti.mapToCollectionPartnerDto(partners.getContent()));
     }
 

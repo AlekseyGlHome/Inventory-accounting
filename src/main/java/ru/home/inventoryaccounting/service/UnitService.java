@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.home.inventoryaccounting.api.response.DTOResponse;
+import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.UnitDto;
 import ru.home.inventoryaccounting.domain.entity.UnitEntity;
 import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
@@ -26,7 +26,6 @@ public class UnitService {
      *
      * @param id - идентификатор
      * @return UnitDTO
-     * @throws NotFoundException
      */
     public UnitDto findById(long id) throws NotFoundException {
         Optional<UnitEntity> unit = unitRepository.findById(id);
@@ -41,9 +40,8 @@ public class UnitService {
      * @param limit  - количество элементов на странице
      * @param query  - строка поиска
      * @return DTOResponse&lt;UnitDTO&gt;
-     * @throws InvalidRequestParameteException
      */
-    public DTOResponse<UnitDto> findByQueryString(int offset, int limit, String query) throws InvalidRequestParameteException {
+    public DtoResponse<UnitDto> findByQueryString(int offset, int limit, String query) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<UnitEntity> units;
 
@@ -53,7 +51,7 @@ public class UnitService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
 
-        return new DTOResponse<>(units.getTotalElements(), mapperUtiliti.mapToCollectionUnitDto(units.getContent()));
+        return new DtoResponse<>(units.getTotalElements(), mapperUtiliti.mapToCollectionUnitDto(units.getContent()));
     }
 
     /**
@@ -63,11 +61,11 @@ public class UnitService {
      * @param limit  - количество элементов на странице
      * @return DTOResponse&lt;UnitDTO&gt;
      */
-    public DTOResponse<UnitDto> findAll(int offset, int limit) {
+    public DtoResponse<UnitDto> findAll(int offset, int limit) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<UnitEntity> units;
         units = unitRepository.findAll(pageRequest);
-        return new DTOResponse<>(units.getTotalElements(), mapperUtiliti.mapToCollectionUnitDto(units.getContent()));
+        return new DtoResponse<>(units.getTotalElements(), mapperUtiliti.mapToCollectionUnitDto(units.getContent()));
     }
 
     // создать страницу пагинации

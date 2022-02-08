@@ -12,7 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.home.inventoryaccounting.api.request.ParameterRequest;
-import ru.home.inventoryaccounting.api.response.DTOResponse;
+import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.InventoryDto;
 import ru.home.inventoryaccounting.domain.dto.InventoryFolderDto;
 import ru.home.inventoryaccounting.domain.dto.UnitDto;
@@ -42,7 +42,7 @@ public class InventoryControllerTests {
 
     @Test
     void getAllInventory() throws Exception {
-        DTOResponse<InventoryDto> response = new DTOResponse<>();
+        DtoResponse<InventoryDto> response = new DtoResponse<>();
         response.setNumberOfRecord(1);
         List<InventoryDto> dtoList = new ArrayList<>();
         InventoryFolderDto inventoryFolderDTO = InventoryFolderDto.builder().id(1L).deleted(false).name("Стаканы").build();
