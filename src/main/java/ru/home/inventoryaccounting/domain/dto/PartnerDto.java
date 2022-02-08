@@ -1,4 +1,4 @@
-package ru.home.inventoryaccounting.domain.DTO;
+package ru.home.inventoryaccounting.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PartnerDTO implements DTOInterface{
+public class PartnerDto implements DtoInterface {
     private Long id;
     private Boolean deleted;
     private String name;

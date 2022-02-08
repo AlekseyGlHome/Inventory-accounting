@@ -8,12 +8,10 @@ import org.springframework.stereotype.Service;
 import ru.home.inventoryaccounting.api.request.ParameterRequest;
 import ru.home.inventoryaccounting.api.request.InventoryUpdateRequest;
 import ru.home.inventoryaccounting.api.response.DTOResponse;
-import ru.home.inventoryaccounting.domain.DTO.InventoryDTO;
+import ru.home.inventoryaccounting.domain.dto.InventoryDto;
 import ru.home.inventoryaccounting.domain.entity.InventoryEntity;
 import ru.home.inventoryaccounting.domain.enums.SortingDirection;
-import ru.home.inventoryaccounting.domain.mapper.InventoryFolderMapper;
-import ru.home.inventoryaccounting.domain.mapper.InventoryMapper;
-import ru.home.inventoryaccounting.domain.mapper.UnitMapper;
+import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.InventoryRepository;
@@ -24,9 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class InventoryService {
 
-    private final InventoryMapper inventoryMapper;
-    private final InventoryFolderMapper inventoryFolderMapper;
-    private final UnitMapper unitMapper;
+    private final MapperUtiliti mapperUtiliti;
     private final InventoryRepository inventoryRepository;
     private final InventoryFolderService inventoryFolderService;
     private final UnitService unitService;
@@ -34,16 +30,16 @@ public class InventoryService {
     /**
      * выбор инвентарь по идентификатору
      */
-    public InventoryDTO findById(long id) throws NotFoundException {
+    public InventoryDto findById(long id) throws NotFoundException {
         Optional<InventoryEntity> inventory = inventoryRepository.findById(id);
-        return inventory.map(inventoryMapper::mapToInventoryDto)
+        return inventory.map(mapperUtiliti::mapToInventoryDto)
                 .orElseThrow(() -> new NotFoundException("Инвентарь с Id: " + id + " не найден."));
     }
 
     /**
      * выбрать инвентарь по входждению в наименование
      */
-    public DTOResponse<InventoryDTO> findByNameLike(ParameterRequest request)
+    public DTOResponse<InventoryDto> findByNameLike(ParameterRequest request)
             throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(request);
         Page<InventoryEntity> inventories;
@@ -53,13 +49,13 @@ public class InventoryService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
         return new DTOResponse<>(inventories.getTotalElements(),
-                inventoryMapper.convertCollectionToDTO(inventories.getContent()));
+                mapperUtiliti.mapToCollectionInventoryDto(inventories.getContent()));
     }
 
     /**
      * выбрать инвентарь по входждению в наименование и идентификатору папки
      */
-    public DTOResponse<InventoryDTO> findByNameLikeAndFolderId(ParameterRequest request)
+    public DTOResponse<InventoryDto> findByNameLikeAndFolderId(ParameterRequest request)
             throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(request);
         Page<InventoryEntity> inventories;
@@ -69,13 +65,13 @@ public class InventoryService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
         return new DTOResponse<>(inventories.getTotalElements(),
-                inventoryMapper.convertCollectionToDTO(inventories.getContent()));
+                mapperUtiliti.mapToCollectionInventoryDto(inventories.getContent()));
     }
 
     /**
      * выбрать инвентарь по идентификатору папки
      */
-    public DTOResponse<InventoryDTO> findByFolderId(ParameterRequest request) throws InvalidRequestParameteException {
+    public DTOResponse<InventoryDto> findByFolderId(ParameterRequest request) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(request);
         Page<InventoryEntity> inventories;
         if (request.getFolderId() > 0) {
@@ -84,24 +80,24 @@ public class InventoryService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
         return new DTOResponse<>(inventories.getTotalElements(),
-                inventoryMapper.convertCollectionToDTO(inventories.getContent()));
+                mapperUtiliti.mapToCollectionInventoryDto(inventories.getContent()));
     }
 
     /**
      * выбрать весь инвентарь
      */
-    public DTOResponse<InventoryDTO> findAll(ParameterRequest request) {
+    public DTOResponse<InventoryDto> findAll(ParameterRequest request) {
         PageRequest pageRequest = getPageRequest(request);
         Page<InventoryEntity> inventories;
         inventories = inventoryRepository.findAll(pageRequest);
         return new DTOResponse<>(inventories.getTotalElements(),
-                inventoryMapper.convertCollectionToDTO(inventories.getContent()));
+                mapperUtiliti.mapToCollectionInventoryDto(inventories.getContent()));
     }
 
     //заполнение объекта RequestParameters для передачи в методы
     public ParameterRequest getRequestParameters(int offset, int limit, String query, long folderId, String sortColumns,
                                                  String sortingDirection) {
-        ParameterRequest parameterRequest = ParameterRequest.builder()
+        return ParameterRequest.builder()
                 .offset(offset)
                 .limit(limit)
                 .query(query)
@@ -109,11 +105,10 @@ public class InventoryService {
                 .sortColumns(sortColumns.split(", +"))
                 .sortingDirection(SortingDirection.valueOf(sortingDirection))
                 .build();
-        return parameterRequest;
     }
 
     // общий запрос
-    public DTOResponse<InventoryDTO> selectQuery(ParameterRequest request) throws InvalidRequestParameteException {
+    public DTOResponse<InventoryDto> selectQuery(ParameterRequest request) throws InvalidRequestParameteException {
         //
 
         if ((!request.getQuery().isEmpty() || !request.getQuery().isBlank()) && (request.getFolderId() == 0)) {
@@ -127,23 +122,23 @@ public class InventoryService {
     }
 
     // добавить карточку
-    public InventoryDTO add(InventoryUpdateRequest request) throws NotFoundException {
+    public InventoryDto add(InventoryUpdateRequest request) throws NotFoundException {
         InventoryEntity inventoryEntity = fillInventory(new InventoryEntity(),request);
-        return inventoryMapper.mapToInventoryDto(inventoryRepository.save(inventoryEntity));
+        return mapperUtiliti.mapToInventoryDto(inventoryRepository.save(inventoryEntity));
     }
 
     // обновить карточку
-    public InventoryDTO update(long id, InventoryUpdateRequest request) throws NotFoundException {
-        InventoryEntity inventoryEntity = fillInventory(inventoryMapper.mapToInventory(findById(id)),request);
-        return inventoryMapper.mapToInventoryDto(inventoryRepository.save(inventoryEntity));
+    public InventoryDto update(long id, InventoryUpdateRequest request) throws NotFoundException {
+        InventoryEntity inventoryEntity = fillInventory(mapperUtiliti.mapToInventoryEntity(findById(id)),request);
+        return mapperUtiliti.mapToInventoryDto(inventoryRepository.save(inventoryEntity));
     }
 
     // заполнить карточку инвентаря из запросса
     private InventoryEntity fillInventory(InventoryEntity inventoryEntity, InventoryUpdateRequest request) throws NotFoundException {
         inventoryEntity.setName(request.getName());
         inventoryEntity.setDeleted(request.isDeleted());
-        inventoryEntity.setFolder(inventoryFolderMapper.mapToInventoryFolder(inventoryFolderService.findById(request.getFolderId())));
-        inventoryEntity.setUnit(unitMapper.mapToUnit(unitService.findById(request.getUnitId())));
+        inventoryEntity.setFolder(mapperUtiliti.mapToInventoryFolderEntity(inventoryFolderService.findById(request.getFolderId())));
+        inventoryEntity.setUnit(mapperUtiliti.mapToUnitEntity(unitService.findById(request.getUnitId())));
         return inventoryEntity;
     }
 

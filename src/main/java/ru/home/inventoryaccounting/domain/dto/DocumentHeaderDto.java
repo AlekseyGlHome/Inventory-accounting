@@ -1,4 +1,4 @@
-package ru.home.inventoryaccounting.domain.DTO;
+package ru.home.inventoryaccounting.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +13,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DocumentHeaderDTO implements DTOInterface {
+public class DocumentHeaderDto implements DtoInterface {
     private Long id;
     private BigDecimal amount;
     private String comment;
@@ -21,11 +21,11 @@ public class DocumentHeaderDTO implements DTOInterface {
     private Boolean deleted;
     private String documentNumber;
     private Boolean registered;
-    private PartnerDTO partner;
-    private UserDTO user;
-    private WarehouseDTO warehouse;
-    private WarehouseDTO warehouseRecipient;
+    private PartnerDto partner;
+    private UserDto user;
+    private WarehouseDto warehouse;
+    private WarehouseDto warehouseRecipient;
     private Integer typeDok;
-    private Collection<DocumentBodyDTO> documentBody;
+    private Collection<DocumentBodyDto> documentBody;
 
 }

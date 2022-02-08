@@ -5,9 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.home.inventoryaccounting.api.response.DTOResponse;
-import ru.home.inventoryaccounting.domain.DTO.UnitDTO;
+import ru.home.inventoryaccounting.domain.dto.UnitDto;
 import ru.home.inventoryaccounting.domain.entity.UnitEntity;
-import ru.home.inventoryaccounting.domain.mapper.UnitMapper;
+import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.UnitRepository;
@@ -18,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UnitService {
 
-    private final UnitMapper unitMapper;
+    private final MapperUtiliti mapperUtiliti;
     private final UnitRepository unitRepository;
 
     /**
@@ -28,9 +28,9 @@ public class UnitService {
      * @return UnitDTO
      * @throws NotFoundException
      */
-    public UnitDTO findById(long id) throws NotFoundException {
+    public UnitDto findById(long id) throws NotFoundException {
         Optional<UnitEntity> unit = unitRepository.findById(id);
-        return unit.map(unitMapper::mapToUnitDto)
+        return unit.map(mapperUtiliti::mapToUnitDto)
                 .orElseThrow(() -> new NotFoundException("Единица измерения с Id: " + id + " не найдена."));
     }
 
@@ -43,7 +43,7 @@ public class UnitService {
      * @return DTOResponse&lt;UnitDTO&gt;
      * @throws InvalidRequestParameteException
      */
-    public DTOResponse<UnitDTO> findByQueryString(int offset, int limit, String query) throws InvalidRequestParameteException {
+    public DTOResponse<UnitDto> findByQueryString(int offset, int limit, String query) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<UnitEntity> units;
 
@@ -53,7 +53,7 @@ public class UnitService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
 
-        return new DTOResponse<>(units.getTotalElements(), unitMapper.convertCollectionToDTO(units.getContent()));
+        return new DTOResponse<>(units.getTotalElements(), mapperUtiliti.mapToCollectionUnitDto(units.getContent()));
     }
 
     /**
@@ -63,11 +63,11 @@ public class UnitService {
      * @param limit  - количество элементов на странице
      * @return DTOResponse&lt;UnitDTO&gt;
      */
-    public DTOResponse<UnitDTO> findAll(int offset, int limit) {
+    public DTOResponse<UnitDto> findAll(int offset, int limit) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<UnitEntity> units;
         units = unitRepository.findAll(pageRequest);
-        return new DTOResponse<>(units.getTotalElements(), unitMapper.convertCollectionToDTO(units.getContent()));
+        return new DTOResponse<>(units.getTotalElements(), mapperUtiliti.mapToCollectionUnitDto(units.getContent()));
     }
 
     // создать страницу пагинации

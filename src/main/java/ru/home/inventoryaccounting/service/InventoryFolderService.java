@@ -5,9 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.home.inventoryaccounting.api.response.DTOResponse;
-import ru.home.inventoryaccounting.domain.DTO.InventoryFolderDTO;
+import ru.home.inventoryaccounting.domain.dto.InventoryFolderDto;
 import ru.home.inventoryaccounting.domain.entity.InventoryFolderEntity;
-import ru.home.inventoryaccounting.domain.mapper.InventoryFolderMapper;
+import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.InventoryFolderRepository;
@@ -19,7 +19,7 @@ import java.util.Optional;
 public class InventoryFolderService {
 
 
-    private final InventoryFolderMapper inventoryFolderMapper;
+    private final MapperUtiliti mapperUtiliti;
     private final InventoryFolderRepository inventoryFolderRepository;
 
     /**
@@ -29,9 +29,9 @@ public class InventoryFolderService {
      * @return InventoryFolderDTO
      * @throws NotFoundException
      */
-    public InventoryFolderDTO findById(long id) throws NotFoundException {
+    public InventoryFolderDto findById(long id) throws NotFoundException {
         Optional<InventoryFolderEntity> inventoryFolder = inventoryFolderRepository.findById(id);
-        return inventoryFolder.map(inventoryFolderMapper::mapToInventoryFolderDto)
+        return inventoryFolder.map(mapperUtiliti::mapToInventoryFolderDto)
                 .orElseThrow(() -> new NotFoundException("Папка инвентаря с Id: " + id + " не найдена."));
     }
 
@@ -44,7 +44,7 @@ public class InventoryFolderService {
      * @return DTOResponse&lt;InventoryFolderDTO&gt;
      * @throws InvalidRequestParameteException
      */
-    public DTOResponse<InventoryFolderDTO> findByQueryString(int offset, int limit, String query) throws InvalidRequestParameteException {
+    public DTOResponse<InventoryFolderDto> findByQueryString(int offset, int limit, String query) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<InventoryFolderEntity> inventoryFolders;
         if (!query.isEmpty() || !query.isBlank()) {
@@ -53,7 +53,7 @@ public class InventoryFolderService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
         return new DTOResponse<>(inventoryFolders.getTotalElements(),
-                inventoryFolderMapper.convertCollectionToDTO(inventoryFolders.getContent()));
+                mapperUtiliti.mapToCollectionInventoryFolderDto(inventoryFolders.getContent()));
     }
 
     /**
@@ -63,12 +63,12 @@ public class InventoryFolderService {
      * @param limit  - количество элементов на страницы
      * @return DTOResponse&lt;InventoryFolderDTO&gt;
      */
-    public DTOResponse<InventoryFolderDTO> findAll(int offset, int limit) {
+    public DTOResponse<InventoryFolderDto> findAll(int offset, int limit) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<InventoryFolderEntity> inventoryFolders;
         inventoryFolders = inventoryFolderRepository.findAll(pageRequest);
         return new DTOResponse<>(inventoryFolders.getTotalElements(),
-                inventoryFolderMapper.convertCollectionToDTO(inventoryFolders.getContent()));
+                mapperUtiliti.mapToCollectionInventoryFolderDto(inventoryFolders.getContent()));
     }
 
     // создать страницу пагинации

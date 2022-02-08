@@ -5,9 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.home.inventoryaccounting.api.response.DTOResponse;
-import ru.home.inventoryaccounting.domain.DTO.WarehouseDTO;
+import ru.home.inventoryaccounting.domain.dto.WarehouseDto;
 import ru.home.inventoryaccounting.domain.entity.WarehouseEntity;
-import ru.home.inventoryaccounting.domain.mapper.WarehouseMapper;
+import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.WarehouseRepository;
@@ -18,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class WarehouseService {
 
-    private final WarehouseMapper warehouseMapper;
+    private final MapperUtiliti mapperUtiliti;
     private final WarehouseRepository warehouseRepository;
 
     /**
@@ -28,9 +28,9 @@ public class WarehouseService {
      * @return Warehouse
      * @throws NotFoundException
      */
-    public WarehouseDTO findById(long id) throws NotFoundException {
+    public WarehouseDto findById(long id) throws NotFoundException {
         Optional<WarehouseEntity> warehouse = warehouseRepository.findById(id);
-        return warehouse.map(warehouseMapper::convertToDTO)
+        return warehouse.map(mapperUtiliti::mapToWarehouseDto)
                 .orElseThrow(() -> new NotFoundException("Слад с Id: " + id + " не найден."));
     }
 
@@ -43,7 +43,7 @@ public class WarehouseService {
      * @return DTOResponse&lt;WarehouseDTO&gt;
      * @throws InvalidRequestParameteException
      */
-    public DTOResponse<WarehouseDTO> findByQueryString(int offset, int limit,
+    public DTOResponse<WarehouseDto> findByQueryString(int offset, int limit,
                                                        String query) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<WarehouseEntity> warehouses;
@@ -53,7 +53,7 @@ public class WarehouseService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
         return new DTOResponse<>(warehouses.getTotalElements(),
-                warehouseMapper.convertCollectionToDTO(warehouses.getContent()));
+                mapperUtiliti.mapToCollectionWarehouseDto(warehouses.getContent()));
     }
 
     /**
@@ -63,12 +63,12 @@ public class WarehouseService {
      * @param limit  - количество элементов на странице
      * @return DTOResponse&lt;WarehouseDTO&gt;
      */
-    public DTOResponse<WarehouseDTO> findAll(int offset, int limit) {
+    public DTOResponse<WarehouseDto> findAll(int offset, int limit) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<WarehouseEntity> warehouses;
         warehouses = warehouseRepository.findAll(pageRequest);
         return new DTOResponse<>(warehouses.getTotalElements(),
-                warehouseMapper.convertCollectionToDTO(warehouses.getContent()));
+                mapperUtiliti.mapToCollectionWarehouseDto(warehouses.getContent()));
     }
 
     // создать страницу пагинации

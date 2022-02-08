@@ -1,4 +1,4 @@
-package ru.home.inventoryaccounting.domain.DTO;
+package ru.home.inventoryaccounting.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,14 +11,14 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DocumentBodyDTO implements DTOInterface{
+public class DocumentBodyDto implements DtoInterface {
     private Long id;
     private BigDecimal amount;
     private Boolean deleted;
     private BigDecimal price;
     private BigDecimal quantity;
-    private InventoryDTO inventory;
-    private DocumentHeaderDTO documentHeader;
-    private long receiptDocument;
-    private long serialDocumentBody;
+    private InventoryDto inventory;
+    private DocumentHeaderDto documentHeader;
+    private DocumentHeaderDto receiptDocument;
+    private DocumentBodyDto serialDocumentBody;
 }

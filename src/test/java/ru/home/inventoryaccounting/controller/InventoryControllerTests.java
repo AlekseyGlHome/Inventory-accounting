@@ -13,9 +13,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.home.inventoryaccounting.api.request.ParameterRequest;
 import ru.home.inventoryaccounting.api.response.DTOResponse;
-import ru.home.inventoryaccounting.domain.DTO.InventoryDTO;
-import ru.home.inventoryaccounting.domain.DTO.InventoryFolderDTO;
-import ru.home.inventoryaccounting.domain.DTO.UnitDTO;
+import ru.home.inventoryaccounting.domain.dto.InventoryDto;
+import ru.home.inventoryaccounting.domain.dto.InventoryFolderDto;
+import ru.home.inventoryaccounting.domain.dto.UnitDto;
 import ru.home.inventoryaccounting.domain.enums.SortingDirection;
 import ru.home.inventoryaccounting.service.InventoryService;
 
@@ -42,12 +42,12 @@ public class InventoryControllerTests {
 
     @Test
     void getAllInventory() throws Exception {
-        DTOResponse<InventoryDTO> response = new DTOResponse<>();
+        DTOResponse<InventoryDto> response = new DTOResponse<>();
         response.setNumberOfRecord(1);
-        List<InventoryDTO> dtoList = new ArrayList<>();
-        InventoryFolderDTO inventoryFolderDTO = InventoryFolderDTO.builder().id(1L).deleted(false).name("Стаканы").build();
-        UnitDTO unitDTO = UnitDTO.builder().id(1L).deleted(false).name("шт").build();
-        InventoryDTO inventoryDTO = InventoryDTO.builder()
+        List<InventoryDto> dtoList = new ArrayList<>();
+        InventoryFolderDto inventoryFolderDTO = InventoryFolderDto.builder().id(1L).deleted(false).name("Стаканы").build();
+        UnitDto unitDTO = UnitDto.builder().id(1L).deleted(false).name("шт").build();
+        InventoryDto inventoryDTO = InventoryDto.builder()
                 .id(1)
                 .deleted(false)
                 .name("Стакан")

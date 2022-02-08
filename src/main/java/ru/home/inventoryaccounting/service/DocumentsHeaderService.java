@@ -5,9 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.home.inventoryaccounting.api.response.DTOResponse;
-import ru.home.inventoryaccounting.domain.DTO.DocumentHeaderDTO;
+import ru.home.inventoryaccounting.domain.dto.DocumentHeaderDto;
 import ru.home.inventoryaccounting.domain.entity.DocumentHeaderEntity;
-import ru.home.inventoryaccounting.domain.mapper.DocumentHeaderMapper;
+import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.DocumentsHeaderRepository;
@@ -20,7 +20,7 @@ import java.util.Optional;
 public class DocumentsHeaderService {
 
     private final DocumentsHeaderRepository documentsHeaderRepository;
-    private final DocumentHeaderMapper documentHeaderMapper;
+    private final MapperUtiliti mapperUtiliti;
 
     /**
      * выбор документа по идентификатору
@@ -29,9 +29,9 @@ public class DocumentsHeaderService {
      * @return DocumentHeaderDTO
      * @throws NotFoundException
      */
-    public DocumentHeaderDTO findById(long id) throws NotFoundException {
+    public DocumentHeaderDto findById(long id) throws NotFoundException {
         Optional<DocumentHeaderEntity> documentsHeader = documentsHeaderRepository.findById(id);
-        return documentsHeader.map(documentHeaderMapper::convertToDTO)
+        return documentsHeader.map(mapperUtiliti::mapToDocumentHeaderDto)
                 .orElseThrow(() -> new NotFoundException("Доумент с Id: " + id + " не найден."));
     }
 
@@ -44,7 +44,7 @@ public class DocumentsHeaderService {
      * @return DTOResponse&lt;DocumentHeaderDTO&gt;
      * @throws InvalidRequestParameteException
      */
-    public DTOResponse<DocumentHeaderDTO> findByDocumentNumber(int offset, int limit,
+    public DTOResponse<DocumentHeaderDto> findByDocumentNumber(int offset, int limit,
                                                                String numberStr) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<DocumentHeaderEntity> documentHeaders;
@@ -54,7 +54,7 @@ public class DocumentsHeaderService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
         return new DTOResponse<>(documentHeaders.getTotalElements(),
-                documentHeaderMapper.convertCollectionToDTO(documentHeaders.getContent()));
+                mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
     }
 
     /**
@@ -68,7 +68,7 @@ public class DocumentsHeaderService {
      * @return DTOResponse&lt;DocumentHeaderDTO&gt;
      * @throws InvalidRequestParameteException
      */
-    public DTOResponse<DocumentHeaderDTO> findByDateAndTypeDok(int offset, int limit,
+    public DTOResponse<DocumentHeaderDto> findByDateAndTypeDok(int offset, int limit,
                                                                LocalDate dateStart,
                                                                LocalDate dateEnd,
                                                                Integer tipDok) throws InvalidRequestParameteException {
@@ -80,7 +80,7 @@ public class DocumentsHeaderService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
         return new DTOResponse<>(documentHeaders.getTotalElements(),
-                documentHeaderMapper.convertCollectionToDTO(documentHeaders.getContent()));
+                mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
     }
 
     /**
@@ -95,7 +95,7 @@ public class DocumentsHeaderService {
      * @return DTOResponse&lt;DocumentHeaderDTO&gt;
      * @throws InvalidRequestParameteException
      */
-    public DTOResponse<DocumentHeaderDTO> findByDateAndTypeDokAndWarehouse(int offset, int limit,
+    public DTOResponse<DocumentHeaderDto> findByDateAndTypeDokAndWarehouse(int offset, int limit,
                                                                            LocalDate dateStart,
                                                                            LocalDate dateEnd,
                                                                            Integer tipDok,
@@ -109,7 +109,7 @@ public class DocumentsHeaderService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
         return new DTOResponse<>(documentHeaders.getTotalElements(),
-                documentHeaderMapper.convertCollectionToDTO(documentHeaders.getContent()));
+                mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
     }
 
     /**
@@ -123,7 +123,7 @@ public class DocumentsHeaderService {
      * @return DTOResponse&lt;DocumentHeaderDTO&gt;
      * @throws InvalidRequestParameteException
      */
-    public DTOResponse<DocumentHeaderDTO> findByDateAndPartner(int offset, int limit,
+    public DTOResponse<DocumentHeaderDto> findByDateAndPartner(int offset, int limit,
                                                                LocalDate dateStart,
                                                                LocalDate dateEnd,
                                                                long partnerId) throws InvalidRequestParameteException {
@@ -135,7 +135,7 @@ public class DocumentsHeaderService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
         return new DTOResponse<>(documentHeaders.getTotalElements(),
-                documentHeaderMapper.convertCollectionToDTO(documentHeaders.getContent()));
+                mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
     }
 
     /**
@@ -147,14 +147,14 @@ public class DocumentsHeaderService {
      * @param dateEnd   - окончание интервала
      * @return DTOResponse&lt;DocumentHeaderDTO&gt;
      */
-    public DTOResponse<DocumentHeaderDTO> findByDate(int offset, int limit,
+    public DTOResponse<DocumentHeaderDto> findByDate(int offset, int limit,
                                                      LocalDate dateStart,
                                                      LocalDate dateEnd) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<DocumentHeaderEntity> documentHeaders;
         documentHeaders = documentsHeaderRepository.findByDate(dateStart, dateEnd, pageRequest);
         return new DTOResponse<>(documentHeaders.getTotalElements(),
-                documentHeaderMapper.convertCollectionToDTO(documentHeaders.getContent()));
+                mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
     }
 
     /**
@@ -168,7 +168,7 @@ public class DocumentsHeaderService {
      * @return DTOResponse&lt;DocumentHeaderDTO&gt;
      * @throws InvalidRequestParameteException
      */
-    public DTOResponse<DocumentHeaderDTO> findByDateAndWarehouse(int offset, int limit,
+    public DTOResponse<DocumentHeaderDto> findByDateAndWarehouse(int offset, int limit,
                                                                  LocalDate dateStart,
                                                                  LocalDate dateEnd,
                                                                  long warehouseId) throws InvalidRequestParameteException {
@@ -180,7 +180,7 @@ public class DocumentsHeaderService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
         return new DTOResponse<>(documentHeaders.getTotalElements(),
-                documentHeaderMapper.convertCollectionToDTO(documentHeaders.getContent()));
+                mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
     }
 
     /**
@@ -195,7 +195,7 @@ public class DocumentsHeaderService {
      * @return DTOResponse&lt;DocumentHeaderDTO&gt;
      * @throws InvalidRequestParameteException
      */
-    public DTOResponse<DocumentHeaderDTO> findByDateAndPartnerAndWarehouse(int offset, int limit,
+    public DTOResponse<DocumentHeaderDto> findByDateAndPartnerAndWarehouse(int offset, int limit,
                                                                            LocalDate dateStart,
                                                                            LocalDate dateEnd,
                                                                            long partnerId,
@@ -209,7 +209,7 @@ public class DocumentsHeaderService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
         return new DTOResponse<>(documentHeaders.getTotalElements(),
-                documentHeaderMapper.convertCollectionToDTO(documentHeaders.getContent()));
+                mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
     }
 
     // создать страницу пагинации

@@ -5,9 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.home.inventoryaccounting.api.response.DTOResponse;
-import ru.home.inventoryaccounting.domain.DTO.PartnerDTO;
+import ru.home.inventoryaccounting.domain.dto.PartnerDto;
 import ru.home.inventoryaccounting.domain.entity.PartnerEntity;
-import ru.home.inventoryaccounting.domain.mapper.PartnerMapper;
+import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.PartnerRepository;
@@ -18,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PartnerService {
 
-    private final PartnerMapper partnerMapper;
+    private final MapperUtiliti mapperUtiliti;
     private final PartnerRepository partnerRepository;
 
     /**
@@ -28,9 +28,9 @@ public class PartnerService {
      * @return PartnerDTO
      * @throws NotFoundException
      */
-    public PartnerDTO findById(long id) throws NotFoundException {
+    public PartnerDto findById(long id) throws NotFoundException {
         Optional<PartnerEntity> partner = partnerRepository.findById(id);
-        return partner.map(partnerMapper::convertToDTO)
+        return partner.map(mapperUtiliti::mapToPartnerDto)
                 .orElseThrow(() -> new NotFoundException("Партнер с Id: " + id + " не найден."));
     }
 
@@ -44,7 +44,7 @@ public class PartnerService {
      * @return DTOResponse&lt;UnitDTO&gt;
      * @throws InvalidRequestParameteException
      */
-    public DTOResponse<PartnerDTO> findByQueryString(int offset, int limit,
+    public DTOResponse<PartnerDto> findByQueryString(int offset, int limit,
                                                      String query) throws InvalidRequestParameteException {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<PartnerEntity> partners;
@@ -56,7 +56,7 @@ public class PartnerService {
         }
 
         return new DTOResponse<>(partners.getTotalElements(),
-                partnerMapper.convertCollectionToDTO(partners.getContent()));
+                mapperUtiliti.mapToCollectionPartnerDto(partners.getContent()));
     }
 
     /**
@@ -66,12 +66,12 @@ public class PartnerService {
      * @param limit  - количество элементов на странице
      * @return DTOResponse&lt;PartnerDTO&gt;
      */
-    public DTOResponse<PartnerDTO> findAll(int offset, int limit, String query) {
+    public DTOResponse<PartnerDto> findAll(int offset, int limit, String query) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<PartnerEntity> partners;
         partners = partnerRepository.findAll(pageRequest);
         return new DTOResponse<>(partners.getTotalElements(),
-                partnerMapper.convertCollectionToDTO(partners.getContent()));
+                mapperUtiliti.mapToCollectionPartnerDto(partners.getContent()));
     }
 
 

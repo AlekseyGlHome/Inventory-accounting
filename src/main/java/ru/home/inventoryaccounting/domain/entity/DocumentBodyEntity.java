@@ -46,6 +46,4 @@ public class DocumentBodyEntity {
     @JoinColumn(name = "serial_document_body_id")
     private DocumentBodyEntity serialDocumentBody;
 
-
-
 }
