@@ -10,7 +10,7 @@ import ru.home.inventoryaccounting.domain.entity.DocumentHeaderEntity;
 import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
-import ru.home.inventoryaccounting.repository.DocumentsHeaderRepository;
+import ru.home.inventoryaccounting.repository.DocumentHeaderRepository;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class DocumentsHeaderService {
 
-    private final DocumentsHeaderRepository documentsHeaderRepository;
+    private final DocumentHeaderRepository documentHeaderRepository;
     private final MapperUtiliti mapperUtiliti;
 
     /**
@@ -29,7 +29,7 @@ public class DocumentsHeaderService {
      * @return DocumentHeaderDTO
      */
     public DocumentHeaderDto findById(long id) throws NotFoundException {
-        Optional<DocumentHeaderEntity> documentsHeader = documentsHeaderRepository.findById(id);
+        Optional<DocumentHeaderEntity> documentsHeader = documentHeaderRepository.findById(id);
         return documentsHeader.map(mapperUtiliti::mapToDocumentHeaderDto)
                 .orElseThrow(() -> new NotFoundException("Доумент с Id: " + id + " не найден."));
     }
@@ -47,7 +47,7 @@ public class DocumentsHeaderService {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<DocumentHeaderEntity> documentHeaders;
         if (!numberStr.isEmpty() || !numberStr.isBlank()) {
-            documentHeaders = documentsHeaderRepository.findByDocumentNumber(numberStr, pageRequest);
+            documentHeaders = documentHeaderRepository.findByDocumentNumber(numberStr, pageRequest);
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
@@ -72,7 +72,7 @@ public class DocumentsHeaderService {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<DocumentHeaderEntity> documentHeaders;
         if (tipDok > 0) {
-            documentHeaders = documentsHeaderRepository.findByDateAndTypeDok(dateStart, dateEnd, tipDok, pageRequest);
+            documentHeaders = documentHeaderRepository.findByDateAndTypeDok(dateStart, dateEnd, tipDok, pageRequest);
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
@@ -99,7 +99,7 @@ public class DocumentsHeaderService {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<DocumentHeaderEntity> documentHeaders;
         if (tipDok > 0 && warehouseId > 0) {
-            documentHeaders = documentsHeaderRepository
+            documentHeaders = documentHeaderRepository
                     .findByDateAndTypeDokAndWarehouse(dateStart, dateEnd, tipDok, warehouseId, pageRequest);
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
@@ -125,7 +125,7 @@ public class DocumentsHeaderService {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<DocumentHeaderEntity> documentHeaders;
         if (partnerId > 0) {
-            documentHeaders = documentsHeaderRepository.findByDateAndPartner(dateStart, dateEnd, partnerId, pageRequest);
+            documentHeaders = documentHeaderRepository.findByDateAndPartner(dateStart, dateEnd, partnerId, pageRequest);
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
@@ -147,7 +147,7 @@ public class DocumentsHeaderService {
                                                      LocalDate dateEnd) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<DocumentHeaderEntity> documentHeaders;
-        documentHeaders = documentsHeaderRepository.findByDate(dateStart, dateEnd, pageRequest);
+        documentHeaders = documentHeaderRepository.findByDate(dateStart, dateEnd, pageRequest);
         return new DtoResponse<>(documentHeaders.getTotalElements(),
                 mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
     }
@@ -169,7 +169,7 @@ public class DocumentsHeaderService {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<DocumentHeaderEntity> documentHeaders;
         if (warehouseId > 0) {
-            documentHeaders = documentsHeaderRepository.findByDateAndWarehouse(dateStart, dateEnd, warehouseId, pageRequest);
+            documentHeaders = documentHeaderRepository.findByDateAndWarehouse(dateStart, dateEnd, warehouseId, pageRequest);
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
@@ -196,7 +196,7 @@ public class DocumentsHeaderService {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<DocumentHeaderEntity> documentHeaders;
         if (warehouseId > 0 && partnerId > 0) {
-            documentHeaders = documentsHeaderRepository
+            documentHeaders = documentHeaderRepository
                     .findByDateAndPartnerAndWarehouse(dateStart, dateEnd, partnerId, warehouseId, pageRequest);
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");

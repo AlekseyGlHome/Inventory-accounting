@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "documents_body")
+@Table(name = "document_body")
 public class DocumentBodyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

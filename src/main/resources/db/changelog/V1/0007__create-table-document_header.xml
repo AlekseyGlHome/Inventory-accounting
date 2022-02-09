@@ -8,7 +8,7 @@
 
     <changeSet id="0007" author="AlekseyGl">
         <sql>
-            CREATE TABLE `documents_header` (
+            CREATE TABLE `document_header` (
             `id` bigint NOT NULL AUTO_INCREMENT,
             `amount` decimal(15,4) DEFAULT NULL COMMENT 'Сумма документа',
             `comment` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
@@ -23,15 +23,15 @@
             `warehouse_recipient_id` bigint DEFAULT NULL COMMENT 'id склада получателя',
             `type_dok` int DEFAULT NULL COMMENT 'тип документа',
             PRIMARY KEY (`id`),
-            KEY `IDX_documents_header_dokument_number` (`document_number`),
-            KEY `IDX_documents_header_warehouse_id` (`warehouse_id`),
-            KEY `IDX_documents_header_warehouse_recipient_id` (`warehouse_recipient_id`),
-            KEY `IDX_documents_header_partner_id` (`partner_id`),
-            KEY `IDX_documents_header_registered` (`registered`),
-            KEY `IDX_documents_header_date` (`date`),
-            KEY `IDX_documents_header_deleted` (`deleted`),
-            KEY `IDX_documents_header_type_dok` (`type_dok`),
-            KEY `IDX_documents_header_user` (`user_id`),
+            KEY `IDX_document_header_dokument_number` (`document_number`),
+            KEY `IDX_document_header_warehouse_id` (`warehouse_id`),
+            KEY `IDX_document_header_warehouse_recipient_id` (`warehouse_recipient_id`),
+            KEY `IDX_document_header_partner_id` (`partner_id`),
+            KEY `IDX_document_header_registered` (`registered`),
+            KEY `IDX_document_header_date` (`date`),
+            KEY `IDX_document_header_deleted` (`deleted`),
+            KEY `IDX_document_header_type_dok` (`type_dok`),
+            KEY `IDX_document_header_user` (`user_id`),
             CONSTRAINT `partner` FOREIGN KEY (`partner_id`) REFERENCES `partner` (`id`),
             CONSTRAINT `user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
             CONSTRAINT `warehous` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouse` (`id`),
@@ -40,7 +40,7 @@
         </sql>
         <rollback>
             <sql>
-                drop table documents_header;
+                drop table document_header;
             </sql>
         </rollback>
     </changeSet>

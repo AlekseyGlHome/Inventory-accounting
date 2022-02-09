@@ -7,7 +7,7 @@
 
     <changeSet id="0009" author="AlekseyGl">
         <sql>
-            CREATE TABLE `movements` (
+            CREATE TABLE `movement` (
             `id` bigint NOT NULL AUTO_INCREMENT,
             `amount` decimal(15,4) DEFAULT NULL COMMENT 'Сумма',
             `date` date DEFAULT NULL COMMENT 'Дата движения',
@@ -20,23 +20,23 @@
             `warehouse_id` bigint NOT NULL COMMENT 'id склада',
             `serial_document_body_id` bigint NOT NULL COMMENT 'id строки в теле документа',
             PRIMARY KEY (`id`),
-            KEY `movements_document_header_id_IDX` (`document_header_id`) USING BTREE,
-            KEY `movements_inventory_id_IDX` (`inventory_id`) USING BTREE,
-            KEY `movements_warehouse_id_IDX` (`warehouse_id`) USING BTREE,
-            KEY `movements_date_IDX` (`date`) USING BTREE,
-            KEY `movements_FK_2` (`receipt_document_id`),
-            KEY `movements_FK_3` (`serial_docu_body_id`),
-            KEY `movements_FK_5` (`serial_document_body_id`),
-            CONSTRAINT `movements_FK` FOREIGN KEY (`document_header_id`) REFERENCES `documents_header` (`id`),
+            KEY `movement_document_header_id_IDX` (`document_header_id`) USING BTREE,
+            KEY `movement_inventory_id_IDX` (`inventory_id`) USING BTREE,
+            KEY `movement_warehouse_id_IDX` (`warehouse_id`) USING BTREE,
+            KEY `movement_date_IDX` (`date`) USING BTREE,
+            KEY `movement_FK_2` (`receipt_document_id`),
+            KEY `movement_FK_3` (`serial_docu_body_id`),
+            KEY `movement_FK_5` (`serial_document_body_id`),
+            CONSTRAINT `movements_FK` FOREIGN KEY (`document_header_id`) REFERENCES `document_header` (`id`),
             CONSTRAINT `movements_FK_1` FOREIGN KEY (`inventory_id`) REFERENCES `inventory` (`id`),
-            CONSTRAINT `movements_FK_2` FOREIGN KEY (`receipt_document_id`) REFERENCES `documents_header` (`id`),
-            CONSTRAINT `movements_FK_3` FOREIGN KEY (`serial_docu_body_id`) REFERENCES `documents_body` (`id`),
+            CONSTRAINT `movements_FK_2` FOREIGN KEY (`receipt_document_id`) REFERENCES `document_header` (`id`),
+            CONSTRAINT `movements_FK_3` FOREIGN KEY (`serial_docu_body_id`) REFERENCES `document_body` (`id`),
             CONSTRAINT `movements_FK_4` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouse` (`id`),
-            CONSTRAINT `movements_FK_5` FOREIGN KEY (`serial_document_body_id`) REFERENCES `documents_body` (`id`)
+            CONSTRAINT `movements_FK_5` FOREIGN KEY (`serial_document_body_id`) REFERENCES `document_body` (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Движение документов'
         </sql>
         <rollback>
-            drop table movements;
+            drop table movement;
         </rollback>
     </changeSet>
 

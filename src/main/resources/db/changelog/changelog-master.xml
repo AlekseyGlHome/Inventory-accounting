@@ -5,15 +5,15 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
 
-    <include file="db/changelog/V1/0001__create-table-users.xml"/>
-    <include file="db/changelog/V1/0002__create-table-units.xml"/>
-    <include file="db/changelog/V1/0003__create-table-warehouses.xml"/>
-    <include file="db/changelog/V1/0004__create-table-partners.xml"/>
+    <include file="db/changelog/V1/0001__create-table-user.xml"/>
+    <include file="db/changelog/V1/0002__create-table-unit.xml"/>
+    <include file="db/changelog/V1/0003__create-table-warehouse.xml"/>
+    <include file="db/changelog/V1/0004__create-table-partner.xml"/>
     <include file="db/changelog/V1/0005__create-table-inventory_folder.xml"/>
     <include file="db/changelog/V1/0006__create-table-inventory.xml"/>
-    <include file="db/changelog/V1/0007__create-table-documents_header.xml"/>
-    <include file="db/changelog/V1/0008__create-table-documents_body.xml"/>
-    <include file="db/changelog/V1/0009__create-table-movements.xml"/>
+    <include file="db/changelog/V1/0007__create-table-document_header.xml"/>
+    <include file="db/changelog/V1/0008__create-table-document_body.xml"/>
+    <include file="db/changelog/V1/0009__create-table-movement.xml"/>
     <include file="db/changelog/V1/0010__adding-test-data.xml"/>
     <include file="db/changelog/V1/0011_update-table-inventory.xml"/>
 </databaseChangeLog>

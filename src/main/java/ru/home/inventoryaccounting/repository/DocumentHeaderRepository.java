@@ -10,7 +10,7 @@ import ru.home.inventoryaccounting.domain.entity.DocumentHeaderEntity;
 import java.time.LocalDate;
 
 @Repository
-public interface DocumentsHeaderRepository extends JpaRepository<DocumentHeaderEntity, Long> {
+public interface DocumentHeaderRepository extends JpaRepository<DocumentHeaderEntity, Long> {
     // выбор документов за интервал
     @Query("select d from DocumentHeaderEntity d where d.deleted=false and d.date between :dateStart and :dateEnd order by d.date")
     Page<DocumentHeaderEntity> findByDate(LocalDate dateStart, LocalDate dateEnd, Pageable pageable);

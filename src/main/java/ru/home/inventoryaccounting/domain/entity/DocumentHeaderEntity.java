@@ -14,7 +14,7 @@ import java.util.Collection;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "documents_header")
+@Table(name = "document_header")
 public class DocumentHeaderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
