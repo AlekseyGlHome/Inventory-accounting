@@ -29,7 +29,7 @@ public class InventoryService {
     private final UnitService unitService;
 
     /**
-     * выбор инвентарь по идентификатору
+     * выбрать инвентарь по идентификатору
      */
     public InventoryDto findById(long id) throws NotFoundException {
         Optional<InventoryEntity> inventory = inventoryRepository.findById(id);
@@ -40,7 +40,7 @@ public class InventoryService {
     public void deleteById(long id) throws NotFoundException {
         try {
             inventoryRepository.deleteById(id);
-        }catch (EmptyResultDataAccessException ex){
+        } catch (EmptyResultDataAccessException ex) {
             throw new NotFoundException("Инвентарь с Id: " + id + " не найден.");
         }
 
@@ -58,7 +58,7 @@ public class InventoryService {
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
-        return new DtoResponse<>(inventories.getTotalElements(),
+        return new DtoResponse<>(true, "", inventories.getTotalElements(),
                 mapperUtiliti.mapToCollectionInventoryDto(inventories.getContent()));
     }
 
@@ -74,7 +74,7 @@ public class InventoryService {
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
-        return new DtoResponse<>(inventories.getTotalElements(),
+        return new DtoResponse<>(true, "", inventories.getTotalElements(),
                 mapperUtiliti.mapToCollectionInventoryDto(inventories.getContent()));
     }
 
@@ -89,7 +89,7 @@ public class InventoryService {
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
-        return new DtoResponse<>(inventories.getTotalElements(),
+        return new DtoResponse<>(true, "", inventories.getTotalElements(),
                 mapperUtiliti.mapToCollectionInventoryDto(inventories.getContent()));
     }
 
@@ -100,7 +100,7 @@ public class InventoryService {
         PageRequest pageRequest = getPageRequest(request);
         Page<InventoryEntity> inventories;
         inventories = inventoryRepository.findAll(pageRequest);
-        return new DtoResponse<>(inventories.getTotalElements(),
+        return new DtoResponse<>(true, "", inventories.getTotalElements(),
                 mapperUtiliti.mapToCollectionInventoryDto(inventories.getContent()));
     }
 
@@ -133,20 +133,20 @@ public class InventoryService {
 
     // добавить карточку
     public InventoryDto add(InventoryUpdateRequest request) throws NotFoundException {
-        InventoryEntity inventoryEntity = fillInventory(new InventoryEntity(),request);
+        InventoryEntity inventoryEntity = fillInventory(new InventoryEntity(), request);
         return mapperUtiliti.mapToInventoryDto(inventoryRepository.save(inventoryEntity));
     }
 
     // обновить карточку
     public InventoryDto update(long id, InventoryUpdateRequest request) throws NotFoundException {
-        InventoryEntity inventoryEntity = fillInventory(mapperUtiliti.mapToInventoryEntity(findById(id)),request);
+        InventoryEntity inventoryEntity = fillInventory(mapperUtiliti.mapToInventoryEntity(findById(id)), request);
         return mapperUtiliti.mapToInventoryDto(inventoryRepository.save(inventoryEntity));
     }
 
     // заполнить карточку инвентаря из запросса
     private InventoryEntity fillInventory(InventoryEntity inventoryEntity, InventoryUpdateRequest request) throws NotFoundException {
         inventoryEntity.setName(request.getName());
-        inventoryEntity.setDeleted(request.isDeleted());
+        inventoryEntity.setIsDeleted(request.isDeleted());
         inventoryEntity.setFolder(mapperUtiliti.mapToInventoryFolderEntity(inventoryFolderService.findById(request.getFolderId())));
         inventoryEntity.setUnit(mapperUtiliti.mapToUnitEntity(unitService.findById(request.getUnitId())));
         return inventoryEntity;

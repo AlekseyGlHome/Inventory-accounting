@@ -30,14 +30,14 @@ public class DocumentHeaderEntity {
     @Column(name = "date")
     private LocalDate date;
 
-    @Column(name = "deleted", nullable = false)
-    private Boolean deleted = false;
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = false;
 
     @Column(name = "document_number", length = 15)
     private String documentNumber;
 
-    @Column(name = "registered", nullable = false)
-    private Boolean registered = false;
+    @Column(name = "is_registered", nullable = false)
+    private Boolean isRegistered = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "partner_id")

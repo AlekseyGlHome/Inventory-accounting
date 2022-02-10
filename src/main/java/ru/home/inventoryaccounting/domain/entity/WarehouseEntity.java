@@ -20,8 +20,8 @@ public class WarehouseEntity {
     @Column(name = "company", length = 150)
     private String company;
 
-    @Column(name = "deleted", nullable = false)
-    private Boolean deleted = false;
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = false;
 
     @Column(name = "name", nullable = false, length = 250)
     private String name;

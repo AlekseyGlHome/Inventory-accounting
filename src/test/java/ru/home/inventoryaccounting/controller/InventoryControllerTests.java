@@ -43,7 +43,7 @@ public class InventoryControllerTests {
     @Test
     void getAllInventory() throws Exception {
         DtoResponse<InventoryDto> response = new DtoResponse<>();
-        response.setNumberOfRecord(1);
+        response.setNumberOfRecord(1L);
         List<InventoryDto> dtoList = new ArrayList<>();
         InventoryFolderDto inventoryFolderDTO = InventoryFolderDto.builder().id(1L).deleted(false).name("Стаканы").build();
         UnitDto unitDTO = UnitDto.builder().id(1L).deleted(false).name("шт").build();

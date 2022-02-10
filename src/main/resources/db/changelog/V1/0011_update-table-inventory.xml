@@ -8,7 +8,7 @@
 
     <changeSet id="0011" author="AlekseyGl">
         <sql>
-            update inventory set deleted=true where id=3
+            update inventory set is_deleted=true where id=3
         </sql>
     </changeSet>
 </databaseChangeLog>

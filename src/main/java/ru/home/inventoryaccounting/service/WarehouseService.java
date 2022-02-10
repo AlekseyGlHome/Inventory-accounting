@@ -50,7 +50,7 @@ public class WarehouseService {
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
-        return new DtoResponse<>(warehouses.getTotalElements(),
+        return new DtoResponse<>(true, "", warehouses.getTotalElements(),
                 mapperUtiliti.mapToCollectionWarehouseDto(warehouses.getContent()));
     }
 
@@ -65,7 +65,7 @@ public class WarehouseService {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<WarehouseEntity> warehouses;
         warehouses = warehouseRepository.findAll(pageRequest);
-        return new DtoResponse<>(warehouses.getTotalElements(),
+        return new DtoResponse<>(true, "", warehouses.getTotalElements(),
                 mapperUtiliti.mapToCollectionWarehouseDto(warehouses.getContent()));
     }
 

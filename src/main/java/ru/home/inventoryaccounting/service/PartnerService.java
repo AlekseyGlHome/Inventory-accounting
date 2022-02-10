@@ -53,7 +53,7 @@ public class PartnerService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
 
-        return new DtoResponse<>(partners.getTotalElements(),
+        return new DtoResponse<>(true, "", partners.getTotalElements(),
                 mapperUtiliti.mapToCollectionPartnerDto(partners.getContent()));
     }
 
@@ -68,7 +68,7 @@ public class PartnerService {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<PartnerEntity> partners;
         partners = partnerRepository.findAll(pageRequest);
-        return new DtoResponse<>(partners.getTotalElements(),
+        return new DtoResponse<>(true, "", partners.getTotalElements(),
                 mapperUtiliti.mapToCollectionPartnerDto(partners.getContent()));
     }
 

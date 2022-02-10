@@ -20,7 +20,7 @@ public class MapperUtiliti {
         return InventoryDto.builder()
                 .id(inventoryEntity.getId())
                 .name(inventoryEntity.getName())
-                .deleted(inventoryEntity.getDeleted())
+                .deleted(inventoryEntity.getIsDeleted())
                 .folder(mapToInventoryFolderDto(inventoryEntity.getFolder()))
                 .unit(mapToUnitDto(inventoryEntity.getUnit()))
                 .build();
@@ -33,7 +33,7 @@ public class MapperUtiliti {
         InventoryEntity inventoryEntity = new InventoryEntity();
         inventoryEntity.setId(inventoryDto.getId());
         inventoryEntity.setName(inventoryDto.getName());
-        inventoryEntity.setDeleted(inventoryDto.isDeleted());
+        inventoryEntity.setIsDeleted(inventoryDto.isDeleted());
         inventoryEntity.setFolder(mapToInventoryFolderEntity(inventoryDto.getFolder()));
         inventoryEntity.setUnit(mapToUnitEntity(inventoryDto.getUnit()));
         return inventoryEntity;
@@ -45,7 +45,7 @@ public class MapperUtiliti {
     public InventoryFolderDto mapToInventoryFolderDto(InventoryFolderEntity inventoryFolderEntity) {
         return InventoryFolderDto.builder()
                 .id(inventoryFolderEntity.getId())
-                .deleted(inventoryFolderEntity.getDeleted())
+                .deleted(inventoryFolderEntity.getIsDeleted())
                 .name(inventoryFolderEntity.getName())
                 .build();
     }
@@ -57,7 +57,7 @@ public class MapperUtiliti {
         InventoryFolderEntity inventoryFolderEntity = new InventoryFolderEntity();
         inventoryFolderEntity.setId(inventoryFolderDto.getId());
         inventoryFolderEntity.setName(inventoryFolderDto.getName());
-        inventoryFolderEntity.setDeleted(inventoryFolderDto.getDeleted());
+        inventoryFolderEntity.setIsDeleted(inventoryFolderDto.getDeleted());
         return inventoryFolderEntity;
     }
 
@@ -67,7 +67,7 @@ public class MapperUtiliti {
     public UnitDto mapToUnitDto(UnitEntity unitEntity) {
         return UnitDto.builder()
                 .id(unitEntity.getId())
-                .deleted(unitEntity.getDeleted())
+                .deleted(unitEntity.getIsDeleted())
                 .name(unitEntity.getName())
                 .build();
     }
@@ -79,7 +79,7 @@ public class MapperUtiliti {
         UnitEntity unitEntity = new UnitEntity();
         unitEntity.setId(unitDto.getId());
         unitEntity.setName(unitDto.getName());
-        unitEntity.setDeleted(unitDto.getDeleted());
+        unitEntity.setIsDeleted(unitDto.getDeleted());
         return unitEntity;
     }
 
@@ -90,7 +90,7 @@ public class MapperUtiliti {
         return WarehouseDto.builder()
                 .id(warehouseEntity.getId())
                 .name(warehouseEntity.getName())
-                .deleted(warehouseEntity.getDeleted())
+                .deleted(warehouseEntity.getIsDeleted())
                 .company(warehouseEntity.getCompany())
                 .person(warehouseEntity.getPerson())
                 .build();
@@ -103,7 +103,7 @@ public class MapperUtiliti {
         WarehouseEntity warehouseEntity = new WarehouseEntity();
         warehouseEntity.setId(warehouseDto.getId());
         warehouseEntity.setName(warehouseDto.getName());
-        warehouseEntity.setDeleted(warehouseDto.getDeleted());
+        warehouseEntity.setIsDeleted(warehouseDto.getDeleted());
         warehouseEntity.setCompany(warehouseDto.getCompany());
         warehouseEntity.setPerson(warehouseDto.getPerson());
         return warehouseEntity;
@@ -116,7 +116,7 @@ public class MapperUtiliti {
         return UserDto.builder()
                 .id(userEntity.getId())
                 .name(userEntity.getName())
-                .deleted(userEntity.getDeleted())
+                .deleted(userEntity.getIsDeleted())
                 .password(userEntity.getPassword())
                 .build();
     }
@@ -128,7 +128,7 @@ public class MapperUtiliti {
         UserEntity userEntity = new UserEntity();
         userEntity.setId(userDto.getId());
         userEntity.setName(userDto.getName());
-        userEntity.setDeleted(userDto.getDeleted());
+        userEntity.setIsDeleted(userDto.getDeleted());
         userEntity.setPassword(userDto.getPassword());
         return userEntity;
     }
@@ -140,7 +140,7 @@ public class MapperUtiliti {
         return PartnerDto.builder()
                 .id(partnerEntity.getId())
                 .name(partnerEntity.getName())
-                .deleted(partnerEntity.getDeleted())
+                .deleted(partnerEntity.getIsDeleted())
                 .build();
     }
 
@@ -151,7 +151,7 @@ public class MapperUtiliti {
         PartnerEntity partnerEntity = new PartnerEntity();
         partnerEntity.setId(partnerDto.getId());
         partnerEntity.setName(partnerDto.getName());
-        partnerEntity.setDeleted(partnerDto.getDeleted());
+        partnerEntity.setIsDeleted(partnerDto.getDeleted());
         return partnerEntity;
     }
 
@@ -164,9 +164,9 @@ public class MapperUtiliti {
                 .amount(documentHeaderEntity.getAmount())
                 .comment(documentHeaderEntity.getComment())
                 .date(documentHeaderEntity.getDate())
-                .deleted(documentHeaderEntity.getDeleted())
+                .deleted(documentHeaderEntity.getIsDeleted())
                 .documentNumber(documentHeaderEntity.getDocumentNumber())
-                .registered(documentHeaderEntity.getRegistered())
+                .registered(documentHeaderEntity.getIsRegistered())
                 .partner(mapToPartnerDto(documentHeaderEntity.getPartner()))
                 .user(mapToUserDto(documentHeaderEntity.getUser()))
                 .warehouse(mapToWarehouseDto(documentHeaderEntity.getWarehouse()))
@@ -186,9 +186,9 @@ public class MapperUtiliti {
         documentHeaderEntity.setAmount(documentHeaderDto.getAmount());
         documentHeaderEntity.setComment(documentHeaderDto.getComment());
         documentHeaderEntity.setDate(documentHeaderDto.getDate());
-        documentHeaderEntity.setDeleted(documentHeaderDto.getDeleted());
+        documentHeaderEntity.setIsDeleted(documentHeaderDto.getDeleted());
         documentHeaderEntity.setDocumentNumber(documentHeaderDto.getDocumentNumber());
-        documentHeaderEntity.setRegistered(documentHeaderDto.getRegistered());
+        documentHeaderEntity.setIsRegistered(documentHeaderDto.getRegistered());
         documentHeaderEntity.setPartner(mapToPartnerEntity(documentHeaderDto.getPartner()));
         documentHeaderEntity.setUser(mapToUserEntity(documentHeaderDto.getUser()));
         documentHeaderEntity.setWarehouse(mapToWarehouseEntity(documentHeaderDto.getWarehouse()));
@@ -294,7 +294,7 @@ public class MapperUtiliti {
         return DocumentBodyDto.builder()
                 .id(documentBodyEntity.getId())
                 .amount(documentBodyEntity.getAmount())
-                .deleted(documentBodyEntity.getDeleted())
+                .deleted(documentBodyEntity.getIsDeleted())
                 .price(documentBodyEntity.getPrice())
                 .quantity(documentBodyEntity.getQuantity())
                 .inventory(mapToInventoryDto(documentBodyEntity.getInventory()))
@@ -313,7 +313,7 @@ public class MapperUtiliti {
         DocumentBodyEntity documentBodyEntity = new DocumentBodyEntity();
         documentBodyEntity.setId(documentBodyDto.getId());
         documentBodyEntity.setAmount(documentBodyDto.getAmount());
-        documentBodyEntity.setDeleted(documentBodyDto.getDeleted());
+        documentBodyEntity.setIsDeleted(documentBodyDto.getDeleted());
         documentBodyEntity.setPrice(documentBodyDto.getPrice());
         documentBodyEntity.setQuantity(documentBodyDto.getQuantity());
         documentBodyEntity.setInventory(mapToInventoryEntity(documentBodyDto.getInventory()));

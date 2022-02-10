@@ -6,17 +6,17 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
 
 
-    <changeSet id="0006" author="v">
+    <changeSet id="0006" author="AlekseyGl">
         <sql>
             CREATE TABLE `inventory` (
             `id` bigint NOT NULL AUTO_INCREMENT,
-            `deleted` bit(1) NOT NULL DEFAULT b'0',
+            `is_deleted` bit(1) NOT NULL DEFAULT b'0',
             `name` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
             `folder_id` bigint NOT NULL,
             `unit_id` bigint NOT NULL,
             PRIMARY KEY (`id`),
             KEY `IDX_inventory_name` (`name`),
-            KEY `IDX_inventory_deleted` (`deleted`),
+            KEY `IDX_inventory_is_deleted` (`is_deleted`),
             KEY `IDX_inventory_folder_id` (`folder_id`),
             KEY `IDX_inventory_unit` (`unit_id`),
             CONSTRAINT `folder` FOREIGN KEY (`folder_id`) REFERENCES `inventory_folder` (`id`),

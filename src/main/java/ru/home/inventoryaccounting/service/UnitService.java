@@ -51,7 +51,7 @@ public class UnitService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
 
-        return new DtoResponse<>(units.getTotalElements(), mapperUtiliti.mapToCollectionUnitDto(units.getContent()));
+        return new DtoResponse<>(true, "", units.getTotalElements(), mapperUtiliti.mapToCollectionUnitDto(units.getContent()));
     }
 
     /**
@@ -65,7 +65,7 @@ public class UnitService {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<UnitEntity> units;
         units = unitRepository.findAll(pageRequest);
-        return new DtoResponse<>(units.getTotalElements(), mapperUtiliti.mapToCollectionUnitDto(units.getContent()));
+        return new DtoResponse<>(true, "", units.getTotalElements(), mapperUtiliti.mapToCollectionUnitDto(units.getContent()));
     }
 
     // создать страницу пагинации

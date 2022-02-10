@@ -10,7 +10,7 @@
             CREATE TABLE `document_body` (
             `id` bigint NOT NULL AUTO_INCREMENT,
             `amount` decimal(15,4) DEFAULT NULL COMMENT 'Сумма',
-            `deleted` bit(1) NOT NULL DEFAULT b'0',
+            `is_deleted` bit(1) NOT NULL DEFAULT b'0',
             `price` decimal(15,4) DEFAULT NULL COMMENT 'Цена',
             `quantity` decimal(15,2) DEFAULT NULL COMMENT 'Количество',
             `document_header_id` bigint DEFAULT NULL COMMENT 'id шапки документа',
@@ -20,7 +20,7 @@
             PRIMARY KEY (`id`),
             KEY `IDX_document_body_document_header_id` (`document_header_id`) /*!80000 INVISIBLE */,
             KEY `IDX_document_body_inventory_id` (`inventory_id`),
-            KEY `IDX_document_body_deleted` (`deleted`),
+            KEY `IDX_document_body_is_deleted` (`is_deleted`),
             KEY `IDX_document_body_receipt_document_id` (`receipt_document_id`),
             KEY `IDX_document_body_serial_document_body_id` (`serial_document_body_id`),
             CONSTRAINT `bod` FOREIGN KEY (`document_header_id`) REFERENCES `document_header` (`id`),

@@ -10,11 +10,11 @@
         <sql>
             CREATE TABLE `partner` (
             `id` bigint NOT NULL AUTO_INCREMENT,
-            `deleted` bit(1) NOT NULL DEFAULT b'0',
+            `is_deleted` bit(1) NOT NULL DEFAULT b'0',
             `name` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
             PRIMARY KEY (`id`),
             UNIQUE KEY `IDX_partners_name` (`name`) USING BTREE,
-            KEY `IDX_partner_deleted` (`deleted`)
+            KEY `IDX_partner_is_deleted` (`is_deleted`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Справочник Партнеры'
         </sql>
         <rollback>

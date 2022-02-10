@@ -21,8 +21,8 @@ public class DocumentBodyEntity {
     @Column(name = "amount", precision = 15, scale = 4)
     private BigDecimal amount;
 
-    @Column(name = "deleted", nullable = false)
-    private Boolean deleted = false;
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = false;
 
     @Column(name = "price", precision = 15, scale = 4)
     private BigDecimal price;

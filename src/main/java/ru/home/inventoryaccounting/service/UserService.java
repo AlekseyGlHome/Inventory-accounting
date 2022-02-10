@@ -51,7 +51,7 @@ public class UserService {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
 
-        return new DtoResponse<>(users.getTotalElements(), mapperUtiliti.mapToCollectionUserDto(users.getContent()));
+        return new DtoResponse<>(true, "", users.getTotalElements(), mapperUtiliti.mapToCollectionUserDto(users.getContent()));
     }
 
     /**
@@ -65,7 +65,7 @@ public class UserService {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<UserEntity> users;
         users = userRepository.findAll(pageRequest);
-        return new DtoResponse<>(users.getTotalElements(), mapperUtiliti.mapToCollectionUserDto(users.getContent()));
+        return new DtoResponse<>(true, "", users.getTotalElements(), mapperUtiliti.mapToCollectionUserDto(users.getContent()));
     }
 
     /**

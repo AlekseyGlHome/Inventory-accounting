@@ -10,12 +10,12 @@
         <sql>
             CREATE TABLE `user` (
             `id` bigint NOT NULL AUTO_INCREMENT,
-            `deleted` bit(1) NOT NULL DEFAULT b'0',
+            `is_deleted` bit(1) NOT NULL DEFAULT b'0',
             `name` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
             `password` varchar(250) DEFAULT NULL,
             PRIMARY KEY (`id`),
             UNIQUE KEY `IDX_user_name` (`name`) USING BTREE,
-            KEY `IDX_user_deleted` (`deleted`)
+            KEY `IDX_user_is_deleted` (`is_deleted`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Пользователи'
         </sql>
         <rollback>

@@ -12,25 +12,25 @@ import java.util.Optional;
 @Repository
 public interface InventoryRepository extends JpaRepository<InventoryEntity, Long> {
 
-    @Query("select i from InventoryEntity i where i.deleted = false and i.id = :id")
+    @Query("select i from InventoryEntity i where i.isDeleted = false and i.id = :id")
     @Override
     Optional<InventoryEntity> findById(Long id);
 
     // выбрать весь неудаленный инвентарь
-    @Query("select i from InventoryEntity i where i.deleted = false")
+    @Query("select i from InventoryEntity i where i.isDeleted = false")
     @Override
     Page<InventoryEntity> findAll(Pageable pageable);
 
     // выбрать весь неудаленный инвентарь и вхождению в наименование
-    @Query("select i from InventoryEntity i where i.deleted=false and i.name like %:query% order by i.name")
+    @Query("select i from InventoryEntity i where i.isDeleted=false and i.name like %:query% order by i.name")
     Page<InventoryEntity> findByNameLike(Pageable pageable, String query);
 
     // выбрать весь неудаленный инвентарь и по идентификатору группы
-    @Query("select i from InventoryEntity i where i.deleted=false and i.folder.id = :id order by i.name")
+    @Query("select i from InventoryEntity i where i.isDeleted=false and i.folder.id = :id order by i.name")
     Page<InventoryEntity> findByFolderId(Pageable pageable, Long id);
 
     // выбрать весь неудаленный инвентарь и вхождению в наименование и по идентификатору группы
-    @Query("select i from InventoryEntity i where i.deleted=false and i.name like %:query% " +
+    @Query("select i from InventoryEntity i where i.isDeleted=false and i.name like %:query% " +
             "and i.folder.id = :folderId order by i.name")
     Page<InventoryEntity> findByNameLikeAndFolderId(Pageable pageable, String query, Long folderId);
 

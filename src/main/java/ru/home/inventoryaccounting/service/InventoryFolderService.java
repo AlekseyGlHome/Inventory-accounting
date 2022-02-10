@@ -50,7 +50,7 @@ public class InventoryFolderService {
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
-        return new DtoResponse<>(inventoryFolders.getTotalElements(),
+        return new DtoResponse<>(true, "", inventoryFolders.getTotalElements(),
                 mapperUtiliti.mapToCollectionInventoryFolderDto(inventoryFolders.getContent()));
     }
 
@@ -65,7 +65,7 @@ public class InventoryFolderService {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<InventoryFolderEntity> inventoryFolders;
         inventoryFolders = inventoryFolderRepository.findAll(pageRequest);
-        return new DtoResponse<>(inventoryFolders.getTotalElements(),
+        return new DtoResponse<>(true, "", inventoryFolders.getTotalElements(),
                 mapperUtiliti.mapToCollectionInventoryFolderDto(inventoryFolders.getContent()));
     }
 

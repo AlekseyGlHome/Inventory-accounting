@@ -17,8 +17,8 @@ public class PartnerEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "deleted", nullable = false)
-    private Boolean deleted = false;
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = false;
 
     @Column(name = "name", nullable = false, length = 250)
     private String name;
