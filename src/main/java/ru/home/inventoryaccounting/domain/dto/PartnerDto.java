@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PartnerDto implements DtoInterface {
     private Long id;
-    private Boolean deleted;
+    private Boolean isDeleted;
     private String name;
 }

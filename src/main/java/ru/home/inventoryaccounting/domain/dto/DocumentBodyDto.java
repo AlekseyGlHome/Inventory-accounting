@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 public class DocumentBodyDto implements DtoInterface {
     private Long id;
     private BigDecimal amount;
-    private Boolean deleted;
+    private Boolean isDeleted;
     private BigDecimal price;
     private BigDecimal quantity;
     private InventoryDto inventory;

@@ -3,8 +3,10 @@ package ru.home.inventoryaccounting.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.home.inventoryaccounting.domain.entity.InventoryEntity;
 
 import java.util.Optional;
@@ -33,5 +35,10 @@ public interface InventoryRepository extends JpaRepository<InventoryEntity, Long
     @Query("select i from InventoryEntity i where i.isDeleted=false and i.name like %:query% " +
             "and i.folder.id = :folderId order by i.name")
     Page<InventoryEntity> findByNameLikeAndFolderId(Pageable pageable, String query, Long folderId);
+
+    @Transactional
+    @Modifying
+    @Query("update InventoryEntity set isDeleted=true where isDeleted=false and id=:id")
+    int updateIsDeleteToTrueById(long id);
 
 }

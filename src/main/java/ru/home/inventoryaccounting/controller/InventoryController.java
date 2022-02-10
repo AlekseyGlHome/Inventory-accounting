@@ -10,16 +10,18 @@ import ru.home.inventoryaccounting.domain.dto.InventoryDto;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.service.InventoryService;
+import ru.home.inventoryaccounting.util.RequestParameterUtil;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/inventory")
 public class InventoryController {
 
     private final InventoryService inventoryService;
 
-    @GetMapping("/inventory")
+    @GetMapping()
     public ResponseEntity<DtoResponse<InventoryDto>> getByAllOrFilter(
             @RequestParam(name = "offset", defaultValue = "0") int offset,
             @RequestParam(name = "limit", defaultValue = "10") int limit,
@@ -29,7 +31,7 @@ public class InventoryController {
             @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection) {
 
         DtoResponse<InventoryDto> inventoryResponse;
-        ParameterRequest parameter = inventoryService.getRequestParameters(offset, limit, query,
+        ParameterRequest parameter = RequestParameterUtil.getObjectOfRequestParameters(offset, limit, query,
                 folderId, sortColumns, sortingDirection);
         try {
             inventoryResponse = inventoryService.selectQuery(parameter);
@@ -39,7 +41,7 @@ public class InventoryController {
         return ResponseEntity.ok(inventoryResponse);
     }
 
-    @GetMapping("/inventory/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<DtoResponse<InventoryDto>> getById(@PathVariable long id) {
         DtoResponse<InventoryDto> inventoryResponse;
         try {
@@ -50,9 +52,9 @@ public class InventoryController {
         return ResponseEntity.ok(inventoryResponse);
     }
 
-    @PostMapping("/inventory/{id}")
-    public ResponseEntity<DtoResponse<InventoryDto>> updateInventory(@PathVariable long id,
-                                    @RequestBody InventoryUpdateRequest request) {
+    @PostMapping("/{id}")
+    public ResponseEntity<DtoResponse<InventoryDto>> update(@PathVariable long id,
+                                                                     @RequestBody InventoryUpdateRequest request) {
         DtoResponse<InventoryDto> inventoryResponse;
         try {
             inventoryResponse = new DtoResponse<>(true, "", 1L, List.of(inventoryService.update(id, request)));
@@ -62,8 +64,8 @@ public class InventoryController {
         return ResponseEntity.ok(inventoryResponse);
     }
 
-    @PostMapping("/inventory")
-    public ResponseEntity<DtoResponse<InventoryDto>> addInventory(@RequestBody InventoryUpdateRequest request) {
+    @PostMapping()
+    public ResponseEntity<DtoResponse<InventoryDto>> add(@RequestBody InventoryUpdateRequest request) {
         DtoResponse<InventoryDto> inventoryResponse;
         try {
             inventoryResponse = new DtoResponse<>(true, "", 1L, List.of(inventoryService.add(request)));
@@ -73,7 +75,7 @@ public class InventoryController {
         return ResponseEntity.ok(inventoryResponse);
     }
 
-    @DeleteMapping("/inventory/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<DtoResponse<InventoryDto>> deleteById(@PathVariable long id) {
         DtoResponse<InventoryDto> inventoryResponse;
         try {

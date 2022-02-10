@@ -18,9 +18,9 @@ public class DocumentHeaderDto implements DtoInterface {
     private BigDecimal amount;
     private String comment;
     private LocalDate date;
-    private Boolean deleted;
+    private Boolean isDeleted;
     private String documentNumber;
-    private Boolean registered;
+    private Boolean isRegistered;
     private PartnerDto partner;
     private UserDto user;
     private WarehouseDto warehouse;

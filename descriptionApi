@@ -1,0 +1,135 @@
+Запрос  Получить все записи
+    GET /inventory
+        param
+            offset=0
+            limit=5
+            query=""
+            folderId=0
+            sortColumns=folder.name, name
+            sortingDirection=ASC
+
+Ответ
+     {
+         "result": true,
+         "message": "",
+         "numberOfRecord": 9,
+         "data": [
+             {
+                 "id": 11,
+                 "deleted": false,
+                 "name": "Радио приемник Элекроника 2",
+                 "folder": {
+                     "id": 3,
+                     "deleted": false,
+                     "name": "Бытовая техника"
+                 },
+                 "unit": {
+                     "id": 1,
+                     "deleted": false,
+                     "name": "шт"
+                 }
+             }
+         ]
+     }
+
+        example
+    (http://localhost:8080/inventory?offset=0&limit=5&query=&folderId=&sortColumns=folder.name, name&sortingDirection=ASC)
+
+****
+Запрос Получить по ID
+    GET /inventory/{id}
+
+Ответ
+    {
+        "result": true,
+        "message": "",
+        "numberOfRecord": 1,
+        "data": [
+            {
+                "id": 8,
+                "deleted": false,
+                "name": "Электро печь 3кВт",
+                "folder": {
+                    "id": 3,
+                    "deleted": false,
+                    "name": "Бытовая техника"
+                },
+                "unit": {
+                    "id": 1,
+                    "deleted": false,
+                    "name": "шт"
+                }
+            }
+        ]
+    }
+
+
+****
+
+Запрос  Изменить по ID
+    POST /inventory/{id}
+        Body
+            {
+                "name":"Радио приемник Элекроника 3 2022",
+                "folderId":2,
+                "unitId":1
+            }
+
+Ответ
+    {
+        "result": true,
+        "message": "",
+        "numberOfRecord": 1,
+        "data": [
+            {
+                "id": 13,
+                "deleted": false,
+                "name": "Радио приемник Элекроника 3 2022",
+                "folder": {
+                    "id": 2,
+                    "deleted": false,
+                    "name": "Тарелки"
+                },
+                "unit": {
+                    "id": 1,
+                    "deleted": false,
+                    "name": "шт"
+                }
+            }
+        ]
+    }
+
+****
+
+Запрос  Добавить новый
+    POST /inventory
+        Body
+            {
+                "name":"Радио приемник Элекроника 3",
+                "folderId":3,
+                 "unitId":2
+            }
+
+Ответ
+    {
+        "result": true,
+        "message": "",
+        "numberOfRecord": 1,
+        "data": [
+            {
+                "id": 14,
+                "deleted": false,
+                "name": "Радио приемник Элекроника 3",
+                "folder": {
+                    "id": 3,
+                    "deleted": false,
+                    "name": "Бытовая техника"
+                },
+                "unit": {
+                    "id": 2,
+                    "deleted": false,
+                    "name": "кг"
+                }
+            }
+        ]
+    }

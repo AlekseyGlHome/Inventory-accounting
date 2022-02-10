@@ -50,5 +50,4 @@ public interface DocumentHeaderRepository extends JpaRepository<DocumentHeaderEn
     @Query("select d from DocumentHeaderEntity d where d.isDeleted = false and d.documentNumber like %:documentNumber% order by d.date")
     Page<DocumentHeaderEntity> findByDocumentNumber(String documentNumber, Pageable pageable);
 
-
 }

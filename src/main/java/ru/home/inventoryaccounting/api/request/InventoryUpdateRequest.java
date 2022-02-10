@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class InventoryUpdateRequest {
     private long id;
-    private boolean deleted;
+    private boolean isDeleted;
     private String name;
     private long folderId;
     private long unitId;

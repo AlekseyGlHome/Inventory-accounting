@@ -1,4 +1,4 @@
-package ru.home.inventoryaccounting.domain.dto;
+package ru.home.inventoryaccounting.api.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class InventoryDto implements DtoInterface {
+public class UserUpdateRequest {
     private long id;
     private boolean isDeleted;
     private String name;
-    private InventoryFolderDto folder;
-    private UnitDto unit;
+    private String password;
 }

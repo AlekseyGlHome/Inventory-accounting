@@ -4,13 +4,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import ru.home.inventoryaccounting.api.request.InventoryFolderUpdateRequest;
+import ru.home.inventoryaccounting.api.request.ParameterRequest;
+import ru.home.inventoryaccounting.api.request.WarehouseUpdateRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
+import ru.home.inventoryaccounting.domain.dto.InventoryFolderDto;
 import ru.home.inventoryaccounting.domain.dto.WarehouseDto;
+import ru.home.inventoryaccounting.domain.entity.InventoryFolderEntity;
 import ru.home.inventoryaccounting.domain.entity.WarehouseEntity;
 import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.WarehouseRepository;
+import ru.home.inventoryaccounting.util.PageRequestUtil;
 
 import java.util.Optional;
 
@@ -21,34 +27,28 @@ public class WarehouseService {
     private final MapperUtiliti mapperUtiliti;
     private final WarehouseRepository warehouseRepository;
 
+    private final String MESSAGE_NOT_FOUND = "Слад с Id: %s не найдена.";
+    private final String MESSAGE_BAD_REQUESR = "Неверный параметр запроса";
+
     /**
      * выбор склада по идентификатору
-     *
-     * @param id - идентификатор склада
-     * @return Warehouse
      */
     public WarehouseDto findById(long id) throws NotFoundException {
         Optional<WarehouseEntity> warehouse = warehouseRepository.findById(id);
         return warehouse.map(mapperUtiliti::mapToWarehouseDto)
-                .orElseThrow(() -> new NotFoundException("Слад с Id: " + id + " не найден."));
+                .orElseThrow(() -> new NotFoundException(String.format(MESSAGE_NOT_FOUND, id)));
     }
 
     /**
      * выбор склада по вхождению в наименование
-     *
-     * @param offset - номер страницы
-     * @param limit  - количество элементов на странице
-     * @param query  - строка поиска
-     * @return DTOResponse&lt;WarehouseDTO&gt;
      */
-    public DtoResponse<WarehouseDto> findByQueryString(int offset, int limit,
-                                                       String query) throws InvalidRequestParameteException {
-        PageRequest pageRequest = getPageRequest(offset, limit);
+    public DtoResponse<WarehouseDto> findByNameLike(ParameterRequest request) throws InvalidRequestParameteException {
+        PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<WarehouseEntity> warehouses;
-        if (!query.isEmpty() || !query.isBlank()) {
-            warehouses = warehouseRepository.findByNameLike(pageRequest, query);
+        if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
+            warehouses = warehouseRepository.findByNameLike(pageRequest, request.getQuery());
         } else {
-            throw new InvalidRequestParameteException("Неверный параметр запроса");
+            throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
         return new DtoResponse<>(true, "", warehouses.getTotalElements(),
                 mapperUtiliti.mapToCollectionWarehouseDto(warehouses.getContent()));
@@ -56,23 +56,54 @@ public class WarehouseService {
 
     /**
      * выбор всех складов
-     *
-     * @param offset - номер страницы
-     * @param limit  - количество элементов на странице
-     * @return DTOResponse&lt;WarehouseDTO&gt;
      */
-    public DtoResponse<WarehouseDto> findAll(int offset, int limit) {
-        PageRequest pageRequest = getPageRequest(offset, limit);
+    public DtoResponse<WarehouseDto> findAll(ParameterRequest request) {
+        PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<WarehouseEntity> warehouses;
         warehouses = warehouseRepository.findAll(pageRequest);
         return new DtoResponse<>(true, "", warehouses.getTotalElements(),
                 mapperUtiliti.mapToCollectionWarehouseDto(warehouses.getContent()));
     }
 
-    // создать страницу пагинации
-    private PageRequest getPageRequest(int offset, int limit) {
-        int numberPage = offset / limit;
-
-        return PageRequest.of(numberPage, limit);
+    /**
+     * общий запрос
+     */
+    public DtoResponse<WarehouseDto> selectQuery(ParameterRequest request) throws InvalidRequestParameteException {
+        if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
+            return findByNameLike(request);
+        }
+        return findAll(request);
     }
+
+    // добавить карточку
+    public WarehouseDto add(WarehouseUpdateRequest request) throws NotFoundException {
+        WarehouseEntity warehouseEntity = fillInventory(new WarehouseEntity(), request);
+        return mapperUtiliti.mapToWarehouseDto(warehouseRepository.save(warehouseEntity));
+    }
+
+    // обновить карточку
+    public WarehouseDto update(long id, WarehouseUpdateRequest request) throws NotFoundException {
+        WarehouseEntity warehouseEntity = fillInventory(mapperUtiliti.mapToWarehouseEntity(findById(id)), request);
+        return mapperUtiliti.mapToWarehouseDto(warehouseRepository.save(warehouseEntity));
+    }
+
+    // заполнить карточку из запросса
+    private WarehouseEntity fillInventory(WarehouseEntity warehouseEntity, WarehouseUpdateRequest request) {
+        warehouseEntity.setName(request.getName());
+        warehouseEntity.setIsDeleted(request.isDeleted());
+        warehouseEntity.setCompany(request.getCompany());
+        warehouseEntity.setPerson(request.getPerson());
+        return warehouseEntity;
+    }
+
+    /**
+     * удалить (переменную is_deleted в true)
+     */
+    public void deleteById(long id) throws NotFoundException {
+        if (warehouseRepository.updateIsDeleteToTrueById(id) <= 0) {
+            throw new NotFoundException(String.format(MESSAGE_NOT_FOUND, id));
+        }
+    }
+
+
 }

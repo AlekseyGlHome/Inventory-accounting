@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class InventoryFolderDto implements DtoInterface {
 
     private Long id;
-    private Boolean deleted;
+    private Boolean isDeleted;
     private String name;
 }

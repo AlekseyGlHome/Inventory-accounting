@@ -1,21 +1,19 @@
 package ru.home.inventoryaccounting.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.home.inventoryaccounting.api.request.ParameterRequest;
 import ru.home.inventoryaccounting.api.request.InventoryUpdateRequest;
+import ru.home.inventoryaccounting.api.request.ParameterRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.InventoryDto;
 import ru.home.inventoryaccounting.domain.entity.InventoryEntity;
-import ru.home.inventoryaccounting.domain.enums.SortingDirection;
 import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.InventoryRepository;
+import ru.home.inventoryaccounting.util.PageRequestUtil;
 
 import java.util.Optional;
 
@@ -28,22 +26,26 @@ public class InventoryService {
     private final InventoryFolderService inventoryFolderService;
     private final UnitService unitService;
 
+    private final String MESSAGE_NOT_FOUND = "Инвентарь с Id: %s не найдена.";
+    private final String MESSAGE_BAD_REQUESR = "Неверный параметр запроса";
+
     /**
      * выбрать инвентарь по идентификатору
      */
     public InventoryDto findById(long id) throws NotFoundException {
         Optional<InventoryEntity> inventory = inventoryRepository.findById(id);
         return inventory.map(mapperUtiliti::mapToInventoryDto)
-                .orElseThrow(() -> new NotFoundException("Инвентарь с Id: " + id + " не найден."));
+                .orElseThrow(() -> new NotFoundException(String.format(MESSAGE_NOT_FOUND, id)));
     }
 
+    /**
+     * удалить (переменную is_deleted в true)
+     */
     public void deleteById(long id) throws NotFoundException {
-        try {
-            inventoryRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException ex) {
-            throw new NotFoundException("Инвентарь с Id: " + id + " не найден.");
+        int countDelete = inventoryRepository.updateIsDeleteToTrueById(id);
+        if (countDelete <= 0) {
+            throw new NotFoundException(String.format(MESSAGE_NOT_FOUND, id));
         }
-
     }
 
     /**
@@ -51,12 +53,12 @@ public class InventoryService {
      */
     public DtoResponse<InventoryDto> findByNameLike(ParameterRequest request)
             throws InvalidRequestParameteException {
-        PageRequest pageRequest = getPageRequest(request);
+        PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<InventoryEntity> inventories;
         if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
             inventories = inventoryRepository.findByNameLike(pageRequest, request.getQuery());
         } else {
-            throw new InvalidRequestParameteException("Неверный параметр запроса");
+            throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
         return new DtoResponse<>(true, "", inventories.getTotalElements(),
                 mapperUtiliti.mapToCollectionInventoryDto(inventories.getContent()));
@@ -67,12 +69,12 @@ public class InventoryService {
      */
     public DtoResponse<InventoryDto> findByNameLikeAndFolderId(ParameterRequest request)
             throws InvalidRequestParameteException {
-        PageRequest pageRequest = getPageRequest(request);
+        PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<InventoryEntity> inventories;
         if ((!request.getQuery().isEmpty() || !request.getQuery().isBlank()) && (request.getFolderId() > 0)) {
             inventories = inventoryRepository.findByNameLikeAndFolderId(pageRequest, request.getQuery(), request.getFolderId());
         } else {
-            throw new InvalidRequestParameteException("Неверный параметр запроса");
+            throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
         return new DtoResponse<>(true, "", inventories.getTotalElements(),
                 mapperUtiliti.mapToCollectionInventoryDto(inventories.getContent()));
@@ -82,12 +84,12 @@ public class InventoryService {
      * выбрать инвентарь по идентификатору папки
      */
     public DtoResponse<InventoryDto> findByFolderId(ParameterRequest request) throws InvalidRequestParameteException {
-        PageRequest pageRequest = getPageRequest(request);
+        PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<InventoryEntity> inventories;
         if (request.getFolderId() > 0) {
             inventories = inventoryRepository.findByFolderId(pageRequest, request.getFolderId());
         } else {
-            throw new InvalidRequestParameteException("Неверный параметр запроса");
+            throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
         return new DtoResponse<>(true, "", inventories.getTotalElements(),
                 mapperUtiliti.mapToCollectionInventoryDto(inventories.getContent()));
@@ -97,30 +99,15 @@ public class InventoryService {
      * выбрать весь инвентарь
      */
     public DtoResponse<InventoryDto> findAll(ParameterRequest request) {
-        PageRequest pageRequest = getPageRequest(request);
+        PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<InventoryEntity> inventories;
         inventories = inventoryRepository.findAll(pageRequest);
         return new DtoResponse<>(true, "", inventories.getTotalElements(),
                 mapperUtiliti.mapToCollectionInventoryDto(inventories.getContent()));
     }
 
-    //заполнение объекта RequestParameters для передачи в методы
-    public ParameterRequest getRequestParameters(int offset, int limit, String query, long folderId, String sortColumns,
-                                                 String sortingDirection) {
-        return ParameterRequest.builder()
-                .offset(offset)
-                .limit(limit)
-                .query(query)
-                .folderId(folderId)
-                .sortColumns(sortColumns.split(", +"))
-                .sortingDirection(SortingDirection.valueOf(sortingDirection))
-                .build();
-    }
-
     // общий запрос
     public DtoResponse<InventoryDto> selectQuery(ParameterRequest request) throws InvalidRequestParameteException {
-        //
-
         if ((!request.getQuery().isEmpty() || !request.getQuery().isBlank()) && (request.getFolderId() == 0)) {
             return findByNameLike(request);
         } else if ((request.getQuery().isEmpty() || request.getQuery().isBlank()) && (request.getFolderId() > 0)) {
@@ -150,18 +137,6 @@ public class InventoryService {
         inventoryEntity.setFolder(mapperUtiliti.mapToInventoryFolderEntity(inventoryFolderService.findById(request.getFolderId())));
         inventoryEntity.setUnit(mapperUtiliti.mapToUnitEntity(unitService.findById(request.getUnitId())));
         return inventoryEntity;
-    }
-
-
-    // создать страницу пагинации
-    private PageRequest getPageRequest(ParameterRequest request) {
-        int numberPage = request.getOffset() / request.getLimit();
-
-        if (request.getSortingDirection() == SortingDirection.ASC) {
-            return PageRequest.of(numberPage, request.getLimit(), Sort.by(request.getSortColumns()).ascending());
-        }
-        return PageRequest.of(numberPage, request.getLimit(), Sort.by(request.getSortColumns()).descending());
-
     }
 
 }
