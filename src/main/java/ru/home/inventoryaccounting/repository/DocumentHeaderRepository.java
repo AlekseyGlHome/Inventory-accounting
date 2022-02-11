@@ -12,42 +12,42 @@ import java.time.LocalDate;
 @Repository
 public interface DocumentHeaderRepository extends JpaRepository<DocumentHeaderEntity, Long> {
     // выбор документов за интервал
-    @Query("select d from DocumentHeaderEntity d where d.isDeleted=false and d.date between :dateStart and :dateEnd order by d.date")
+    @Query("select d from DocumentHeaderEntity d where d.isDeleted=false and d.date between :dateStart and :dateEnd ")
     Page<DocumentHeaderEntity> findByDate(LocalDate dateStart, LocalDate dateEnd, Pageable pageable);
 
     // выбор документов за интервал и по партнеру
     @Query("select d from DocumentHeaderEntity d where d.date between :dateStart and :dateEnd " +
-            "and d.isDeleted = false and d.partner.id = :partnerId order by d.date")
+            "and d.isDeleted = false and d.partner.id = :partnerId ")
     Page<DocumentHeaderEntity> findByDateAndPartner(LocalDate dateStart, LocalDate dateEnd, Long partnerId, Pageable pageable);
 
     // выбор документов за интервал и по складу
     @Query("select d from DocumentHeaderEntity d where d.date between :dateStart and :dateEnd " +
-            "and d.isDeleted = false and (d.warehouse.id = :warehouseId or d.warehouseRecipient.id = :warehouseId) order by d.date")
+            "and d.isDeleted = false and (d.warehouse.id = :warehouseId or d.warehouseRecipient.id = :warehouseId) ")
     Page<DocumentHeaderEntity> findByDateAndWarehouse(LocalDate dateStart, LocalDate dateEnd, Long warehouseId, Pageable pageable);
 
     // выбор документов за интервал по партнеру и по складу
     @Query("select d from DocumentHeaderEntity d where d.date between :dateStart and :dateEnd " +
             "and d.isDeleted = false and d.partner.id = :partnerId " +
-            "and (d.warehouse.id = :warehouseId or d.warehouseRecipient.id = :warehouseId) order by d.date")
+            "and (d.warehouse.id = :warehouseId or d.warehouseRecipient.id = :warehouseId) ")
     Page<DocumentHeaderEntity> findByDateAndPartnerAndWarehouse(LocalDate dateStart, LocalDate dateEnd,
                                                                 Long partnerId, Long warehouseId,
                                                                 Pageable pageable);
 
     // выбор документов за интервал по типу документа
     @Query("select d from DocumentHeaderEntity d where d.date between :dateStart and :dateEnd " +
-            "and d.isDeleted = false and d.typeDok = :typeDok order by d.date")
+            "and d.isDeleted = false and d.typeDok = :typeDok ")
     Page<DocumentHeaderEntity> findByDateAndTypeDok(LocalDate dateStart, LocalDate dateEnd, Integer typeDok, Pageable pageable);
 
     // выбор документов за интервал по типу документа и по складу
     @Query("select d from DocumentHeaderEntity d where d.date between :dateStart and :dateEnd " +
             "and d.isDeleted = false and d.typeDok = :typeDok " +
-            "and (d.warehouse.id = :warehouseId or d.warehouseRecipient.id = :warehouseId) order by d.date")
+            "and (d.warehouse.id = :warehouseId or d.warehouseRecipient.id = :warehouseId) ")
     Page<DocumentHeaderEntity> findByDateAndTypeDokAndWarehouse(LocalDate dateStart, LocalDate dateEnd,
                                                                 Integer typeDok, Long warehouseId,
                                                                 Pageable pageable);
 
     // выбор документов по вхождению в номер документа
-    @Query("select d from DocumentHeaderEntity d where d.isDeleted = false and d.documentNumber like %:documentNumber% order by d.date")
+    @Query("select d from DocumentHeaderEntity d where d.isDeleted = false and d.documentNumber like %:documentNumber% ")
     Page<DocumentHeaderEntity> findByDocumentNumber(String documentNumber, Pageable pageable);
 
 }

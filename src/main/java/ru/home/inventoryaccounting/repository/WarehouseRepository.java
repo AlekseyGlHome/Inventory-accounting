@@ -13,12 +13,12 @@ import ru.home.inventoryaccounting.domain.entity.WarehouseEntity;
 public interface WarehouseRepository extends JpaRepository<WarehouseEntity, Long> {
 
     // выбрать все неудаленные склады
-    @Query("select w from WarehouseEntity w where w.isDeleted = false order by w.name")
+    @Query("select w from WarehouseEntity w where w.isDeleted = false ")
     @Override
     Page<WarehouseEntity> findAll(Pageable pageable);
 
     // выбрать все неудаленные склады и вхождению в наименование
-    @Query("select w from WarehouseEntity w where w.isDeleted=false and w.name like %:query% order by w.name")
+    @Query("select w from WarehouseEntity w where w.isDeleted=false and w.name like %:query% ")
     Page<WarehouseEntity> findByNameLike(Pageable pageable, String query);
 
     @Transactional

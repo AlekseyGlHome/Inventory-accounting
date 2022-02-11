@@ -13,12 +13,12 @@ import ru.home.inventoryaccounting.domain.entity.PartnerEntity;
 public interface PartnerRepository extends JpaRepository<PartnerEntity, Long> {
 
     // выбрать всех неудаленных партнеров
-    @Query("select p from PartnerEntity p where p.isDeleted = false order by p.name")
+    @Query("select p from PartnerEntity p where p.isDeleted = false ")
     @Override
     Page<PartnerEntity> findAll(Pageable pageable);
 
     // выбрать всех неудаленных партнеров и вхождению в наименование
-    @Query("select p from PartnerEntity p where p.isDeleted=false and p.name like %:query% order by p.name")
+    @Query("select p from PartnerEntity p where p.isDeleted=false and p.name like %:query% ")
     Page<PartnerEntity> findByNameLike(Pageable pageable, String query);
 
     @Transactional

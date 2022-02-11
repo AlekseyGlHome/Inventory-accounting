@@ -13,12 +13,12 @@ import ru.home.inventoryaccounting.domain.entity.UnitEntity;
 public interface UnitRepository extends JpaRepository<UnitEntity, Long> {
 
     // выбрать все неудаленные единицы измерения
-    @Query("select u from UnitEntity u where u.isDeleted = false order by u.name")
+    @Query("select u from UnitEntity u where u.isDeleted = false ")
     @Override
     Page<UnitEntity> findAll(Pageable pageable);
 
     // выбрать все неудаленные единицы измерения и вхождению в наименование
-    @Query("select u from UnitEntity u where u.isDeleted=false and u.name like %:query% order by u.name")
+    @Query("select u from UnitEntity u where u.isDeleted=false and u.name like %:query% ")
     Page<UnitEntity> findByNameLike(Pageable pageable, String query);
 
     @Transactional

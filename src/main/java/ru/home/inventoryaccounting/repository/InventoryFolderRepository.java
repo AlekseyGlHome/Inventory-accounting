@@ -13,12 +13,12 @@ import ru.home.inventoryaccounting.domain.entity.InventoryFolderEntity;
 public interface InventoryFolderRepository extends JpaRepository<InventoryFolderEntity, Long> {
 
     // выбрать все неудаленные папки
-    @Query("select i from InventoryFolderEntity i where i.isDeleted = false order by i.name")
+    @Query("select i from InventoryFolderEntity i where i.isDeleted = false ")
     @Override
     Page<InventoryFolderEntity> findAll(Pageable pageable);
 
     // выбрать все неудаленные папки и вхождению в наименование
-    @Query("select i from InventoryFolderEntity i where i.isDeleted=false and i.name like %:query% order by i.name")
+    @Query("select i from InventoryFolderEntity i where i.isDeleted=false and i.name like %:query% ")
     Page<InventoryFolderEntity> findByNameLike(Pageable pageable, String query);
 
     @Transactional

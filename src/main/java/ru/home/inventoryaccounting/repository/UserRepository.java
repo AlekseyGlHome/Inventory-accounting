@@ -15,16 +15,16 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     // выбрать всех неудаленных пользователей
-    @Query("select u from UserEntity u where u.isDeleted = false order by u.name")
+    @Query("select u from UserEntity u where u.isDeleted = false ")
     @Override
     Page<UserEntity> findAll(Pageable pageable);
 
     //// выбрать всех неудаленных пользователей и вхождению в наименование
-    @Query("select u from UserEntity u where u.isDeleted=false and u.name like %:query% order by u.name")
+    @Query("select u from UserEntity u where u.isDeleted=false and u.name like %:query% ")
     Page<UserEntity> findByNameLike(Pageable pageable, String query);
 
     //выбрать пользователя по имени
-    @Query("select u from UserEntity u where u.isDeleted=false and u.name = :query order by u.name")
+    @Query("select u from UserEntity u where u.isDeleted=false and u.name = :query ")
     Optional<UserEntity> findByName(String query);
 
     @Transactional
