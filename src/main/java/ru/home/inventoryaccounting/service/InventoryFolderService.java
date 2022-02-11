@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.home.inventoryaccounting.api.request.InventoryFolderUpdateRequest;
+import ru.home.inventoryaccounting.api.request.InventoryFoldeRequest;
 import ru.home.inventoryaccounting.api.request.ParameterRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.InventoryFolderDto;
@@ -76,19 +76,19 @@ public class InventoryFolderService {
 
 
     // добавить карточку
-    public InventoryFolderDto add(InventoryFolderUpdateRequest request) throws NotFoundException {
+    public InventoryFolderDto add(InventoryFoldeRequest request) throws NotFoundException {
         InventoryFolderEntity inventoryFolderEntity = fillInventory(new InventoryFolderEntity(), request);
         return mapperUtiliti.mapToInventoryFolderDto(inventoryFolderRepository.save(inventoryFolderEntity));
     }
 
     // обновить карточку
-    public InventoryFolderDto update(long id, InventoryFolderUpdateRequest request) throws NotFoundException {
+    public InventoryFolderDto update(long id, InventoryFoldeRequest request) throws NotFoundException {
         InventoryFolderEntity inventoryFolderEntity = fillInventory(mapperUtiliti.mapToInventoryFolderEntity(findById(id)), request);
         return mapperUtiliti.mapToInventoryFolderDto(inventoryFolderRepository.save(inventoryFolderEntity));
     }
 
     // заполнить карточку из запросса
-    private InventoryFolderEntity fillInventory(InventoryFolderEntity inventoryFolderEntity, InventoryFolderUpdateRequest request) {
+    private InventoryFolderEntity fillInventory(InventoryFolderEntity inventoryFolderEntity, InventoryFoldeRequest request) {
         inventoryFolderEntity.setName(request.getName());
         inventoryFolderEntity.setIsDeleted(request.isDeleted());
         return inventoryFolderEntity;

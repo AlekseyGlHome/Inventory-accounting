@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WarehouseUpdateRequest {
+public class InventoryRequest {
     private long id;
     private boolean isDeleted;
     private String name;
-    private String company;
-    private String person;
+    private long folderId;
+    private long unitId;
 }

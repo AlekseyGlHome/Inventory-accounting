@@ -5,13 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.home.inventoryaccounting.api.request.ParameterRequest;
-import ru.home.inventoryaccounting.api.request.UserUpdateRequest;
-import ru.home.inventoryaccounting.api.request.WarehouseUpdateRequest;
+import ru.home.inventoryaccounting.api.request.UserRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.UserDto;
-import ru.home.inventoryaccounting.domain.dto.WarehouseDto;
 import ru.home.inventoryaccounting.domain.entity.UserEntity;
-import ru.home.inventoryaccounting.domain.entity.WarehouseEntity;
 import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
@@ -85,19 +82,19 @@ public class UserService {
 
 
     // добавить карточку
-    public UserDto add(UserUpdateRequest request) throws NotFoundException {
+    public UserDto add(UserRequest request) throws NotFoundException {
         UserEntity userEntity = fillInventory(new UserEntity(), request);
         return mapperUtiliti.mapToUserDto(userRepository.save(userEntity));
     }
 
     // обновить карточку
-    public UserDto update(long id, UserUpdateRequest request) throws NotFoundException {
+    public UserDto update(long id, UserRequest request) throws NotFoundException {
         UserEntity userEntity = fillInventory(mapperUtiliti.mapToUserEntity(findById(id)), request);
         return mapperUtiliti.mapToUserDto(userRepository.save(userEntity));
     }
 
     // заполнить карточку из запросса
-    private UserEntity fillInventory(UserEntity userEntity, UserUpdateRequest request) {
+    private UserEntity fillInventory(UserEntity userEntity, UserRequest request) {
         userEntity.setName(request.getName());
         userEntity.setIsDeleted(request.isDeleted());
         userEntity.setPassword(request.getPassword());

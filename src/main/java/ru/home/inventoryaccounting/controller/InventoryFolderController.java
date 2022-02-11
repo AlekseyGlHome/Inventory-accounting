@@ -3,7 +3,7 @@ package ru.home.inventoryaccounting.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.home.inventoryaccounting.api.request.InventoryFolderUpdateRequest;
+import ru.home.inventoryaccounting.api.request.InventoryFoldeRequest;
 import ru.home.inventoryaccounting.api.request.ParameterRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.InventoryFolderDto;
@@ -25,7 +25,7 @@ public class InventoryFolderController {
             @RequestParam(name = "offset", defaultValue = "0") int offset,
             @RequestParam(name = "limit", defaultValue = "10") int limit,
             @RequestParam(name = "query", defaultValue = "") String query,
-            @RequestParam(name = "sortColumns", defaultValue = "name") String sortColumns,
+            @RequestParam(name = "sortColumns", defaultValue = "name") String[] sortColumns,
             @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection) {
 
         DtoResponse<InventoryFolderDto> inventoryResponse;
@@ -51,7 +51,7 @@ public class InventoryFolderController {
 
     @PostMapping("/{id}")
     public ResponseEntity<DtoResponse<InventoryFolderDto>> update(@PathVariable long id,
-                                                            @RequestBody InventoryFolderUpdateRequest request) {
+                                                            @RequestBody InventoryFoldeRequest request) {
         DtoResponse<InventoryFolderDto> response;
         try {
             response = new DtoResponse<>(true, "", 1L, List.of(inventoryFolderService.update(id, request)));
@@ -62,7 +62,7 @@ public class InventoryFolderController {
     }
 
     @PostMapping()
-    public ResponseEntity<DtoResponse<InventoryFolderDto>> add(@RequestBody InventoryFolderUpdateRequest request) {
+    public ResponseEntity<DtoResponse<InventoryFolderDto>> add(@RequestBody InventoryFoldeRequest request) {
         DtoResponse<InventoryFolderDto> response;
         try {
             response = new DtoResponse<>(true, "", 1L, List.of(inventoryFolderService.add(request)));

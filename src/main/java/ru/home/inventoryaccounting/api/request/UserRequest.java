@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserUpdateRequest {
+public class UserRequest {
     private long id;
     private boolean isDeleted;
     private String name;

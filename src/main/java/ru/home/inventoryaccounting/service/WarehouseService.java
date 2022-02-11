@@ -4,13 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.home.inventoryaccounting.api.request.InventoryFolderUpdateRequest;
 import ru.home.inventoryaccounting.api.request.ParameterRequest;
-import ru.home.inventoryaccounting.api.request.WarehouseUpdateRequest;
+import ru.home.inventoryaccounting.api.request.WarehouseRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
-import ru.home.inventoryaccounting.domain.dto.InventoryFolderDto;
 import ru.home.inventoryaccounting.domain.dto.WarehouseDto;
-import ru.home.inventoryaccounting.domain.entity.InventoryFolderEntity;
 import ru.home.inventoryaccounting.domain.entity.WarehouseEntity;
 import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
@@ -76,19 +73,19 @@ public class WarehouseService {
     }
 
     // добавить карточку
-    public WarehouseDto add(WarehouseUpdateRequest request) throws NotFoundException {
+    public WarehouseDto add(WarehouseRequest request) throws NotFoundException {
         WarehouseEntity warehouseEntity = fillInventory(new WarehouseEntity(), request);
         return mapperUtiliti.mapToWarehouseDto(warehouseRepository.save(warehouseEntity));
     }
 
     // обновить карточку
-    public WarehouseDto update(long id, WarehouseUpdateRequest request) throws NotFoundException {
+    public WarehouseDto update(long id, WarehouseRequest request) throws NotFoundException {
         WarehouseEntity warehouseEntity = fillInventory(mapperUtiliti.mapToWarehouseEntity(findById(id)), request);
         return mapperUtiliti.mapToWarehouseDto(warehouseRepository.save(warehouseEntity));
     }
 
     // заполнить карточку из запросса
-    private WarehouseEntity fillInventory(WarehouseEntity warehouseEntity, WarehouseUpdateRequest request) {
+    private WarehouseEntity fillInventory(WarehouseEntity warehouseEntity, WarehouseRequest request) {
         warehouseEntity.setName(request.getName());
         warehouseEntity.setIsDeleted(request.isDeleted());
         warehouseEntity.setCompany(request.getCompany());

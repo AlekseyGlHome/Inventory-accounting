@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class InventoryFolderUpdateRequest {
+public class InventoryFoldeRequest {
     private long id;
     private boolean isDeleted;
     private String name;

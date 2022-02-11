@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.home.inventoryaccounting.api.request.ParameterRequest;
-import ru.home.inventoryaccounting.api.request.UserUpdateRequest;
+import ru.home.inventoryaccounting.api.request.UserRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.UserDto;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
@@ -25,7 +25,7 @@ public class UserController {
             @RequestParam(name = "offset", defaultValue = "0") int offset,
             @RequestParam(name = "limit", defaultValue = "10") int limit,
             @RequestParam(name = "query", defaultValue = "") String query,
-            @RequestParam(name = "sortColumns", defaultValue = "name") String sortColumns,
+            @RequestParam(name = "sortColumns", defaultValue = "name") String[] sortColumns,
             @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection) {
 
         DtoResponse<UserDto> inventoryResponse;
@@ -51,7 +51,7 @@ public class UserController {
 
     @PostMapping("/{id}")
     public ResponseEntity<DtoResponse<UserDto>> update(@PathVariable long id,
-                                                            @RequestBody UserUpdateRequest request) {
+                                                            @RequestBody UserRequest request) {
         DtoResponse<UserDto> response;
         try {
             response = new DtoResponse<>(true, "", 1L, List.of(userService.update(id, request)));
@@ -62,7 +62,7 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<DtoResponse<UserDto>> add(@RequestBody UserUpdateRequest request) {
+    public ResponseEntity<DtoResponse<UserDto>> add(@RequestBody UserRequest request) {
         DtoResponse<UserDto> response;
         try {
             response = new DtoResponse<>(true, "", 1L, List.of(userService.add(request)));

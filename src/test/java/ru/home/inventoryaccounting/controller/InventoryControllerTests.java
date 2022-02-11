@@ -40,30 +40,30 @@ public class InventoryControllerTests {
     @MockBean
     private InventoryService inventoryService;
 
-    @Test
-    void getAllInventory() throws Exception {
-        DtoResponse<InventoryDto> response = new DtoResponse<>();
-        response.setNumberOfRecord(1L);
-        List<InventoryDto> dtoList = new ArrayList<>();
-        InventoryFolderDto inventoryFolderDTO = InventoryFolderDto.builder().id(1L).isDeleted(false).name("Стаканы").build();
-        UnitDto unitDTO = UnitDto.builder().id(1L).isDeleted(false).name("шт").build();
-        InventoryDto inventoryDTO = InventoryDto.builder()
-                .id(1)
-                .isDeleted(false)
-                .name("Стакан")
-                .folder(inventoryFolderDTO)
-                .unit(unitDTO)
-                .build();
-        dtoList.add(inventoryDTO);
-        response.setData(dtoList);
-        String json = mapper.writeValueAsString(response);
-        Mockito.when(inventoryService.findByNameLikeAndFolderId(new ParameterRequest(0,10,"",0, new String[]{"name"}, SortingDirection.ASC))).thenReturn(response);
-        mockMvc.perform(get("/inventory?offset=0&limit=10&query=&folderId=")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("numberOfRecord").value("1"))
-                .andExpect(content().string(containsString(json)));
-    }
+//    @Test
+//    void getAllInventory() throws Exception {
+//        DtoResponse<InventoryDto> response = new DtoResponse<>();
+//        response.setNumberOfRecord(1L);
+//        List<InventoryDto> dtoList = new ArrayList<>();
+//        InventoryFolderDto inventoryFolderDTO = InventoryFolderDto.builder().id(1L).isDeleted(false).name("Стаканы").build();
+//        UnitDto unitDTO = UnitDto.builder().id(1L).isDeleted(false).name("шт").build();
+//        InventoryDto inventoryDTO = InventoryDto.builder()
+//                .id(1)
+//                .isDeleted(false)
+//                .name("Стакан")
+//                .folder(inventoryFolderDTO)
+//                .unit(unitDTO)
+//                .build();
+//        dtoList.add(inventoryDTO);
+//        response.setData(dtoList);
+//        String json = mapper.writeValueAsString(response);
+//        Mockito.when(inventoryService.findByNameLikeAndFolderId(new ParameterRequest(0,10,"",0, new String[]{"name"}, SortingDirection.ASC))).thenReturn(response);
+//        mockMvc.perform(get("/inventory?offset=0&limit=10&query=&folderId=")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
+//                .andDo(print())
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("numberOfRecord").value("1"))
+//                .andExpect(content().string(containsString(json)));
+//    }
 }

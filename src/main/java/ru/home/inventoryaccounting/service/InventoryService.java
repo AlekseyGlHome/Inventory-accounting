@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.home.inventoryaccounting.api.request.InventoryUpdateRequest;
+import ru.home.inventoryaccounting.api.request.InventoryRequest;
 import ru.home.inventoryaccounting.api.request.ParameterRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.InventoryDto;
@@ -119,19 +119,19 @@ public class InventoryService {
     }
 
     // добавить карточку
-    public InventoryDto add(InventoryUpdateRequest request) throws NotFoundException {
+    public InventoryDto add(InventoryRequest request) throws NotFoundException {
         InventoryEntity inventoryEntity = fillInventory(new InventoryEntity(), request);
         return mapperUtiliti.mapToInventoryDto(inventoryRepository.save(inventoryEntity));
     }
 
     // обновить карточку
-    public InventoryDto update(long id, InventoryUpdateRequest request) throws NotFoundException {
+    public InventoryDto update(long id, InventoryRequest request) throws NotFoundException {
         InventoryEntity inventoryEntity = fillInventory(mapperUtiliti.mapToInventoryEntity(findById(id)), request);
         return mapperUtiliti.mapToInventoryDto(inventoryRepository.save(inventoryEntity));
     }
 
     // заполнить карточку инвентаря из запросса
-    private InventoryEntity fillInventory(InventoryEntity inventoryEntity, InventoryUpdateRequest request) throws NotFoundException {
+    private InventoryEntity fillInventory(InventoryEntity inventoryEntity, InventoryRequest request) throws NotFoundException {
         inventoryEntity.setName(request.getName());
         inventoryEntity.setIsDeleted(request.isDeleted());
         inventoryEntity.setFolder(mapperUtiliti.mapToInventoryFolderEntity(inventoryFolderService.findById(request.getFolderId())));

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.home.inventoryaccounting.api.request.ParameterRequest;
-import ru.home.inventoryaccounting.api.request.WarehouseUpdateRequest;
+import ru.home.inventoryaccounting.api.request.WarehouseRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.WarehouseDto;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
@@ -25,8 +25,8 @@ public class WarehouseController {
             @RequestParam(name = "offset", defaultValue = "0") int offset,
             @RequestParam(name = "limit", defaultValue = "10") int limit,
             @RequestParam(name = "query", defaultValue = "") String query,
-            @RequestParam(name = "sortColumns", defaultValue = "name") String sortColumns,
-            @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection) {
+            @RequestParam(name = "sortColumns", defaultValue = "name") String[] sortColumns,
+            @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection){
 
         DtoResponse<WarehouseDto> inventoryResponse;
         ParameterRequest parameter = RequestParameterUtil.getObjectOfRequestParameters(offset, limit, query, sortColumns, sortingDirection);
@@ -51,7 +51,7 @@ public class WarehouseController {
 
     @PostMapping("/{id}")
     public ResponseEntity<DtoResponse<WarehouseDto>> update(@PathVariable long id,
-                                                            @RequestBody WarehouseUpdateRequest request) {
+                                                            @RequestBody WarehouseRequest request) {
         DtoResponse<WarehouseDto> response;
         try {
             response = new DtoResponse<>(true, "", 1L, List.of(warehouseService.update(id, request)));
@@ -62,7 +62,7 @@ public class WarehouseController {
     }
 
     @PostMapping()
-    public ResponseEntity<DtoResponse<WarehouseDto>> add(@RequestBody WarehouseUpdateRequest request) {
+    public ResponseEntity<DtoResponse<WarehouseDto>> add(@RequestBody WarehouseRequest request) {
         DtoResponse<WarehouseDto> response;
         try {
             response = new DtoResponse<>(true, "", 1L, List.of(warehouseService.add(request)));

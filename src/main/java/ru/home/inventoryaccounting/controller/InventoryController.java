@@ -3,7 +3,7 @@ package ru.home.inventoryaccounting.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.home.inventoryaccounting.api.request.InventoryUpdateRequest;
+import ru.home.inventoryaccounting.api.request.InventoryRequest;
 import ru.home.inventoryaccounting.api.request.ParameterRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.InventoryDto;
@@ -27,7 +27,7 @@ public class InventoryController {
             @RequestParam(name = "limit", defaultValue = "10") int limit,
             @RequestParam(name = "query", defaultValue = "") String query,
             @RequestParam(name = "folderId", defaultValue = "0") long folderId,
-            @RequestParam(name = "sortColumns", defaultValue = "name") String sortColumns,
+            @RequestParam(name = "sortColumns", defaultValue = "name") String[] sortColumns,
             @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection) {
 
         DtoResponse<InventoryDto> inventoryResponse;
@@ -54,7 +54,7 @@ public class InventoryController {
 
     @PostMapping("/{id}")
     public ResponseEntity<DtoResponse<InventoryDto>> update(@PathVariable long id,
-                                                                     @RequestBody InventoryUpdateRequest request) {
+                                                                     @RequestBody InventoryRequest request) {
         DtoResponse<InventoryDto> inventoryResponse;
         try {
             inventoryResponse = new DtoResponse<>(true, "", 1L, List.of(inventoryService.update(id, request)));
@@ -65,7 +65,7 @@ public class InventoryController {
     }
 
     @PostMapping()
-    public ResponseEntity<DtoResponse<InventoryDto>> add(@RequestBody InventoryUpdateRequest request) {
+    public ResponseEntity<DtoResponse<InventoryDto>> add(@RequestBody InventoryRequest request) {
         DtoResponse<InventoryDto> inventoryResponse;
         try {
             inventoryResponse = new DtoResponse<>(true, "", 1L, List.of(inventoryService.add(request)));
