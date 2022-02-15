@@ -30,15 +30,15 @@ public class InventoryController {
             @RequestParam(name = "sortColumns", defaultValue = "name") String[] sortColumns,
             @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection) {
 
-        DtoResponse<InventoryDto> inventoryResponse;
+        DtoResponse<InventoryDto> response;
         ParameterRequest parameter = RequestParameterUtil.getObjectOfRequestParameters(offset, limit, query,
                 folderId, sortColumns, sortingDirection);
         try {
-            inventoryResponse = inventoryService.selectQuery(parameter);
+            response = inventoryService.selectQuery(parameter);
         } catch (InvalidRequestParameteException ex) {
-            inventoryResponse = new DtoResponse<>(false, ex.getMessage(), null, null);
+            response = new DtoResponse<>(false, ex.getMessage(), null, null);
         }
-        return ResponseEntity.ok(inventoryResponse);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")

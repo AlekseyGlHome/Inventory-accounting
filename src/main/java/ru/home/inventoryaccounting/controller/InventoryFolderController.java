@@ -28,14 +28,14 @@ public class InventoryFolderController {
             @RequestParam(name = "sortColumns", defaultValue = "name") String[] sortColumns,
             @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection) {
 
-        DtoResponse<InventoryFolderDto> inventoryResponse;
+        DtoResponse<InventoryFolderDto> response;
         ParameterRequest parameter = RequestParameterUtil.getObjectOfRequestParameters(offset, limit, query, sortColumns, sortingDirection);
         try {
-            inventoryResponse = inventoryFolderService.selectQuery(parameter);
+            response = inventoryFolderService.selectQuery(parameter);
         } catch (InvalidRequestParameteException ex) {
-            inventoryResponse = new DtoResponse<>(false, ex.getMessage(), null, null);
+            response = new DtoResponse<>(false, ex.getMessage(), null, null);
         }
-        return ResponseEntity.ok(inventoryResponse);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
