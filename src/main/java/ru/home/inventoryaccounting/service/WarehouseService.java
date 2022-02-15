@@ -24,7 +24,7 @@ public class WarehouseService {
     private final MapperUtiliti mapperUtiliti;
     private final WarehouseRepository warehouseRepository;
 
-    private final String MESSAGE_NOT_FOUND = "Слад с Id: %s не найдена.";
+    private final String MESSAGE_NOT_FOUND = "Склад с Id: %s не найдена.";
     private final String MESSAGE_BAD_REQUESR = "Неверный параметр запроса";
 
     /**

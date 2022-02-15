@@ -4,13 +4,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import ru.home.inventoryaccounting.api.request.ParameterRequest;
+import ru.home.inventoryaccounting.api.request.UnitRequest;
+import ru.home.inventoryaccounting.api.request.WarehouseRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.UnitDto;
+import ru.home.inventoryaccounting.domain.dto.WarehouseDto;
 import ru.home.inventoryaccounting.domain.entity.UnitEntity;
+import ru.home.inventoryaccounting.domain.entity.WarehouseEntity;
 import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.UnitRepository;
+import ru.home.inventoryaccounting.util.PageRequestUtil;
 
 import java.util.Optional;
 
@@ -21,58 +27,83 @@ public class UnitService {
     private final MapperUtiliti mapperUtiliti;
     private final UnitRepository unitRepository;
 
+    private final String MESSAGE_NOT_FOUND = "Единица измерения с Id: %s не найдена.";
+    private final String MESSAGE_BAD_REQUESR = "Неверный параметр запроса";
+
     /**
      * выбор единицы измерения по идентификатору
-     *
-     * @param id - идентификатор
-     * @return UnitDTO
      */
     public UnitDto findById(long id) throws NotFoundException {
         Optional<UnitEntity> unit = unitRepository.findById(id);
         return unit.map(mapperUtiliti::mapToUnitDto)
-                .orElseThrow(() -> new NotFoundException("Единица измерения с Id: " + id + " не найдена."));
+                .orElseThrow(() -> new NotFoundException(String.format(MESSAGE_NOT_FOUND, id)));
     }
 
     /**
      * выбор единицы измерения по входждению в наименование
-     *
-     * @param offset - номер страницы
-     * @param limit  - количество элементов на странице
-     * @param query  - строка поиска
-     * @return DTOResponse&lt;UnitDTO&gt;
      */
-    public DtoResponse<UnitDto> findByQueryString(int offset, int limit, String query) throws InvalidRequestParameteException {
-        PageRequest pageRequest = getPageRequest(offset, limit);
+    public DtoResponse<UnitDto> findByNameLike(ParameterRequest request) throws InvalidRequestParameteException {
+        PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<UnitEntity> units;
 
-        if (!query.isEmpty() || !query.isBlank()) {
-            units = unitRepository.findByNameLike(pageRequest, query);
+        if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
+            units = unitRepository.findByNameLike(pageRequest, request.getQuery());
         } else {
-            throw new InvalidRequestParameteException("Неверный параметр запроса");
+            throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
 
-        return new DtoResponse<>(true, "", units.getTotalElements(), mapperUtiliti.mapToCollectionUnitDto(units.getContent()));
+        return new DtoResponse<>(true, "", units.getTotalElements(),
+                mapperUtiliti.mapToCollectionUnitDto(units.getContent()));
     }
 
     /**
      * выбор всех единиц измерения
-     *
-     * @param offset - номер страницы
-     * @param limit  - количество элементов на странице
-     * @return DTOResponse&lt;UnitDTO&gt;
      */
-    public DtoResponse<UnitDto> findAll(int offset, int limit) {
-        PageRequest pageRequest = getPageRequest(offset, limit);
+    public DtoResponse<UnitDto> findAll(ParameterRequest request) {
+        PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<UnitEntity> units;
         units = unitRepository.findAll(pageRequest);
-        return new DtoResponse<>(true, "", units.getTotalElements(), mapperUtiliti.mapToCollectionUnitDto(units.getContent()));
+        return new DtoResponse<>(true, "", units.getTotalElements(),
+                mapperUtiliti.mapToCollectionUnitDto(units.getContent()));
     }
 
-    // создать страницу пагинации
-    private PageRequest getPageRequest(int offset, int limit) {
-        int numberPage = offset / limit;
+    /**
+     * общий запрос
+     */
+    public DtoResponse<UnitDto> selectQuery(ParameterRequest request) throws InvalidRequestParameteException {
+        if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
+            return findByNameLike(request);
+        }
+        return findAll(request);
+    }
 
-        return PageRequest.of(numberPage, limit);
+    // добавить карточку
+    public UnitDto add(UnitRequest request) throws NotFoundException {
+        UnitEntity unitEntity = fill(new UnitEntity(), request);
+        return mapperUtiliti.mapToUnitDto(unitRepository.save(unitEntity));
+    }
+
+    // обновить карточку
+    public UnitDto update(long id, UnitRequest request) throws NotFoundException {
+        UnitEntity unitEntity = fill(mapperUtiliti.mapToUnitEntity(findById(id)), request);
+        return mapperUtiliti.mapToUnitDto(unitRepository.save(unitEntity));
+    }
+
+    // заполнить карточку из запросса
+    private UnitEntity fill(UnitEntity unitEntity, UnitRequest request) {
+        unitEntity.setName(request.getName());
+        unitEntity.setIsDeleted(request.isDeleted());
+
+        return unitEntity;
+    }
+
+    /**
+     * удалить (переменную is_deleted в true)
+     */
+    public void deleteById(long id) throws NotFoundException {
+        if (unitRepository.updateIsDeleteToTrueById(id) <= 0) {
+            throw new NotFoundException(String.format(MESSAGE_NOT_FOUND, id));
+        }
     }
 
 }

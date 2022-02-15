@@ -7,10 +7,18 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.home.inventoryaccounting.domain.entity.InventoryEntity;
 import ru.home.inventoryaccounting.domain.entity.WarehouseEntity;
+
+import java.util.Optional;
 
 @Repository
 public interface WarehouseRepository extends JpaRepository<WarehouseEntity, Long> {
+
+    // выбрать по id
+    @Query("select w from WarehouseEntity w where w.isDeleted = false and w.id = :id")
+    @Override
+    Optional<WarehouseEntity> findById(Long id);
 
     // выбрать все неудаленные склады
     @Query("select w from WarehouseEntity w where w.isDeleted = false ")

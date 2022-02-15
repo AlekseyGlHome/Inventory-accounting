@@ -8,11 +8,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.home.inventoryaccounting.domain.entity.UserEntity;
+import ru.home.inventoryaccounting.domain.entity.WarehouseEntity;
 
 import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
+
+    // выбрать по id
+    @Query("select u from UserEntity u where u.isDeleted = false and u.id = :id")
+    @Override
+    Optional<UserEntity> findById(Long id);
 
     // выбрать всех неудаленных пользователей
     @Query("select u from UserEntity u where u.isDeleted = false ")

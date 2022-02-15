@@ -4,12 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.home.inventoryaccounting.api.request.ParameterRequest;
-import ru.home.inventoryaccounting.api.request.UserRequest;
+import ru.home.inventoryaccounting.api.request.UnitRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
-import ru.home.inventoryaccounting.domain.dto.UserDto;
+import ru.home.inventoryaccounting.domain.dto.UnitDto;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
-import ru.home.inventoryaccounting.service.UserService;
+import ru.home.inventoryaccounting.service.UnitService;
 import ru.home.inventoryaccounting.util.RequestParameterUtil;
 
 import java.util.List;
@@ -18,20 +18,20 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/unit")
 public class UnitController {
-    private final UserService userService;
+    private final UnitService unitService;
 
     @GetMapping()
-    public ResponseEntity<DtoResponse<UserDto>> getByAllOrFilter(
+    public ResponseEntity<DtoResponse<UnitDto>> getByAllOrFilter(
             @RequestParam(name = "offset", defaultValue = "0") int offset,
             @RequestParam(name = "limit", defaultValue = "10") int limit,
             @RequestParam(name = "query", defaultValue = "") String query,
             @RequestParam(name = "sortColumns", defaultValue = "name") String[] sortColumns,
             @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection) {
 
-        DtoResponse<UserDto> inventoryResponse;
+        DtoResponse<UnitDto> inventoryResponse;
         ParameterRequest parameter = RequestParameterUtil.getObjectOfRequestParameters(offset, limit, query, sortColumns, sortingDirection);
         try {
-            inventoryResponse = userService.selectQuery(parameter);
+            inventoryResponse = unitService.selectQuery(parameter);
         } catch (InvalidRequestParameteException ex) {
             inventoryResponse = new DtoResponse<>(false, ex.getMessage(), null, null);
         }
@@ -39,10 +39,10 @@ public class UnitController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DtoResponse<UserDto>> getById(@PathVariable long id) {
-        DtoResponse<UserDto> response;
+    public ResponseEntity<DtoResponse<UnitDto>> getById(@PathVariable long id) {
+        DtoResponse<UnitDto> response;
         try {
-            response = new DtoResponse<>(true, "", 1L, List.of(userService.findById(id)));
+            response = new DtoResponse<>(true, "", 1L, List.of(unitService.findById(id)));
         } catch (NotFoundException ex) {
             response = new DtoResponse<>(false, ex.getMessage(), null, null);
         }
@@ -50,11 +50,11 @@ public class UnitController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<DtoResponse<UserDto>> update(@PathVariable long id,
-                                                            @RequestBody UserRequest request) {
-        DtoResponse<UserDto> response;
+    public ResponseEntity<DtoResponse<UnitDto>> update(@PathVariable long id,
+                                                            @RequestBody UnitRequest request) {
+        DtoResponse<UnitDto> response;
         try {
-            response = new DtoResponse<>(true, "", 1L, List.of(userService.update(id, request)));
+            response = new DtoResponse<>(true, "", 1L, List.of(unitService.update(id, request)));
         } catch (NotFoundException ex) {
             response = new DtoResponse<>(false, ex.getMessage(), null, null);
         }
@@ -62,10 +62,10 @@ public class UnitController {
     }
 
     @PostMapping()
-    public ResponseEntity<DtoResponse<UserDto>> add(@RequestBody UserRequest request) {
-        DtoResponse<UserDto> response;
+    public ResponseEntity<DtoResponse<UnitDto>> add(@RequestBody UnitRequest request) {
+        DtoResponse<UnitDto> response;
         try {
-            response = new DtoResponse<>(true, "", 1L, List.of(userService.add(request)));
+            response = new DtoResponse<>(true, "", 1L, List.of(unitService.add(request)));
         } catch (NotFoundException ex) {
             response = new DtoResponse<>(false, ex.getMessage(), null, null);
         }
@@ -73,10 +73,10 @@ public class UnitController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<DtoResponse<UserDto>> deleteById(@PathVariable long id) {
-        DtoResponse<UserDto> response;
+    public ResponseEntity<DtoResponse<UnitDto>> deleteById(@PathVariable long id) {
+        DtoResponse<UnitDto> response;
         try {
-            userService.deleteById(id);
+            unitService.deleteById(id);
             response = new DtoResponse<>(true, "Запись удалена", null, null);
         } catch (NotFoundException ex) {
             response = new DtoResponse<>(false, ex.getMessage(), null, null);
