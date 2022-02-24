@@ -33,13 +33,15 @@ public class UnitController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DtoResponse<UnitDto>> getById(@PathVariable long id) throws NotFoundException {
+    public ResponseEntity<DtoResponse<UnitDto>> getById(@PathVariable long id)
+            throws NotFoundException, InvalidRequestParameteException {
         return ResponseEntity.ok(new DtoResponse<>(1L, List.of(unitService.findById(id))));
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<DtoResponse<UnitDto>> update(@PathVariable long id,
-                                                       @RequestBody UnitRequest request) throws NotFoundException {
+                                                       @RequestBody UnitRequest request)
+            throws NotFoundException, InvalidRequestParameteException {
         return ResponseEntity.ok(new DtoResponse<>(1L, List.of(unitService.update(id, request))));
     }
 

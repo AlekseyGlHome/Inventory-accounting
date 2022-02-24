@@ -119,19 +119,20 @@ public class InventoryService {
     }
 
     // добавить карточку
-    public InventoryDto add(InventoryRequest request) throws NotFoundException {
+    public InventoryDto add(InventoryRequest request) throws NotFoundException, InvalidRequestParameteException {
         InventoryEntity inventoryEntity = fillInventory(new InventoryEntity(), request);
         return mapperUtiliti.mapToInventoryDto(inventoryRepository.save(inventoryEntity));
     }
 
     // обновить карточку
-    public InventoryDto update(long id, InventoryRequest request) throws NotFoundException {
+    public InventoryDto update(long id, InventoryRequest request) throws NotFoundException, InvalidRequestParameteException {
         InventoryEntity inventoryEntity = fillInventory(mapperUtiliti.mapToInventoryEntity(findById(id)), request);
         return mapperUtiliti.mapToInventoryDto(inventoryRepository.save(inventoryEntity));
     }
 
     // заполнить карточку инвентаря из запросса
-    private InventoryEntity fillInventory(InventoryEntity inventoryEntity, InventoryRequest request) throws NotFoundException {
+    private InventoryEntity fillInventory(InventoryEntity inventoryEntity, InventoryRequest request)
+            throws NotFoundException, InvalidRequestParameteException {
         inventoryEntity.setName(request.getName());
         inventoryEntity.setIsDeleted(request.isDeleted());
         inventoryEntity.setFolder(mapperUtiliti.mapToInventoryFolderEntity(inventoryFolderService.findById(request.getFolderId())));

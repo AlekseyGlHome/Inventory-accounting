@@ -16,7 +16,7 @@ import java.util.Optional;
 public interface UnitRepository extends JpaRepository<UnitEntity, Long> {
 
     // выбрать по id
-    @Query("select u from WarehouseEntity u where u.isDeleted = false and u.id = :id")
+    @Query("select u from UnitEntity u where u.isDeleted = false and u.id = :id")
     @Override
     Optional<UnitEntity> findById(Long id);
 

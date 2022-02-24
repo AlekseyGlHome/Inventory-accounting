@@ -30,11 +30,17 @@ public class UnitService {
     /**
      * выбор единицы измерения по идентификатору
      */
-    public UnitDto findById(long id) throws NotFoundException {
-        Optional<UnitEntity> unit = unitRepository.findById(id);
-        return unit.map(mapperUtiliti::mapToUnitDto)
-                .orElseThrow(() -> new NotFoundException(String.format(MESSAGE_NOT_FOUND, id)));
+    public UnitDto findById(long id) throws NotFoundException, InvalidRequestParameteException {
+        try {
+            Optional<UnitEntity> unit = unitRepository.findById(id);
+            return unit.map(mapperUtiliti::mapToUnitDto)
+                    .orElseThrow(() -> new NotFoundException(String.format(MESSAGE_NOT_FOUND, id)));
+        }catch (Exception ex){
+            throw new InvalidRequestParameteException(ex.getMessage());
+        }
+
     }
+
 
     /**
      * выбор единицы измерения по входждению в наименование
@@ -81,7 +87,7 @@ public class UnitService {
     }
 
     // обновить карточку
-    public UnitDto update(long id, UnitRequest request) throws NotFoundException {
+    public UnitDto update(long id, UnitRequest request) throws NotFoundException, InvalidRequestParameteException {
         UnitEntity unitEntity = fill(mapperUtiliti.mapToUnitEntity(findById(id)), request);
         return mapperUtiliti.mapToUnitDto(unitRepository.save(unitEntity));
     }

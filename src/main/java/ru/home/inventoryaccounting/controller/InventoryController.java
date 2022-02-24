@@ -42,12 +42,14 @@ public class InventoryController {
 
     @PostMapping("/{id}")
     public ResponseEntity<DtoResponse<InventoryDto>> update(@PathVariable long id,
-                                                            @RequestBody InventoryRequest request) throws NotFoundException {
+                                                            @RequestBody InventoryRequest request)
+            throws NotFoundException, InvalidRequestParameteException {
         return ResponseEntity.ok(new DtoResponse<>(1L, List.of(inventoryService.update(id, request))));
     }
 
     @PostMapping()
-    public ResponseEntity<DtoResponse<InventoryDto>> add(@RequestBody InventoryRequest request) throws NotFoundException {
+    public ResponseEntity<DtoResponse<InventoryDto>> add(@RequestBody InventoryRequest request)
+            throws NotFoundException, InvalidRequestParameteException {
         return ResponseEntity.ok(new DtoResponse<>(1L, List.of(inventoryService.add(request))));
     }
 
