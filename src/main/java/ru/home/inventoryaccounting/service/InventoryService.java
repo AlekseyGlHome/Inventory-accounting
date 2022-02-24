@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.home.inventoryaccounting.api.request.InventoryRequest;
-import ru.home.inventoryaccounting.api.request.ParameterRequest;
+import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.InventoryDto;
 import ru.home.inventoryaccounting.domain.entity.InventoryEntity;
@@ -51,7 +51,7 @@ public class InventoryService {
     /**
      * выбрать инвентарь по входждению в наименование
      */
-    public DtoResponse<InventoryDto> findByNameLike(ParameterRequest request)
+    public DtoResponse<InventoryDto> findByNameLike(RequestParametersForDirectories request)
             throws InvalidRequestParameteException {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<InventoryEntity> inventories;
@@ -67,7 +67,7 @@ public class InventoryService {
     /**
      * выбрать инвентарь по входждению в наименование и идентификатору папки
      */
-    public DtoResponse<InventoryDto> findByNameLikeAndFolderId(ParameterRequest request)
+    public DtoResponse<InventoryDto> findByNameLikeAndFolderId(RequestParametersForDirectories request)
             throws InvalidRequestParameteException {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<InventoryEntity> inventories;
@@ -83,7 +83,7 @@ public class InventoryService {
     /**
      * выбрать инвентарь по идентификатору папки
      */
-    public DtoResponse<InventoryDto> findByFolderId(ParameterRequest request) throws InvalidRequestParameteException {
+    public DtoResponse<InventoryDto> findByFolderId(RequestParametersForDirectories request) throws InvalidRequestParameteException {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<InventoryEntity> inventories;
         if (request.getFolderId() > 0) {
@@ -98,7 +98,7 @@ public class InventoryService {
     /**
      * выбрать весь инвентарь
      */
-    public DtoResponse<InventoryDto> findAll(ParameterRequest request) {
+    public DtoResponse<InventoryDto> findAll(RequestParametersForDirectories request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<InventoryEntity> inventories;
         inventories = inventoryRepository.findAll(pageRequest);
@@ -107,7 +107,7 @@ public class InventoryService {
     }
 
     // общий запрос
-    public DtoResponse<InventoryDto> selectQuery(ParameterRequest request) throws InvalidRequestParameteException {
+    public DtoResponse<InventoryDto> selectQuery(RequestParametersForDirectories request) throws InvalidRequestParameteException {
         if ((!request.getQuery().isEmpty() || !request.getQuery().isBlank()) && (request.getFolderId() == 0)) {
             return findByNameLike(request);
         } else if ((request.getQuery().isEmpty() || request.getQuery().isBlank()) && (request.getFolderId() > 0)) {

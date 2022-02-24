@@ -3,6 +3,7 @@ package ru.home.inventoryaccounting.domain.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.home.inventoryaccounting.domain.enums.TypeDok;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -56,12 +57,13 @@ public class DocumentHeaderEntity {
     private WarehouseEntity warehouseRecipient;
 
     @Column(name = "type_dok")
+    //@Enumerated(EnumType.ORDINAL)
     private Integer typeDok;
 
-    @OneToMany(mappedBy = "documentHeader", fetch = FetchType.LAZY)
-    private Collection<DocumentBodyEntity> documentBody;
+//    @OneToMany(mappedBy = "documentHeader", fetch = FetchType.LAZY)
+//    private Collection<DocumentBodyEntity> documentBody;
 
-    @OneToMany(mappedBy = "receiptDocument",fetch = FetchType.LAZY)
-    private Collection<DocumentBodyEntity> expenseDocuments = new ArrayList<>();
+    //@OneToMany(mappedBy = "receiptDocument",fetch = FetchType.LAZY)
+    //private Collection<DocumentBodyEntity> expenseDocuments = new ArrayList<>();
 
 }

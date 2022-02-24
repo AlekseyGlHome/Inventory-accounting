@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.home.inventoryaccounting.api.request.ParameterRequest;
+import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.request.WarehouseRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.WarehouseDto;
@@ -39,7 +39,7 @@ public class WarehouseService {
     /**
      * выбор склада по вхождению в наименование
      */
-    public DtoResponse<WarehouseDto> findByNameLike(ParameterRequest request) throws InvalidRequestParameteException {
+    public DtoResponse<WarehouseDto> findByNameLike(RequestParametersForDirectories request) throws InvalidRequestParameteException {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<WarehouseEntity> warehouses;
         if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
@@ -54,7 +54,7 @@ public class WarehouseService {
     /**
      * выбор всех складов
      */
-    public DtoResponse<WarehouseDto> findAll(ParameterRequest request) {
+    public DtoResponse<WarehouseDto> findAll(RequestParametersForDirectories request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<WarehouseEntity> warehouses;
         warehouses = warehouseRepository.findAll(pageRequest);
@@ -65,7 +65,7 @@ public class WarehouseService {
     /**
      * общий запрос
      */
-    public DtoResponse<WarehouseDto> selectQuery(ParameterRequest request) throws InvalidRequestParameteException {
+    public DtoResponse<WarehouseDto> selectQuery(RequestParametersForDirectories request) throws InvalidRequestParameteException {
         if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
             return findByNameLike(request);
         }

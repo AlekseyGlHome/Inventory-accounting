@@ -15,18 +15,21 @@
             `quantity` decimal(15,2) DEFAULT NULL COMMENT 'Количество',
             `document_header_id` bigint DEFAULT NULL COMMENT 'id шапки документа',
             `inventory_id` bigint DEFAULT NULL COMMENT 'id инвентаря',
-            `receipt_document_id` bigint DEFAULT NULL COMMENT 'id шапки окумента прихода',
-            `serial_document_body_id` bigint DEFAULT NULL COMMENT 'id строки в документе прихода',
+            `receipt_id` bigint DEFAULT NULL COMMENT 'id прихода из movement',
+            /*`receipt_document_id` bigint DEFAULT NULL COMMENT 'id шапки окумента прихода',
+            `serial_document_body_id` bigint DEFAULT NULL COMMENT 'id строки в документе прихода',*/
             PRIMARY KEY (`id`),
             KEY `IDX_document_body_document_header_id` (`document_header_id`) /*!80000 INVISIBLE */,
             KEY `IDX_document_body_inventory_id` (`inventory_id`),
             KEY `IDX_document_body_is_deleted` (`is_deleted`),
-            KEY `IDX_document_body_receipt_document_id` (`receipt_document_id`),
-            KEY `IDX_document_body_serial_document_body_id` (`serial_document_body_id`),
+            KEY `IDX_document_body_receipt_id` (`receipt_id`),
+           /* KEY `IDX_document_body_receipt_document_id` (`receipt_document_id`),
+            KEY `IDX_document_body_serial_document_body_id` (`serial_document_body_id`),*/
             CONSTRAINT `bod` FOREIGN KEY (`document_header_id`) REFERENCES `document_header` (`id`),
-            CONSTRAINT `inv` FOREIGN KEY (`inventory_id`) REFERENCES `inventory` (`id`),
-            CONSTRAINT `rec` FOREIGN KEY (`receipt_document_id`) REFERENCES `document_header` (`id`),
-            CONSTRAINT `ser` FOREIGN KEY (`serial_document_body_id`) REFERENCES `document_body` (`id`)
+            CONSTRAINT `inv` FOREIGN KEY (`inventory_id`) REFERENCES `inventory` (`id`)/*,*/
+            /*CONSTRAINT `rec` FOREIGN KEY (`receipt_id`) REFERENCES `movement` (`id`)*/
+            /*CONSTRAINT `rec` FOREIGN KEY (`receipt_document_id`) REFERENCES `document_header` (`id`),
+            CONSTRAINT `ser` FOREIGN KEY (`serial_document_body_id`) REFERENCES `document_body` (`id`)*/
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Табличная часть документа'
         </sql>
         <rollback>

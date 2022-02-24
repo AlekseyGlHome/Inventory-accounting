@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.home.inventoryaccounting.api.request.InventoryFoldeRequest;
-import ru.home.inventoryaccounting.api.request.ParameterRequest;
+import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.InventoryFolderDto;
 import ru.home.inventoryaccounting.domain.entity.InventoryFolderEntity;
@@ -40,7 +40,7 @@ public class InventoryFolderService {
     /**
      * выбрать папки по входждению в наименование
      */
-    public DtoResponse<InventoryFolderDto> findByNameLike(ParameterRequest request) throws InvalidRequestParameteException {
+    public DtoResponse<InventoryFolderDto> findByNameLike(RequestParametersForDirectories request) throws InvalidRequestParameteException {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<InventoryFolderEntity> inventoryFolders;
         if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
@@ -55,7 +55,7 @@ public class InventoryFolderService {
     /**
      * выбрать весе папки
      */
-    public DtoResponse<InventoryFolderDto> findAll(ParameterRequest request) {
+    public DtoResponse<InventoryFolderDto> findAll(RequestParametersForDirectories request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<InventoryFolderEntity> inventoryFolders;
         inventoryFolders = inventoryFolderRepository.findAll(pageRequest);
@@ -67,7 +67,7 @@ public class InventoryFolderService {
     /**
      * общий запрос
      */
-    public DtoResponse<InventoryFolderDto> selectQuery(ParameterRequest request) throws InvalidRequestParameteException {
+    public DtoResponse<InventoryFolderDto> selectQuery(RequestParametersForDirectories request) throws InvalidRequestParameteException {
         if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
             return findByNameLike(request);
         }

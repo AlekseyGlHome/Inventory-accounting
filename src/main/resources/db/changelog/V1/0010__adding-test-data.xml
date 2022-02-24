@@ -48,10 +48,10 @@
                    (2, 500, NULL, '2015-12-20', 0, '56', 1, 2, 1, 2, NULL, 1);
 
             INSERT INTO document_body (id, amount, is_deleted, price, quantity, document_header_id, inventory_id,
-                                       receipt_document_id, serial_document_body_id)
-            VALUES (1, 250, 0, 25, 10, 1, 3, NULL, NULL),
-                   (2, 250, 0, 50, 5, 1, 4, NULL, NULL),
-                   (3, 500, 0, 500, 1, 2, 7, NULL, NULL);
+                                       receipt_id)
+            VALUES (1, 250, 0, 25, 10, 1, 3, NULL),
+                   (2, 250, 0, 50, 5, 1, 4, NULL),
+                   (3, 500, 0, 500, 1, 2, 7, NULL);
 
             INSERT INTO movement (id, amount, `date`, price, quantity, document_header_id, inventory_id,
                                   receipt_document_id, serial_docu_body_id, warehouse_id, serial_document_body_id)

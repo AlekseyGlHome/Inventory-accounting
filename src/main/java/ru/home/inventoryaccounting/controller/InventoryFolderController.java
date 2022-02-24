@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.home.inventoryaccounting.api.request.InventoryFoldeRequest;
-import ru.home.inventoryaccounting.api.request.ParameterRequest;
+import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.InventoryFolderDto;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
@@ -29,7 +29,7 @@ public class InventoryFolderController {
             @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection) {
 
         DtoResponse<InventoryFolderDto> response;
-        ParameterRequest parameter = RequestParameterUtil.getObjectOfRequestParameters(offset, limit, query, sortColumns, sortingDirection);
+        RequestParametersForDirectories parameter = RequestParameterUtil.getObjectOfRequestParameters(offset, limit, query, sortColumns, sortingDirection);
         try {
             response = inventoryFolderService.selectQuery(parameter);
         } catch (InvalidRequestParameteException ex) {

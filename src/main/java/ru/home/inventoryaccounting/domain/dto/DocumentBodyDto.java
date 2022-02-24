@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.home.inventoryaccounting.domain.entity.Movement;
 
 import java.math.BigDecimal;
 
@@ -19,6 +20,6 @@ public class DocumentBodyDto implements DtoInterface {
     private BigDecimal quantity;
     private InventoryDto inventory;
     private DocumentHeaderDto documentHeader;
-    private DocumentHeaderDto receiptDocument;
-    private DocumentBodyDto serialDocumentBody;
+    private Movement receiptDocument;
+    //private DocumentBodyDto serialDocumentBody;
 }

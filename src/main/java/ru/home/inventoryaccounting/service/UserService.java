@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.home.inventoryaccounting.api.request.ParameterRequest;
+import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.request.UserRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.UserDto;
@@ -40,7 +40,7 @@ public class UserService {
     /**
      * выбор пользователя по вхождению в наименование
      */
-    public DtoResponse<UserDto> findByNameLike(ParameterRequest request) throws InvalidRequestParameteException {
+    public DtoResponse<UserDto> findByNameLike(RequestParametersForDirectories request) throws InvalidRequestParameteException {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<UserEntity> users;
         if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
@@ -55,7 +55,7 @@ public class UserService {
     /**
      * выбор всех пользователей
      */
-    public DtoResponse<UserDto> findAll(ParameterRequest request) {
+    public DtoResponse<UserDto> findAll(RequestParametersForDirectories request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<UserEntity> users = userRepository.findAll(pageRequest);
         return new DtoResponse<>(true, "", users.getTotalElements(), mapperUtiliti.mapToCollectionUserDto(users.getContent()));
@@ -64,7 +64,7 @@ public class UserService {
     /**
      * общий запрос
      */
-    public DtoResponse<UserDto> selectQuery(ParameterRequest request) throws InvalidRequestParameteException {
+    public DtoResponse<UserDto> selectQuery(RequestParametersForDirectories request) throws InvalidRequestParameteException {
         if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
             return findByNameLike(request);
         }
@@ -74,7 +74,7 @@ public class UserService {
     /**
      * выбор пользователя по наименованию
      */
-    public UserDto findByName(ParameterRequest request) throws NotFoundException {
+    public UserDto findByName(RequestParametersForDirectories request) throws NotFoundException {
         Optional<UserEntity> user = userRepository.findByName(request.getQuery());
         return user.map(mapperUtiliti::mapToUserDto)
                 .orElseThrow(() -> new NotFoundException(String.format(MESSAGE_NOT_FOUND_NAME, request.getQuery())));

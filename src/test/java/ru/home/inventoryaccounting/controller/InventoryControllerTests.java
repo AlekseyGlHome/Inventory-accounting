@@ -1,31 +1,17 @@
 package ru.home.inventoryaccounting.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.home.inventoryaccounting.api.request.ParameterRequest;
-import ru.home.inventoryaccounting.api.response.DtoResponse;
-import ru.home.inventoryaccounting.domain.dto.InventoryDto;
-import ru.home.inventoryaccounting.domain.dto.InventoryFolderDto;
-import ru.home.inventoryaccounting.domain.dto.UnitDto;
-import ru.home.inventoryaccounting.domain.enums.SortingDirection;
 import ru.home.inventoryaccounting.service.InventoryService;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

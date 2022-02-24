@@ -39,11 +39,11 @@ public class DocumentBodyEntity {
     private InventoryEntity inventory;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "receipt_document_id")
+    @JoinColumn(name = "receipt_id")
     private DocumentHeaderEntity receiptDocument;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "serial_document_body_id")
-    private DocumentBodyEntity serialDocumentBody;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "serial_document_body_id")
+//    private DocumentBodyEntity serialDocumentBody;
 
 }

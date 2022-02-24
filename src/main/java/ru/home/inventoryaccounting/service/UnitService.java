@@ -4,14 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.home.inventoryaccounting.api.request.ParameterRequest;
+import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.request.UnitRequest;
-import ru.home.inventoryaccounting.api.request.WarehouseRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.UnitDto;
-import ru.home.inventoryaccounting.domain.dto.WarehouseDto;
 import ru.home.inventoryaccounting.domain.entity.UnitEntity;
-import ru.home.inventoryaccounting.domain.entity.WarehouseEntity;
 import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
@@ -42,7 +39,7 @@ public class UnitService {
     /**
      * выбор единицы измерения по входждению в наименование
      */
-    public DtoResponse<UnitDto> findByNameLike(ParameterRequest request) throws InvalidRequestParameteException {
+    public DtoResponse<UnitDto> findByNameLike(RequestParametersForDirectories request) throws InvalidRequestParameteException {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<UnitEntity> units;
 
@@ -59,7 +56,7 @@ public class UnitService {
     /**
      * выбор всех единиц измерения
      */
-    public DtoResponse<UnitDto> findAll(ParameterRequest request) {
+    public DtoResponse<UnitDto> findAll(RequestParametersForDirectories request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<UnitEntity> units;
         units = unitRepository.findAll(pageRequest);
@@ -70,7 +67,7 @@ public class UnitService {
     /**
      * общий запрос
      */
-    public DtoResponse<UnitDto> selectQuery(ParameterRequest request) throws InvalidRequestParameteException {
+    public DtoResponse<UnitDto> selectQuery(RequestParametersForDirectories request) throws InvalidRequestParameteException {
         if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
             return findByNameLike(request);
         }

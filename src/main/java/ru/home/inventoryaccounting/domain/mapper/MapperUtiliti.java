@@ -173,7 +173,7 @@ public class MapperUtiliti {
                 .warehouseRecipient(mapToWarehouseDto(documentHeaderEntity.getWarehouseRecipient()))
                 .typeDok(documentHeaderEntity.getTypeDok())
                 .build();
-        documentHeaderDto.setDocumentBody(mapToCollectionDocumentBodyDto(documentHeaderEntity.getDocumentBody(), documentHeaderDto));
+        //documentHeaderDto.setDocumentBody(mapToCollectionDocumentBodyDto(documentHeaderEntity.getDocumentBody(), documentHeaderDto));
         return documentHeaderDto;
     }
 
@@ -194,7 +194,7 @@ public class MapperUtiliti {
         documentHeaderEntity.setWarehouse(mapToWarehouseEntity(documentHeaderDto.getWarehouse()));
         documentHeaderEntity.setWarehouseRecipient(mapToWarehouseEntity(documentHeaderDto.getWarehouseRecipient()));
         documentHeaderEntity.setTypeDok(documentHeaderDto.getTypeDok());
-        documentHeaderEntity.setDocumentBody(mapToCollectionDocumentBodyEntity(documentHeaderDto.getDocumentBody(),documentHeaderEntity));
+        //documentHeaderEntity.setDocumentBody(mapToCollectionDocumentBodyEntity(documentHeaderDto.getDocumentBody(),documentHeaderEntity));
 
         return documentHeaderEntity;
     }
@@ -298,9 +298,9 @@ public class MapperUtiliti {
                 .price(documentBodyEntity.getPrice())
                 .quantity(documentBodyEntity.getQuantity())
                 .inventory(mapToInventoryDto(documentBodyEntity.getInventory()))
-                .receiptDocument(mapToDocumentHeaderDto(documentBodyEntity.getReceiptDocument()))
-                .serialDocumentBody(mapToDocumentBodyDto(documentBodyEntity.getSerialDocumentBody(),
-                        mapToDocumentHeaderDto(documentBodyEntity.getSerialDocumentBody().getDocumentHeader())))
+                //.receiptDocument(mapToDocumentHeaderDto(documentBodyEntity.getReceiptDocument()))
+                //.serialDocumentBody(mapToDocumentBodyDto(documentBodyEntity.getSerialDocumentBody(),
+                //        mapToDocumentHeaderDto(documentBodyEntity.getSerialDocumentBody().getDocumentHeader())))
                 .documentHeader(documentHeaderDto)
                 .build();
     }
@@ -317,9 +317,9 @@ public class MapperUtiliti {
         documentBodyEntity.setPrice(documentBodyDto.getPrice());
         documentBodyEntity.setQuantity(documentBodyDto.getQuantity());
         documentBodyEntity.setInventory(mapToInventoryEntity(documentBodyDto.getInventory()));
-        documentBodyEntity.setReceiptDocument(mapToDocumentHeaderEntity(documentBodyDto.getReceiptDocument()));
-        documentBodyEntity.setSerialDocumentBody(mapToDocumentBodyEntity(documentBodyDto.getSerialDocumentBody(),
-                mapToDocumentHeaderEntity(documentBodyDto.getSerialDocumentBody().getDocumentHeader())));
+        //documentBodyEntity.setReceiptDocument(mapToDocumentHeaderEntity(documentBodyDto.getReceiptDocument()));
+        //documentBodyEntity.setSerialDocumentBody(mapToDocumentBodyEntity(documentBodyDto.getSerialDocumentBody(),
+        //        mapToDocumentHeaderEntity(documentBodyDto.getSerialDocumentBody().getDocumentHeader())));
         documentBodyEntity.setDocumentHeader(documentHeaderEntity);
 
         return documentBodyEntity;

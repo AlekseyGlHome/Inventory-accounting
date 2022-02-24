@@ -3,7 +3,7 @@ package ru.home.inventoryaccounting.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.home.inventoryaccounting.api.request.ParameterRequest;
+import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.request.WarehouseRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.WarehouseDto;
@@ -29,7 +29,7 @@ public class WarehouseController {
             @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection){
 
         DtoResponse<WarehouseDto> response;
-        ParameterRequest parameter = RequestParameterUtil.getObjectOfRequestParameters(offset, limit, query, sortColumns, sortingDirection);
+        RequestParametersForDirectories parameter = RequestParameterUtil.getObjectOfRequestParameters(offset, limit, query, sortColumns, sortingDirection);
         try {
             response = warehouseService.selectQuery(parameter);
         } catch (InvalidRequestParameteException ex) {

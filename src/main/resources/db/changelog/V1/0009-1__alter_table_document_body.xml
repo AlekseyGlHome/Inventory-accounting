@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.7.xsd">
+
+
+    <changeSet id="0009-1-1" author="AlekseyGl">
+        <sql>
+            ALTER TABLE inventory.document_body
+                ADD CONSTRAINT document_body_FK
+                    FOREIGN KEY (receipt_id)
+                        REFERENCES inventory.movement (id);
+        </sql>
+    </changeSet>
+</databaseChangeLog>

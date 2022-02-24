@@ -1,4 +1,4 @@
-package ru.home.inventoryaccounting.domain.dto;
+package ru.home.inventoryaccounting.api.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,13 +7,12 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collection;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DocumentHeaderDto implements DtoInterface {
+public class DocumentHeaderRequest {
     private Long id;
     private BigDecimal amount;
     private String comment;
@@ -21,11 +20,10 @@ public class DocumentHeaderDto implements DtoInterface {
     private Boolean isDeleted;
     private String documentNumber;
     private Boolean isRegistered;
-    private PartnerDto partner;
-    private UserDto user;
-    private WarehouseDto warehouse;
-    private WarehouseDto warehouseRecipient;
+    private Long partnerId;
+    private Long userId;
+    private Long warehouseId;
+    private Long warehouseRecipientId;
     private Integer typeDok;
-    //private Collection<DocumentBodyDto> documentBody;
 
 }
