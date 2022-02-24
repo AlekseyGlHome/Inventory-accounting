@@ -26,62 +26,32 @@ public class UnitController {
             @RequestParam(name = "limit", defaultValue = "10") int limit,
             @RequestParam(name = "query", defaultValue = "") String query,
             @RequestParam(name = "sortColumns", defaultValue = "name") String[] sortColumns,
-            @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection) {
-
-        DtoResponse<UnitDto> response;
+            @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection)
+            throws InvalidRequestParameteException {
         RequestParametersForDirectories parameter = RequestParameterUtil.getObjectOfRequestParameters(offset, limit, query, sortColumns, sortingDirection);
-        try {
-            response = unitService.selectQuery(parameter);
-        } catch (InvalidRequestParameteException ex) {
-            response = new DtoResponse<>(false, ex.getMessage(), null, null);
-        }
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(unitService.selectQuery(parameter));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DtoResponse<UnitDto>> getById(@PathVariable long id) {
-        DtoResponse<UnitDto> response;
-        try {
-            response = new DtoResponse<>(true, "", 1L, List.of(unitService.findById(id)));
-        } catch (NotFoundException ex) {
-            response = new DtoResponse<>(false, ex.getMessage(), null, null);
-        }
-        return ResponseEntity.ok(response);
+    public ResponseEntity<DtoResponse<UnitDto>> getById(@PathVariable long id) throws NotFoundException {
+        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(unitService.findById(id))));
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<DtoResponse<UnitDto>> update(@PathVariable long id,
-                                                            @RequestBody UnitRequest request) {
-        DtoResponse<UnitDto> response;
-        try {
-            response = new DtoResponse<>(true, "", 1L, List.of(unitService.update(id, request)));
-        } catch (NotFoundException ex) {
-            response = new DtoResponse<>(false, ex.getMessage(), null, null);
-        }
-        return ResponseEntity.ok(response);
+                                                       @RequestBody UnitRequest request) throws NotFoundException {
+        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(unitService.update(id, request))));
     }
 
     @PostMapping()
-    public ResponseEntity<DtoResponse<UnitDto>> add(@RequestBody UnitRequest request) {
-        DtoResponse<UnitDto> response;
-        try {
-            response = new DtoResponse<>(true, "", 1L, List.of(unitService.add(request)));
-        } catch (NotFoundException ex) {
-            response = new DtoResponse<>(false, ex.getMessage(), null, null);
-        }
-        return ResponseEntity.ok(response);
+    public ResponseEntity<DtoResponse<UnitDto>> add(@RequestBody UnitRequest request) throws NotFoundException {
+        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(unitService.add(request))));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<DtoResponse<UnitDto>> deleteById(@PathVariable long id) {
-        DtoResponse<UnitDto> response;
-        try {
-            unitService.deleteById(id);
-            response = new DtoResponse<>(true, "Запись удалена", null, null);
-        } catch (NotFoundException ex) {
-            response = new DtoResponse<>(false, ex.getMessage(), null, null);
-        }
-        return ResponseEntity.ok(response);
+    public ResponseEntity<String> deleteById(@PathVariable long id) throws NotFoundException {
+        unitService.deleteById(id);
+        return ResponseEntity.ok("Запись удалена");
     }
 
 }

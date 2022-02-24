@@ -51,7 +51,7 @@ public class DocumentsHeaderService {
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
-        return new DtoResponse<>(true, "", documentHeaders.getTotalElements(),
+        return new DtoResponse<>(documentHeaders.getTotalElements(),
                 mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
     }
 
@@ -76,7 +76,7 @@ public class DocumentsHeaderService {
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
-        return new DtoResponse<>(true, "", documentHeaders.getTotalElements(),
+        return new DtoResponse<>(documentHeaders.getTotalElements(),
                 mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
     }
 
@@ -104,7 +104,7 @@ public class DocumentsHeaderService {
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
-        return new DtoResponse<>(true, "", documentHeaders.getTotalElements(),
+        return new DtoResponse<>(documentHeaders.getTotalElements(),
                 mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
     }
 
@@ -129,7 +129,7 @@ public class DocumentsHeaderService {
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
-        return new DtoResponse<>(true, "", documentHeaders.getTotalElements(),
+        return new DtoResponse<>(documentHeaders.getTotalElements(),
                 mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
     }
 
@@ -148,7 +148,7 @@ public class DocumentsHeaderService {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<DocumentHeaderEntity> documentHeaders;
         documentHeaders = documentHeaderRepository.findByDate(dateStart, dateEnd, pageRequest);
-        return new DtoResponse<>(true, "", documentHeaders.getTotalElements(),
+        return new DtoResponse<>(documentHeaders.getTotalElements(),
                 mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
     }
 
@@ -173,7 +173,7 @@ public class DocumentsHeaderService {
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
-        return new DtoResponse<>(true, "", documentHeaders.getTotalElements(),
+        return new DtoResponse<>(documentHeaders.getTotalElements(),
                 mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
     }
 
@@ -201,7 +201,7 @@ public class DocumentsHeaderService {
         } else {
             throw new InvalidRequestParameteException("Неверный параметр запроса");
         }
-        return new DtoResponse<>(true, "", documentHeaders.getTotalElements(),
+        return new DtoResponse<>(documentHeaders.getTotalElements(),
                 mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
     }
 

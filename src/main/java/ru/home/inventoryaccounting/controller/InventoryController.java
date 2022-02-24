@@ -28,63 +28,33 @@ public class InventoryController {
             @RequestParam(name = "query", defaultValue = "") String query,
             @RequestParam(name = "folderId", defaultValue = "0") long folderId,
             @RequestParam(name = "sortColumns", defaultValue = "name") String[] sortColumns,
-            @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection) {
-
-        DtoResponse<InventoryDto> response;
+            @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection)
+            throws InvalidRequestParameteException {
         RequestParametersForDirectories parameter = RequestParameterUtil.getObjectOfRequestParameters(offset, limit, query,
                 folderId, sortColumns, sortingDirection);
-        try {
-            response = inventoryService.selectQuery(parameter);
-        } catch (InvalidRequestParameteException ex) {
-            response = new DtoResponse<>(false, ex.getMessage(), null, null);
-        }
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(inventoryService.selectQuery(parameter));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DtoResponse<InventoryDto>> getById(@PathVariable long id) {
-        DtoResponse<InventoryDto> inventoryResponse;
-        try {
-            inventoryResponse = new DtoResponse<>(true, "", 1L, List.of(inventoryService.findById(id)));
-        } catch (NotFoundException ex) {
-            inventoryResponse = new DtoResponse<>(false, ex.getMessage(), null, null);
-        }
-        return ResponseEntity.ok(inventoryResponse);
+    public ResponseEntity<DtoResponse<InventoryDto>> getById(@PathVariable long id) throws NotFoundException {
+        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(inventoryService.findById(id))));
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<DtoResponse<InventoryDto>> update(@PathVariable long id,
-                                                                     @RequestBody InventoryRequest request) {
-        DtoResponse<InventoryDto> inventoryResponse;
-        try {
-            inventoryResponse = new DtoResponse<>(true, "", 1L, List.of(inventoryService.update(id, request)));
-        } catch (NotFoundException ex) {
-            inventoryResponse = new DtoResponse<>(false, ex.getMessage(), null, null);
-        }
-        return ResponseEntity.ok(inventoryResponse);
+                                                            @RequestBody InventoryRequest request) throws NotFoundException {
+        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(inventoryService.update(id, request))));
     }
 
     @PostMapping()
-    public ResponseEntity<DtoResponse<InventoryDto>> add(@RequestBody InventoryRequest request) {
-        DtoResponse<InventoryDto> inventoryResponse;
-        try {
-            inventoryResponse = new DtoResponse<>(true, "", 1L, List.of(inventoryService.add(request)));
-        } catch (NotFoundException ex) {
-            inventoryResponse = new DtoResponse<>(false, ex.getMessage(), null, null);
-        }
-        return ResponseEntity.ok(inventoryResponse);
+    public ResponseEntity<DtoResponse<InventoryDto>> add(@RequestBody InventoryRequest request) throws NotFoundException {
+        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(inventoryService.add(request))));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<DtoResponse<InventoryDto>> deleteById(@PathVariable long id) {
-        DtoResponse<InventoryDto> inventoryResponse;
-        try {
-            inventoryService.deleteById(id);
-            inventoryResponse = new DtoResponse<>(true, "Запись удалена", null, null);
-        } catch (NotFoundException ex) {
-            inventoryResponse = new DtoResponse<>(false, ex.getMessage(), null, null);
-        }
-        return ResponseEntity.ok(inventoryResponse);
+    public ResponseEntity<String> deleteById(@PathVariable long id) throws NotFoundException {
+        inventoryService.deleteById(id);
+        return ResponseEntity.ok("Запись удалена");
     }
 
 }

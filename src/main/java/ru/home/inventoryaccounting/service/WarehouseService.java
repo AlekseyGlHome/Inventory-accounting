@@ -47,7 +47,7 @@ public class WarehouseService {
         } else {
             throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
-        return new DtoResponse<>(true, "", warehouses.getTotalElements(),
+        return new DtoResponse<>(warehouses.getTotalElements(),
                 mapperUtiliti.mapToCollectionWarehouseDto(warehouses.getContent()));
     }
 
@@ -58,7 +58,7 @@ public class WarehouseService {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<WarehouseEntity> warehouses;
         warehouses = warehouseRepository.findAll(pageRequest);
-        return new DtoResponse<>(true, "", warehouses.getTotalElements(),
+        return new DtoResponse<>(warehouses.getTotalElements(),
                 mapperUtiliti.mapToCollectionWarehouseDto(warehouses.getContent()));
     }
 

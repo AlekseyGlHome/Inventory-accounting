@@ -26,62 +26,32 @@ public class PartnerController {
             @RequestParam(name = "limit", defaultValue = "10") int limit,
             @RequestParam(name = "query", defaultValue = "") String query,
             @RequestParam(name = "sortColumns", defaultValue = "name") String[] sortColumns,
-            @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection) {
-
-        DtoResponse<PartnerDto> response;
+            @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection)
+            throws InvalidRequestParameteException {
         RequestParametersForDirectories parameter = RequestParameterUtil.getObjectOfRequestParameters(offset, limit, query, sortColumns, sortingDirection);
-        try {
-            response = partnerService.selectQuery(parameter);
-        } catch (InvalidRequestParameteException ex) {
-            response = new DtoResponse<>(false, ex.getMessage(), null, null);
-        }
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(partnerService.selectQuery(parameter));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DtoResponse<PartnerDto>> getById(@PathVariable long id) {
-        DtoResponse<PartnerDto> response;
-        try {
-            response = new DtoResponse<>(true, "", 1L, List.of(partnerService.findById(id)));
-        } catch (NotFoundException ex) {
-            response = new DtoResponse<>(false, ex.getMessage(), null, null);
-        }
-        return ResponseEntity.ok(response);
+    public ResponseEntity<DtoResponse<PartnerDto>> getById(@PathVariable long id) throws NotFoundException {
+        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(partnerService.findById(id))));
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<DtoResponse<PartnerDto>> update(@PathVariable long id,
-                                                            @RequestBody PartnerRequest request) {
-        DtoResponse<PartnerDto> response;
-        try {
-            response = new DtoResponse<>(true, "", 1L, List.of(partnerService.update(id, request)));
-        } catch (NotFoundException ex) {
-            response = new DtoResponse<>(false, ex.getMessage(), null, null);
-        }
-        return ResponseEntity.ok(response);
+                                                            @RequestBody PartnerRequest request) throws NotFoundException {
+        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(partnerService.update(id, request))));
     }
 
     @PostMapping()
-    public ResponseEntity<DtoResponse<PartnerDto>> add(@RequestBody PartnerRequest request) {
-        DtoResponse<PartnerDto> response;
-        try {
-            response = new DtoResponse<>(true, "", 1L, List.of(partnerService.add(request)));
-        } catch (NotFoundException ex) {
-            response = new DtoResponse<>(false, ex.getMessage(), null, null);
-        }
-        return ResponseEntity.ok(response);
+    public ResponseEntity<DtoResponse<PartnerDto>> add(@RequestBody PartnerRequest request) throws NotFoundException {
+        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(partnerService.add(request))));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<DtoResponse<PartnerDto>> deleteById(@PathVariable long id) {
-        DtoResponse<PartnerDto> response;
-        try {
-            partnerService.deleteById(id);
-            response = new DtoResponse<>(true, "Запись удалена", null, null);
-        } catch (NotFoundException ex) {
-            response = new DtoResponse<>(false, ex.getMessage(), null, null);
-        }
-        return ResponseEntity.ok(response);
+    public ResponseEntity<String> deleteById(@PathVariable long id) throws NotFoundException {
+        partnerService.deleteById(id);
+        return ResponseEntity.ok("Запись удалена");
     }
 
 }

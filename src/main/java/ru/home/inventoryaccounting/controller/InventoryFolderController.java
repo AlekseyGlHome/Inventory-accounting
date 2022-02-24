@@ -26,62 +26,33 @@ public class InventoryFolderController {
             @RequestParam(name = "limit", defaultValue = "10") int limit,
             @RequestParam(name = "query", defaultValue = "") String query,
             @RequestParam(name = "sortColumns", defaultValue = "name") String[] sortColumns,
-            @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection) {
-
-        DtoResponse<InventoryFolderDto> response;
+            @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection) throws InvalidRequestParameteException {
         RequestParametersForDirectories parameter = RequestParameterUtil.getObjectOfRequestParameters(offset, limit, query, sortColumns, sortingDirection);
-        try {
-            response = inventoryFolderService.selectQuery(parameter);
-        } catch (InvalidRequestParameteException ex) {
-            response = new DtoResponse<>(false, ex.getMessage(), null, null);
-        }
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(inventoryFolderService.selectQuery(parameter));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DtoResponse<InventoryFolderDto>> getById(@PathVariable long id) {
-        DtoResponse<InventoryFolderDto> response;
-        try {
-            response = new DtoResponse<>(true, "", 1L, List.of(inventoryFolderService.findById(id)));
-        } catch (NotFoundException ex) {
-            response = new DtoResponse<>(false, ex.getMessage(), null, null);
-        }
-        return ResponseEntity.ok(response);
+    public ResponseEntity<DtoResponse<InventoryFolderDto>> getById(@PathVariable long id) throws NotFoundException {
+
+        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(inventoryFolderService.findById(id))));
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<DtoResponse<InventoryFolderDto>> update(@PathVariable long id,
-                                                            @RequestBody InventoryFoldeRequest request) {
-        DtoResponse<InventoryFolderDto> response;
-        try {
-            response = new DtoResponse<>(true, "", 1L, List.of(inventoryFolderService.update(id, request)));
-        } catch (NotFoundException ex) {
-            response = new DtoResponse<>(false, ex.getMessage(), null, null);
-        }
-        return ResponseEntity.ok(response);
+                                                                  @RequestBody InventoryFoldeRequest request) throws NotFoundException {
+        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(inventoryFolderService.update(id, request))));
     }
 
     @PostMapping()
-    public ResponseEntity<DtoResponse<InventoryFolderDto>> add(@RequestBody InventoryFoldeRequest request) {
-        DtoResponse<InventoryFolderDto> response;
-        try {
-            response = new DtoResponse<>(true, "", 1L, List.of(inventoryFolderService.add(request)));
-        } catch (NotFoundException ex) {
-            response = new DtoResponse<>(false, ex.getMessage(), null, null);
-        }
-        return ResponseEntity.ok(response);
+    public ResponseEntity<DtoResponse<InventoryFolderDto>> add(@RequestBody InventoryFoldeRequest request) throws NotFoundException {
+
+        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(inventoryFolderService.add(request))));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<DtoResponse<InventoryFolderDto>> deleteById(@PathVariable long id) {
-        DtoResponse<InventoryFolderDto> response;
-        try {
-            inventoryFolderService.deleteById(id);
-            response = new DtoResponse<>(true, "Запись удалена", null, null);
-        } catch (NotFoundException ex) {
-            response = new DtoResponse<>(false, ex.getMessage(), null, null);
-        }
-        return ResponseEntity.ok(response);
+    public ResponseEntity<String> deleteById(@PathVariable long id) throws NotFoundException {
+        inventoryFolderService.deleteById(id);
+        return ResponseEntity.ok("Запись удалена");
     }
 
 }

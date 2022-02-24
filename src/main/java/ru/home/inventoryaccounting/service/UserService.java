@@ -26,7 +26,7 @@ public class UserService {
 
     private final String MESSAGE_NOT_FOUND = "Пользователь с Id: %s не найдена.";
     private final String MESSAGE_BAD_REQUESR = "Неверный параметр запроса";
-    private final String MESSAGE_NOT_FOUND_NAME = "Запись с Name: %s не найдена.";
+    private final String MESSAGE_NOT_FOUND_NAME = "Пользователь Name: %s не найдена.";
 
     /**
      * выбор пользователя по идентификатору
@@ -36,6 +36,7 @@ public class UserService {
         return user.map(mapperUtiliti::mapToUserDto)
                 .orElseThrow(() -> new NotFoundException(String.format(MESSAGE_NOT_FOUND, id)));
     }
+
 
     /**
      * выбор пользователя по вхождению в наименование
@@ -49,7 +50,7 @@ public class UserService {
             throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
 
-        return new DtoResponse<>(true, "", users.getTotalElements(), mapperUtiliti.mapToCollectionUserDto(users.getContent()));
+        return new DtoResponse<>(users.getTotalElements(), mapperUtiliti.mapToCollectionUserDto(users.getContent()));
     }
 
     /**
@@ -58,7 +59,7 @@ public class UserService {
     public DtoResponse<UserDto> findAll(RequestParametersForDirectories request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<UserEntity> users = userRepository.findAll(pageRequest);
-        return new DtoResponse<>(true, "", users.getTotalElements(), mapperUtiliti.mapToCollectionUserDto(users.getContent()));
+        return new DtoResponse<>(users.getTotalElements(), mapperUtiliti.mapToCollectionUserDto(users.getContent()));
     }
 
     /**

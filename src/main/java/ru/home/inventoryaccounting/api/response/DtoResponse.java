@@ -13,8 +13,6 @@ import java.util.Collection;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DtoResponse<T extends DtoInterface>{
-    private Boolean result;
-    private String message;
     private Long numberOfRecord;
     private Collection<T> data;
 }

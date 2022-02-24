@@ -60,7 +60,7 @@ public class InventoryService {
         } else {
             throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
-        return new DtoResponse<>(true, "", inventories.getTotalElements(),
+        return new DtoResponse<>(inventories.getTotalElements(),
                 mapperUtiliti.mapToCollectionInventoryDto(inventories.getContent()));
     }
 
@@ -76,7 +76,7 @@ public class InventoryService {
         } else {
             throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
-        return new DtoResponse<>(true, "", inventories.getTotalElements(),
+        return new DtoResponse<>(inventories.getTotalElements(),
                 mapperUtiliti.mapToCollectionInventoryDto(inventories.getContent()));
     }
 
@@ -91,7 +91,7 @@ public class InventoryService {
         } else {
             throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
-        return new DtoResponse<>(true, "", inventories.getTotalElements(),
+        return new DtoResponse<>(inventories.getTotalElements(),
                 mapperUtiliti.mapToCollectionInventoryDto(inventories.getContent()));
     }
 
@@ -102,7 +102,7 @@ public class InventoryService {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<InventoryEntity> inventories;
         inventories = inventoryRepository.findAll(pageRequest);
-        return new DtoResponse<>(true, "", inventories.getTotalElements(),
+        return new DtoResponse<>(inventories.getTotalElements(),
                 mapperUtiliti.mapToCollectionInventoryDto(inventories.getContent()));
     }
 

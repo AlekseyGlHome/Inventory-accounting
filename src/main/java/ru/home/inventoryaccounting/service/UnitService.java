@@ -49,7 +49,7 @@ public class UnitService {
             throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
 
-        return new DtoResponse<>(true, "", units.getTotalElements(),
+        return new DtoResponse<>(units.getTotalElements(),
                 mapperUtiliti.mapToCollectionUnitDto(units.getContent()));
     }
 
@@ -60,7 +60,7 @@ public class UnitService {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<UnitEntity> units;
         units = unitRepository.findAll(pageRequest);
-        return new DtoResponse<>(true, "", units.getTotalElements(),
+        return new DtoResponse<>(units.getTotalElements(),
                 mapperUtiliti.mapToCollectionUnitDto(units.getContent()));
     }
 

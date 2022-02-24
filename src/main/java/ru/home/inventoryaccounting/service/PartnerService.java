@@ -53,7 +53,7 @@ public class PartnerService {
             throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
 
-        return new DtoResponse<>(true, "", partners.getTotalElements(),
+        return new DtoResponse<>(partners.getTotalElements(),
                 mapperUtiliti.mapToCollectionPartnerDto(partners.getContent()));
     }
 
@@ -65,7 +65,7 @@ public class PartnerService {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<PartnerEntity> partners;
         partners = partnerRepository.findAll(pageRequest);
-        return new DtoResponse<>(true, "", partners.getTotalElements(),
+        return new DtoResponse<>(partners.getTotalElements(),
                 mapperUtiliti.mapToCollectionPartnerDto(partners.getContent()));
     }
 
