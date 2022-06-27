@@ -30,7 +30,7 @@ public class UnitService {
     /**
      * выбор единицы измерения по идентификатору
      */
-    public UnitDto findById(long id) throws NotFoundException, InvalidRequestParameteException {
+    public UnitDto findById(long id) {
         try {
             Optional<UnitEntity> unit = unitRepository.findById(id);
             return unit.map(mapperUtiliti::mapToUnitDto)
@@ -45,7 +45,7 @@ public class UnitService {
     /**
      * выбор единицы измерения по входждению в наименование
      */
-    public DtoResponse<UnitDto> findByNameLike(RequestParametersForDirectories request) throws InvalidRequestParameteException {
+    public DtoResponse<UnitDto> findByNameLike(RequestParametersForDirectories request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<UnitEntity> units;
 
@@ -73,7 +73,7 @@ public class UnitService {
     /**
      * общий запрос
      */
-    public DtoResponse<UnitDto> selectQuery(RequestParametersForDirectories request) throws InvalidRequestParameteException {
+    public DtoResponse<UnitDto> selectQuery(RequestParametersForDirectories request) {
         if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
             return findByNameLike(request);
         }
@@ -81,13 +81,13 @@ public class UnitService {
     }
 
     // добавить карточку
-    public UnitDto add(UnitRequest request) throws NotFoundException {
+    public UnitDto add(UnitRequest request) {
         UnitEntity unitEntity = fill(new UnitEntity(), request);
         return mapperUtiliti.mapToUnitDto(unitRepository.save(unitEntity));
     }
 
     // обновить карточку
-    public UnitDto update(long id, UnitRequest request) throws NotFoundException, InvalidRequestParameteException {
+    public UnitDto update(long id, UnitRequest request) {
         UnitEntity unitEntity = fill(mapperUtiliti.mapToUnitEntity(findById(id)), request);
         return mapperUtiliti.mapToUnitDto(unitRepository.save(unitEntity));
     }
@@ -103,7 +103,7 @@ public class UnitService {
     /**
      * удалить (переменную is_deleted в true)
      */
-    public void deleteById(long id) throws NotFoundException {
+    public void deleteById(long id) {
         if (unitRepository.updateIsDeleteToTrueById(id) <= 0) {
             throw new NotFoundException(String.format(MESSAGE_NOT_FOUND, id));
         }

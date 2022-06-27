@@ -32,7 +32,7 @@ public class InventoryService {
     /**
      * выбрать инвентарь по идентификатору
      */
-    public InventoryDto findById(long id) throws NotFoundException {
+    public InventoryDto findById(long id) {
         Optional<InventoryEntity> inventory = inventoryRepository.findById(id);
         return inventory.map(mapperUtiliti::mapToInventoryDto)
                 .orElseThrow(() -> new NotFoundException(String.format(MESSAGE_NOT_FOUND, id)));
@@ -41,7 +41,7 @@ public class InventoryService {
     /**
      * удалить (переменную is_deleted в true)
      */
-    public void deleteById(long id) throws NotFoundException {
+    public void deleteById(long id) {
         int countDelete = inventoryRepository.updateIsDeleteToTrueById(id);
         if (countDelete <= 0) {
             throw new NotFoundException(String.format(MESSAGE_NOT_FOUND, id));
@@ -51,8 +51,7 @@ public class InventoryService {
     /**
      * выбрать инвентарь по входждению в наименование
      */
-    public DtoResponse<InventoryDto> findByNameLike(RequestParametersForDirectories request)
-            throws InvalidRequestParameteException {
+    public DtoResponse<InventoryDto> findByNameLike(RequestParametersForDirectories request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<InventoryEntity> inventories;
         if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
@@ -67,8 +66,7 @@ public class InventoryService {
     /**
      * выбрать инвентарь по входждению в наименование и идентификатору папки
      */
-    public DtoResponse<InventoryDto> findByNameLikeAndFolderId(RequestParametersForDirectories request)
-            throws InvalidRequestParameteException {
+    public DtoResponse<InventoryDto> findByNameLikeAndFolderId(RequestParametersForDirectories request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<InventoryEntity> inventories;
         if ((!request.getQuery().isEmpty() || !request.getQuery().isBlank()) && (request.getFolderId() > 0)) {
@@ -83,7 +81,7 @@ public class InventoryService {
     /**
      * выбрать инвентарь по идентификатору папки
      */
-    public DtoResponse<InventoryDto> findByFolderId(RequestParametersForDirectories request) throws InvalidRequestParameteException {
+    public DtoResponse<InventoryDto> findByFolderId(RequestParametersForDirectories request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<InventoryEntity> inventories;
         if (request.getFolderId() > 0) {
@@ -107,7 +105,7 @@ public class InventoryService {
     }
 
     // общий запрос
-    public DtoResponse<InventoryDto> selectQuery(RequestParametersForDirectories request) throws InvalidRequestParameteException {
+    public DtoResponse<InventoryDto> selectQuery(RequestParametersForDirectories request) {
         if ((!request.getQuery().isEmpty() || !request.getQuery().isBlank()) && (request.getFolderId() == 0)) {
             return findByNameLike(request);
         } else if ((request.getQuery().isEmpty() || request.getQuery().isBlank()) && (request.getFolderId() > 0)) {
@@ -119,20 +117,19 @@ public class InventoryService {
     }
 
     // добавить карточку
-    public InventoryDto add(InventoryRequest request) throws NotFoundException, InvalidRequestParameteException {
+    public InventoryDto add(InventoryRequest request) {
         InventoryEntity inventoryEntity = fillInventory(new InventoryEntity(), request);
         return mapperUtiliti.mapToInventoryDto(inventoryRepository.save(inventoryEntity));
     }
 
     // обновить карточку
-    public InventoryDto update(long id, InventoryRequest request) throws NotFoundException, InvalidRequestParameteException {
+    public InventoryDto update(long id, InventoryRequest request) {
         InventoryEntity inventoryEntity = fillInventory(mapperUtiliti.mapToInventoryEntity(findById(id)), request);
         return mapperUtiliti.mapToInventoryDto(inventoryRepository.save(inventoryEntity));
     }
 
     // заполнить карточку инвентаря из запросса
-    private InventoryEntity fillInventory(InventoryEntity inventoryEntity, InventoryRequest request)
-            throws NotFoundException, InvalidRequestParameteException {
+    private InventoryEntity fillInventory(InventoryEntity inventoryEntity, InventoryRequest request) {
         inventoryEntity.setName(request.getName());
         inventoryEntity.setIsDeleted(request.isDeleted());
         inventoryEntity.setFolder(mapperUtiliti.mapToInventoryFolderEntity(inventoryFolderService.findById(request.getFolderId())));

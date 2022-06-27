@@ -32,7 +32,7 @@ public class PartnerService {
      * выбор партнера по идентификатору
      *
      */
-    public PartnerDto findById(long id) throws NotFoundException {
+    public PartnerDto findById(long id) {
         Optional<PartnerEntity> partner = partnerRepository.findById(id);
         return partner.map(mapperUtiliti::mapToPartnerDto)
                 .orElseThrow(() -> new NotFoundException(String.format(MESSAGE_NOT_FOUND, id)));
@@ -43,7 +43,7 @@ public class PartnerService {
      * выбор партнеров по входждению в наименование
      *
      */
-    public DtoResponse<PartnerDto> findByNameLike(RequestParametersForDirectories request) throws InvalidRequestParameteException {
+    public DtoResponse<PartnerDto> findByNameLike(RequestParametersForDirectories request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<PartnerEntity> partners;
 
@@ -72,7 +72,7 @@ public class PartnerService {
     /**
      * общий запрос
      */
-    public DtoResponse<PartnerDto> selectQuery(RequestParametersForDirectories request) throws InvalidRequestParameteException {
+    public DtoResponse<PartnerDto> selectQuery(RequestParametersForDirectories request) {
         if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
             return findByNameLike(request);
         }
@@ -80,13 +80,13 @@ public class PartnerService {
     }
 
     // добавить карточку
-    public PartnerDto add(PartnerRequest request) throws NotFoundException {
+    public PartnerDto add(PartnerRequest request) {
         PartnerEntity partnerEntity = fill(new PartnerEntity(), request);
         return mapperUtiliti.mapToPartnerDto(partnerRepository.save(partnerEntity));
     }
 
     // обновить карточку
-    public PartnerDto update(long id, PartnerRequest request) throws NotFoundException {
+    public PartnerDto update(long id, PartnerRequest request) {
         PartnerEntity partnerEntity = fill(mapperUtiliti.mapToPartnerEntity(findById(id)), request);
         return mapperUtiliti.mapToPartnerDto(partnerRepository.save(partnerEntity));
     }
@@ -102,7 +102,7 @@ public class PartnerService {
     /**
      * удалить (переменную is_deleted в true)
      */
-    public void deleteById(long id) throws NotFoundException {
+    public void deleteById(long id) {
         if (partnerRepository.updateIsDeleteToTrueById(id) <= 0) {
             throw new NotFoundException(String.format(MESSAGE_NOT_FOUND, id));
         }

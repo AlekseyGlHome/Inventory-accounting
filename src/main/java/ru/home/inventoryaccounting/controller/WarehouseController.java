@@ -7,8 +7,6 @@ import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.request.WarehouseRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.WarehouseDto;
-import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
-import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.service.WarehouseService;
 import ru.home.inventoryaccounting.util.RequestParameterUtil;
 
@@ -26,30 +24,29 @@ public class WarehouseController {
             @RequestParam(name = "limit", defaultValue = "10") int limit,
             @RequestParam(name = "query", defaultValue = "") String query,
             @RequestParam(name = "sortColumns", defaultValue = "name") String[] sortColumns,
-            @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection)
-            throws InvalidRequestParameteException {
+            @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection) {
         RequestParametersForDirectories parameter = RequestParameterUtil.getObjectOfRequestParameters(offset, limit, query, sortColumns, sortingDirection);
         return ResponseEntity.ok(warehouseService.selectQuery(parameter));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DtoResponse<WarehouseDto>> getById(@PathVariable long id) throws NotFoundException {
+    public ResponseEntity<DtoResponse<WarehouseDto>> getById(@PathVariable long id) {
         return ResponseEntity.ok(new DtoResponse<>(1L, List.of(warehouseService.findById(id))));
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<DtoResponse<WarehouseDto>> update(@PathVariable long id,
-                                                            @RequestBody WarehouseRequest request) throws NotFoundException {
+                                                            @RequestBody WarehouseRequest request) {
         return ResponseEntity.ok(new DtoResponse<>(1L, List.of(warehouseService.update(id, request))));
     }
 
     @PostMapping()
-    public ResponseEntity<DtoResponse<WarehouseDto>> add(@RequestBody WarehouseRequest request) throws NotFoundException {
+    public ResponseEntity<DtoResponse<WarehouseDto>> add(@RequestBody WarehouseRequest request) {
         return ResponseEntity.ok(new DtoResponse<>(1L, List.of(warehouseService.add(request))));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable long id) throws NotFoundException {
+    public ResponseEntity<String> deleteById(@PathVariable long id) {
         warehouseService.deleteById(id);
         return ResponseEntity.ok("Запись удалена");
     }

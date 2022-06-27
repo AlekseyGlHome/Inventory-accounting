@@ -28,7 +28,7 @@ public class DocumentsHeaderService {
      * @param id - идентификатор документа
      * @return DocumentHeaderDTO
      */
-    public DocumentHeaderDto findById(long id) throws NotFoundException {
+    public DocumentHeaderDto findById(long id) {
         Optional<DocumentHeaderEntity> documentsHeader = documentHeaderRepository.findById(id);
         return documentsHeader.map(mapperUtiliti::mapToDocumentHeaderDto)
                 .orElseThrow(() -> new NotFoundException("Доумент с Id: " + id + " не найден."));
@@ -43,7 +43,7 @@ public class DocumentsHeaderService {
      * @return DTOResponse&lt;DocumentHeaderDTO&gt;
      */
     public DtoResponse<DocumentHeaderDto> findByDocumentNumber(int offset, int limit,
-                                                               String numberStr) throws InvalidRequestParameteException {
+                                                               String numberStr) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<DocumentHeaderEntity> documentHeaders;
         if (!numberStr.isEmpty() || !numberStr.isBlank()) {
@@ -68,7 +68,7 @@ public class DocumentsHeaderService {
     public DtoResponse<DocumentHeaderDto> findByDateAndTypeDok(int offset, int limit,
                                                                LocalDate dateStart,
                                                                LocalDate dateEnd,
-                                                               Integer tipDok) throws InvalidRequestParameteException {
+                                                               Integer tipDok) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<DocumentHeaderEntity> documentHeaders;
         if (tipDok > 0) {
@@ -95,7 +95,7 @@ public class DocumentsHeaderService {
                                                                            LocalDate dateStart,
                                                                            LocalDate dateEnd,
                                                                            Integer tipDok,
-                                                                           long warehouseId) throws InvalidRequestParameteException {
+                                                                           long warehouseId) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<DocumentHeaderEntity> documentHeaders;
         if (tipDok > 0 && warehouseId > 0) {
@@ -121,7 +121,7 @@ public class DocumentsHeaderService {
     public DtoResponse<DocumentHeaderDto> findByDateAndPartner(int offset, int limit,
                                                                LocalDate dateStart,
                                                                LocalDate dateEnd,
-                                                               long partnerId) throws InvalidRequestParameteException {
+                                                               long partnerId) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<DocumentHeaderEntity> documentHeaders;
         if (partnerId > 0) {
@@ -165,7 +165,7 @@ public class DocumentsHeaderService {
     public DtoResponse<DocumentHeaderDto> findByDateAndWarehouse(int offset, int limit,
                                                                  LocalDate dateStart,
                                                                  LocalDate dateEnd,
-                                                                 long warehouseId) throws InvalidRequestParameteException {
+                                                                 long warehouseId) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<DocumentHeaderEntity> documentHeaders;
         if (warehouseId > 0) {
@@ -192,7 +192,7 @@ public class DocumentsHeaderService {
                                                                            LocalDate dateStart,
                                                                            LocalDate dateEnd,
                                                                            long partnerId,
-                                                                           long warehouseId) throws InvalidRequestParameteException {
+                                                                           long warehouseId) {
         PageRequest pageRequest = getPageRequest(offset, limit);
         Page<DocumentHeaderEntity> documentHeaders;
         if (warehouseId > 0 && partnerId > 0) {

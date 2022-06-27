@@ -31,7 +31,7 @@ public class UserService {
     /**
      * выбор пользователя по идентификатору
      */
-    public UserDto findById(long id) throws NotFoundException {
+    public UserDto findById(long id) {
         Optional<UserEntity> user = userRepository.findById(id);
         return user.map(mapperUtiliti::mapToUserDto)
                 .orElseThrow(() -> new NotFoundException(String.format(MESSAGE_NOT_FOUND, id)));
@@ -41,7 +41,7 @@ public class UserService {
     /**
      * выбор пользователя по вхождению в наименование
      */
-    public DtoResponse<UserDto> findByNameLike(RequestParametersForDirectories request) throws InvalidRequestParameteException {
+    public DtoResponse<UserDto> findByNameLike(RequestParametersForDirectories request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<UserEntity> users;
         if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
@@ -65,7 +65,7 @@ public class UserService {
     /**
      * общий запрос
      */
-    public DtoResponse<UserDto> selectQuery(RequestParametersForDirectories request) throws InvalidRequestParameteException {
+    public DtoResponse<UserDto> selectQuery(RequestParametersForDirectories request) {
         if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
             return findByNameLike(request);
         }
@@ -75,7 +75,7 @@ public class UserService {
     /**
      * выбор пользователя по наименованию
      */
-    public UserDto findByName(RequestParametersForDirectories request) throws NotFoundException {
+    public UserDto findByName(RequestParametersForDirectories request) {
         Optional<UserEntity> user = userRepository.findByName(request.getQuery());
         return user.map(mapperUtiliti::mapToUserDto)
                 .orElseThrow(() -> new NotFoundException(String.format(MESSAGE_NOT_FOUND_NAME, request.getQuery())));
@@ -83,13 +83,13 @@ public class UserService {
 
 
     // добавить карточку
-    public UserDto add(UserRequest request) throws NotFoundException {
+    public UserDto add(UserRequest request) {
         UserEntity userEntity = fillInventory(new UserEntity(), request);
         return mapperUtiliti.mapToUserDto(userRepository.save(userEntity));
     }
 
     // обновить карточку
-    public UserDto update(long id, UserRequest request) throws NotFoundException {
+    public UserDto update(long id, UserRequest request) {
         UserEntity userEntity = fillInventory(mapperUtiliti.mapToUserEntity(findById(id)), request);
         return mapperUtiliti.mapToUserDto(userRepository.save(userEntity));
     }
@@ -105,7 +105,7 @@ public class UserService {
     /**
      * удалить (переменную is_deleted в true)
      */
-    public void deleteById(long id) throws NotFoundException {
+    public void deleteById(long id) {
         if (userRepository.updateIsDeleteToTrueById(id) <= 0) {
             throw new NotFoundException(String.format(MESSAGE_NOT_FOUND, id));
         }

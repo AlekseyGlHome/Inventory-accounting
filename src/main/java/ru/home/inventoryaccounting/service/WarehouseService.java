@@ -30,7 +30,7 @@ public class WarehouseService {
     /**
      * выбор склада по идентификатору
      */
-    public WarehouseDto findById(long id) throws NotFoundException {
+    public WarehouseDto findById(long id) {
         Optional<WarehouseEntity> warehouse = warehouseRepository.findById(id);
         return warehouse.map(mapperUtiliti::mapToWarehouseDto)
                 .orElseThrow(() -> new NotFoundException(String.format(MESSAGE_NOT_FOUND, id)));
@@ -39,7 +39,7 @@ public class WarehouseService {
     /**
      * выбор склада по вхождению в наименование
      */
-    public DtoResponse<WarehouseDto> findByNameLike(RequestParametersForDirectories request) throws InvalidRequestParameteException {
+    public DtoResponse<WarehouseDto> findByNameLike(RequestParametersForDirectories request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<WarehouseEntity> warehouses;
         if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
@@ -65,7 +65,7 @@ public class WarehouseService {
     /**
      * общий запрос
      */
-    public DtoResponse<WarehouseDto> selectQuery(RequestParametersForDirectories request) throws InvalidRequestParameteException {
+    public DtoResponse<WarehouseDto> selectQuery(RequestParametersForDirectories request) {
         if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
             return findByNameLike(request);
         }
@@ -73,13 +73,13 @@ public class WarehouseService {
     }
 
     // добавить карточку
-    public WarehouseDto add(WarehouseRequest request) throws NotFoundException {
+    public WarehouseDto add(WarehouseRequest request){
         WarehouseEntity warehouseEntity = fillInventory(new WarehouseEntity(), request);
         return mapperUtiliti.mapToWarehouseDto(warehouseRepository.save(warehouseEntity));
     }
 
     // обновить карточку
-    public WarehouseDto update(long id, WarehouseRequest request) throws NotFoundException {
+    public WarehouseDto update(long id, WarehouseRequest request) {
         WarehouseEntity warehouseEntity = fillInventory(mapperUtiliti.mapToWarehouseEntity(findById(id)), request);
         return mapperUtiliti.mapToWarehouseDto(warehouseRepository.save(warehouseEntity));
     }
@@ -96,7 +96,7 @@ public class WarehouseService {
     /**
      * удалить (переменную is_deleted в true)
      */
-    public void deleteById(long id) throws NotFoundException {
+    public void deleteById(long id) {
         if (warehouseRepository.updateIsDeleteToTrueById(id) <= 0) {
             throw new NotFoundException(String.format(MESSAGE_NOT_FOUND, id));
         }
