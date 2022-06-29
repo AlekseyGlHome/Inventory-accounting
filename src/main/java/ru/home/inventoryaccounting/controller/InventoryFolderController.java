@@ -35,7 +35,7 @@ public class InventoryFolderController {
         return ResponseEntity.ok(new DtoResponse<>(1L, List.of(inventoryFolderService.findById(id))));
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<DtoResponse<InventoryFolderDto>> update(@PathVariable long id,
                                                                   @RequestBody InventoryFoldeRequest request) {
         return ResponseEntity.ok(new DtoResponse<>(1L, List.of(inventoryFolderService.update(id, request))));

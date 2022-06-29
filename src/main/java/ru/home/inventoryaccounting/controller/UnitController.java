@@ -34,7 +34,7 @@ public class UnitController {
         return ResponseEntity.ok(new DtoResponse<>(1L, List.of(unitService.findById(id))));
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<DtoResponse<UnitDto>> update(@PathVariable long id,
                                                        @RequestBody UnitRequest request) {
         return ResponseEntity.ok(new DtoResponse<>(1L, List.of(unitService.update(id, request))));

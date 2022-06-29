@@ -34,7 +34,7 @@ public class WarehouseController {
         return ResponseEntity.ok(new DtoResponse<>(1L, List.of(warehouseService.findById(id))));
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<DtoResponse<WarehouseDto>> update(@PathVariable long id,
                                                             @RequestBody WarehouseRequest request) {
         return ResponseEntity.ok(new DtoResponse<>(1L, List.of(warehouseService.update(id, request))));

@@ -34,7 +34,7 @@ public class PartnerController {
         return ResponseEntity.ok(new DtoResponse<>(1L, List.of(partnerService.findById(id))));
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<DtoResponse<PartnerDto>> update(@PathVariable long id,
                                                           @RequestBody PartnerRequest request) {
         return ResponseEntity.ok(new DtoResponse<>(1L, List.of(partnerService.update(id, request))));

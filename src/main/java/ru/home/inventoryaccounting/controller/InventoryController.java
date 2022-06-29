@@ -37,7 +37,7 @@ public class InventoryController {
         return ResponseEntity.ok(new DtoResponse<>(1L, List.of(inventoryService.findById(id))));
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<DtoResponse<InventoryDto>> update(@PathVariable long id,
                                                             @RequestBody InventoryRequest request) {
         return ResponseEntity.ok(new DtoResponse<>(1L, List.of(inventoryService.update(id, request))));

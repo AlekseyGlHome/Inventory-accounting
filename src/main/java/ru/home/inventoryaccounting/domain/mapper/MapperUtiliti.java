@@ -75,7 +75,7 @@ public class MapperUtiliti {
     /**
      * Единица измерения Из Dto в Entity
      */
-    public UnitEntity mapToUnitEntity(UnitDto unitDto){
+    public UnitEntity mapToUnitEntity(UnitDto unitDto) {
         UnitEntity unitEntity = new UnitEntity();
         unitEntity.setId(unitDto.getId());
         unitEntity.setName(unitDto.getName());
@@ -170,9 +170,12 @@ public class MapperUtiliti {
                 .partner(mapToPartnerDto(documentHeaderEntity.getPartner()))
                 .user(mapToUserDto(documentHeaderEntity.getUser()))
                 .warehouse(mapToWarehouseDto(documentHeaderEntity.getWarehouse()))
-                .warehouseRecipient(mapToWarehouseDto(documentHeaderEntity.getWarehouseRecipient()))
+//                .warehouseRecipient(mapToWarehouseDto(documentHeaderEntity.getWarehouseRecipient()))
                 .typeDok(documentHeaderEntity.getTypeDok())
                 .build();
+        if (documentHeaderEntity.getWarehouseRecipient() != null) {
+            documentHeaderDto.setWarehouseRecipient(mapToWarehouseDto(documentHeaderEntity.getWarehouseRecipient()));
+        }
         //documentHeaderDto.setDocumentBody(mapToCollectionDocumentBodyDto(documentHeaderEntity.getDocumentBody(), documentHeaderDto));
         return documentHeaderDto;
     }
@@ -192,20 +195,21 @@ public class MapperUtiliti {
         documentHeaderEntity.setPartner(mapToPartnerEntity(documentHeaderDto.getPartner()));
         documentHeaderEntity.setUser(mapToUserEntity(documentHeaderDto.getUser()));
         documentHeaderEntity.setWarehouse(mapToWarehouseEntity(documentHeaderDto.getWarehouse()));
-        documentHeaderEntity.setWarehouseRecipient(mapToWarehouseEntity(documentHeaderDto.getWarehouseRecipient()));
+        //documentHeaderEntity.setWarehouseRecipient(mapToWarehouseEntity(documentHeaderDto.getWarehouseRecipient()));
         documentHeaderEntity.setTypeDok(documentHeaderDto.getTypeDok());
         //documentHeaderEntity.setDocumentBody(mapToCollectionDocumentBodyEntity(documentHeaderDto.getDocumentBody(),documentHeaderEntity));
-
+        if (documentHeaderDto.getWarehouseRecipient() != null) {
+            documentHeaderEntity.setWarehouseRecipient(mapToWarehouseEntity(documentHeaderDto.getWarehouseRecipient()));
+        }
         return documentHeaderEntity;
     }
-
 
 
     /**
      * Документ коллекцию тело Из Entity в Dto
      */
     public Collection<DocumentBodyDto> mapToCollectionDocumentBodyDto(Collection<DocumentBodyEntity> collection,
-                                                              DocumentHeaderDto documentHeaderDto) {
+                                                                      DocumentHeaderDto documentHeaderDto) {
         return collection.stream()
                 .map((d) -> this.mapToDocumentBodyDto(d, documentHeaderDto))
                 .collect(Collectors.toList());
@@ -215,7 +219,7 @@ public class MapperUtiliti {
      * Документ коллекцию тело Из Dto в Entity
      */
     public Collection<DocumentBodyEntity> mapToCollectionDocumentBodyEntity(Collection<DocumentBodyDto> collection,
-                                                                      DocumentHeaderEntity documentHeaderEntity) {
+                                                                            DocumentHeaderEntity documentHeaderEntity) {
         return collection.stream()
                 .map((d) -> this.mapToDocumentBodyEntity(d, documentHeaderEntity))
                 .collect(Collectors.toList());
