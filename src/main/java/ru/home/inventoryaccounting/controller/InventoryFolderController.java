@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/folder")
+@RequestMapping("/v1/folder")
 public class InventoryFolderController {
     private final InventoryFolderService inventoryFolderService;
 

@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/header")
+@RequestMapping("/v1/documents/header")
 public class DocumentHeaderController {
     private final DocumentsHeaderService documentsHeaderService;
 

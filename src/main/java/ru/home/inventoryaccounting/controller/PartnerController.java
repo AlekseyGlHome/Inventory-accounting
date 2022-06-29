@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/partner")
+@RequestMapping("/v1/partner")
 public class PartnerController {
     private final PartnerService partnerService;
 

@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/unit")
+@RequestMapping("/v1/unit")
 public class UnitController {
     private final UnitService unitService;
 
