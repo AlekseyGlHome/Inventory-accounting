@@ -40,7 +40,7 @@ public class DocumentBodyEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receipt_id")
-    private DocumentHeaderEntity receiptDocument;
+    private MovementEntity receiptDocument;
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "serial_document_body_id")

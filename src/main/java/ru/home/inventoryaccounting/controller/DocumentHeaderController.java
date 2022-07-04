@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.home.inventoryaccounting.api.request.DocumentHeaderRequest;
-import ru.home.inventoryaccounting.api.request.RequestParametersForDocuments;
+import ru.home.inventoryaccounting.api.request.RequestParametersForDocHeader;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.DocumentHeaderDto;
 import ru.home.inventoryaccounting.service.DocumentsHeaderService;
@@ -31,7 +31,7 @@ public class DocumentHeaderController {
             @RequestParam(name = "typeDok", defaultValue = "0") Integer typeDok,
             @RequestParam(name = "sortColumns", defaultValue = "date") String[] sortColumns,
             @RequestParam(name = "sortingDirection", defaultValue = "ASC") String sortingDirection) {
-        RequestParametersForDocuments parameter =
+        RequestParametersForDocHeader parameter =
                 RequestParameterUtil.getObjectOfRequestParametersOfDocumentHeader(offset, limit, query, intervalStart,
                         intervalEnd, partnerId, warehouseId, typeDok, sortColumns, sortingDirection);
         return ResponseEntity.ok(documentsHeaderService.selectQuery(parameter));

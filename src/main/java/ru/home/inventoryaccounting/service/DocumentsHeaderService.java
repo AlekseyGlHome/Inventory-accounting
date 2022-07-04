@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.home.inventoryaccounting.api.request.DocumentHeaderRequest;
-import ru.home.inventoryaccounting.api.request.RequestParametersForDocuments;
+import ru.home.inventoryaccounting.api.request.RequestParametersForDocHeader;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.DocumentHeaderDto;
 import ru.home.inventoryaccounting.domain.entity.DocumentHeaderEntity;
@@ -42,7 +42,7 @@ public class DocumentsHeaderService {
     /**
      * выбор документов по вхождению в номер документа
      */
-    public DtoResponse<DocumentHeaderDto> findByDocumentNumber(RequestParametersForDocuments request) {
+    public DtoResponse<DocumentHeaderDto> findByDocumentNumber(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);// getPageRequest(request.getOffset(), request.getLimit());
         Page<DocumentHeaderEntity> documentHeaders;
         if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
@@ -57,7 +57,7 @@ public class DocumentsHeaderService {
     /**
      * выбор документов за интервал по типу документа
      */
-    public DtoResponse<DocumentHeaderDto> findByDateAndTypeDok(RequestParametersForDocuments request) {
+    public DtoResponse<DocumentHeaderDto> findByDateAndTypeDok(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
         Page<DocumentHeaderEntity> documentHeaders;
         if (request.getTypeDok() > 0) {
@@ -73,7 +73,7 @@ public class DocumentsHeaderService {
     /**
      * выбор документов за интервал по типу документа и по складу
      */
-    public DtoResponse<DocumentHeaderDto> findByDateAndTypeDokAndWarehouse(RequestParametersForDocuments request) {
+    public DtoResponse<DocumentHeaderDto> findByDateAndTypeDokAndWarehouse(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
         Page<DocumentHeaderEntity> documentHeaders;
         if (request.getTypeDok() > 0 && request.getWarehouseId() > 0) {
@@ -90,7 +90,7 @@ public class DocumentsHeaderService {
     /**
      * выбор документов за интервал и по партнеру
      */
-    public DtoResponse<DocumentHeaderDto> findByDateAndPartner(RequestParametersForDocuments request) {
+    public DtoResponse<DocumentHeaderDto> findByDateAndPartner(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
         Page<DocumentHeaderEntity> documentHeaders;
         if (request.getPartnerId() > 0) {
@@ -106,7 +106,7 @@ public class DocumentsHeaderService {
     /**
      * выбор документов за интервал по партнеру и типу документа
      */
-    public DtoResponse<DocumentHeaderDto> findByDateAndPartnerAndTypeDok(RequestParametersForDocuments request) {
+    public DtoResponse<DocumentHeaderDto> findByDateAndPartnerAndTypeDok(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
         Page<DocumentHeaderEntity> documentHeaders;
         if (request.getPartnerId() > 0) {
@@ -126,7 +126,7 @@ public class DocumentsHeaderService {
     /**
      * выбор документов за интервал
      */
-    public DtoResponse<DocumentHeaderDto> findByDate(RequestParametersForDocuments request) {
+    public DtoResponse<DocumentHeaderDto> findByDate(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
         Page<DocumentHeaderEntity> documentHeaders;
         documentHeaders = documentHeaderRepository.findByDate(request.getIntervalStart(), request.getIntervalEnd(), pageRequest);
@@ -137,7 +137,7 @@ public class DocumentsHeaderService {
     /**
      * выбор документов за интервал и по складу
      */
-    public DtoResponse<DocumentHeaderDto> findByDateAndWarehouse(RequestParametersForDocuments request) {
+    public DtoResponse<DocumentHeaderDto> findByDateAndWarehouse(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
         Page<DocumentHeaderEntity> documentHeaders;
         if (request.getWarehouseId() > 0) {
@@ -159,7 +159,7 @@ public class DocumentsHeaderService {
     /**
      * выбор документов за интервал по партнеру и по складу
      */
-    public DtoResponse<DocumentHeaderDto> findByDateAndPartnerAndWarehouse(RequestParametersForDocuments request) {
+    public DtoResponse<DocumentHeaderDto> findByDateAndPartnerAndWarehouse(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
         Page<DocumentHeaderEntity> documentHeaders;
         if (request.getWarehouseId() > 0 && request.getPartnerId() > 0) {
@@ -176,7 +176,7 @@ public class DocumentsHeaderService {
     /**
      * общий запрос
      */
-    public DtoResponse<DocumentHeaderDto> selectQuery(RequestParametersForDocuments request) {
+    public DtoResponse<DocumentHeaderDto> selectQuery(RequestParametersForDocHeader request) {
 
         if (!request.getQuery().isEmpty() || !request.getQuery().isBlank()) {
             return findByDocumentNumber(request);// выборка по номеру документа

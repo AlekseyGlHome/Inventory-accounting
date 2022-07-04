@@ -1,7 +1,8 @@
 package ru.home.inventoryaccounting.util;
 
 import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
-import ru.home.inventoryaccounting.api.request.RequestParametersForDocuments;
+import ru.home.inventoryaccounting.api.request.RequestParametersForDocBody;
+import ru.home.inventoryaccounting.api.request.RequestParametersForDocHeader;
 import ru.home.inventoryaccounting.domain.enums.SortingDirection;
 
 import java.time.LocalDate;
@@ -23,10 +24,10 @@ public class RequestParameterUtil {
         return getObjectOfRequestParameters(offset, limit, query, 0, sortColumns, sortingDirection);
     }
 
-    public static RequestParametersForDocuments getObjectOfRequestParametersOfDocumentHeader(
+    public static RequestParametersForDocHeader getObjectOfRequestParametersOfDocumentHeader(
             int offset, int limit, String query, LocalDate intervalStart, LocalDate intervalEnd, Long partnerId,
             Long warehouseId, Integer typeDok, String[] sortColumns, String sortingDirection) {
-        return RequestParametersForDocuments.builder()
+        return RequestParametersForDocHeader.builder()
                 .offset(offset)
                 .limit(limit)
                 .query(query)
@@ -35,6 +36,15 @@ public class RequestParameterUtil {
                 .partnerId(partnerId)
                 .warehouseId(warehouseId)
                 .typeDok(typeDok)
+                .sortColumns(sortColumns)
+                .sortingDirection(SortingDirection.valueOf(sortingDirection))
+                .build();
+
+    }
+    public static RequestParametersForDocBody getObjectOfRequestParametersOfDocumentBody(
+            Long documentHeaderId, String[] sortColumns, String sortingDirection) {
+        return RequestParametersForDocBody.builder()
+                .documentHeaderId(documentHeaderId)
                 .sortColumns(sortColumns)
                 .sortingDirection(SortingDirection.valueOf(sortingDirection))
                 .build();

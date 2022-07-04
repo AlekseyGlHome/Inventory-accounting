@@ -13,9 +13,9 @@ import ru.home.inventoryaccounting.service.InventoryService;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@AutoConfigureMockMvc
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
+//@AutoConfigureMockMvc
 public class InventoryControllerTests {
     @Autowired
     private MockMvc mockMvc;
