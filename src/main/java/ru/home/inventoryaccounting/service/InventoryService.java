@@ -31,6 +31,8 @@ public class InventoryService {
 
     /**
      * выбрать инвентарь по идентификатору
+     * @param id
+     * @return 
      */
     public InventoryDto findById(long id) {
         Optional<InventoryEntity> inventory = inventoryRepository.findById(id);
@@ -40,6 +42,7 @@ public class InventoryService {
 
     /**
      * удалить (переменную is_deleted в true)
+     * @param id
      */
     public void deleteById(long id) {
         int countDelete = inventoryRepository.updateIsDeleteToTrueById(id);
@@ -50,6 +53,8 @@ public class InventoryService {
 
     /**
      * выбрать инвентарь по входждению в наименование
+     * @param request
+     * @return 
      */
     public DtoResponse<InventoryDto> findByNameLike(RequestParametersForDirectories request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
@@ -65,6 +70,8 @@ public class InventoryService {
 
     /**
      * выбрать инвентарь по входждению в наименование и идентификатору папки
+     * @param request
+     * @return 
      */
     public DtoResponse<InventoryDto> findByNameLikeAndFolderId(RequestParametersForDirectories request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
@@ -80,6 +87,8 @@ public class InventoryService {
 
     /**
      * выбрать инвентарь по идентификатору папки
+     * @param request
+     * @return 
      */
     public DtoResponse<InventoryDto> findByFolderId(RequestParametersForDirectories request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
@@ -95,6 +104,8 @@ public class InventoryService {
 
     /**
      * выбрать весь инвентарь
+     * @param request
+     * @return 
      */
     public DtoResponse<InventoryDto> findAll(RequestParametersForDirectories request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
