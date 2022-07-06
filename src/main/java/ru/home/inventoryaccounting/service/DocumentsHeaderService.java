@@ -42,7 +42,9 @@ public class DocumentsHeaderService {
     }
 
     /**
-     * выбор документов по вхождению в номер документа
+     * выбор документов по вхождению в номер документа 
+     * @param request
+     * @return 
      */
     public DtoResponse<DocumentHeaderDto> findByDocumentNumber(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);// getPageRequest(request.getOffset(), request.getLimit());
