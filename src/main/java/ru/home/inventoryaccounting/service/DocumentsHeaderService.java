@@ -32,6 +32,8 @@ public class DocumentsHeaderService {
 
     /**
      * выбор документа по идентификатору
+     * @param id
+     * @return 
      */
     public DocumentHeaderDto findById(long id) {
         Optional<DocumentHeaderEntity> documentsHeader = documentHeaderRepository.findById(id);
