@@ -30,6 +30,8 @@ public class InventoryFolderService {
 
     /**
      * выбрать папку по идентификатору
+     * @param id
+     * @return 
      */
     public InventoryFolderDto findById(long id) {
         Optional<InventoryFolderEntity> inventoryFolder = inventoryFolderRepository.findById(id);

@@ -60,6 +60,8 @@ public class DocumentsHeaderService {
 
     /**
      * выбор документов за интервал по типу документа
+     * @param request
+     * @return 
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndTypeDok(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -76,6 +78,8 @@ public class DocumentsHeaderService {
 
     /**
      * выбор документов за интервал по типу документа и по складу
+     * @param request
+     * @return 
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndTypeDokAndWarehouse(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -93,6 +97,8 @@ public class DocumentsHeaderService {
 
     /**
      * выбор документов за интервал и по партнеру
+     * @param request
+     * @return 
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndPartner(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -109,6 +115,8 @@ public class DocumentsHeaderService {
 
     /**
      * выбор документов за интервал по партнеру и типу документа
+     * @param request
+     * @return 
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndPartnerAndTypeDok(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -129,6 +137,8 @@ public class DocumentsHeaderService {
 
     /**
      * выбор документов за интервал
+     * @param request
+     * @return 
      */
     public DtoResponse<DocumentHeaderDto> findByDate(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -140,6 +150,8 @@ public class DocumentsHeaderService {
 
     /**
      * выбор документов за интервал и по складу
+     * @param request
+     * @return 
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndWarehouse(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -162,6 +174,8 @@ public class DocumentsHeaderService {
 
     /**
      * выбор документов за интервал по партнеру и по складу
+     * @param request
+     * @return 
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndPartnerAndWarehouse(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -179,6 +193,8 @@ public class DocumentsHeaderService {
 
     /**
      * общий запрос
+     * @param request
+     * @return 
      */
     public DtoResponse<DocumentHeaderDto> selectQuery(RequestParametersForDocHeader request) {
 
@@ -204,6 +220,7 @@ public class DocumentsHeaderService {
 
     /**
      * удалить (переменную is_deleted в true)
+     * @param id
      */
     public void deleteById(long id) {
         int countDelete = documentHeaderRepository.updateIsDeleteToTrueById(id);
