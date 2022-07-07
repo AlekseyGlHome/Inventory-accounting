@@ -37,11 +37,11 @@ public class DocumentsBodyService {
     /**
      * выбор документа по идентификатору
      */
-    //public DocumentBodyDto findById(long id) {
-    //    Optional<DocumentBodyEntity> documentBody = documentBodyRepository.findById(id);
-    //    return documentBody.map(mapperUtiliti::mapToDocumentHeaderDto)
-    //            .orElseThrow(() -> new NotFoundException(MESSAGE_NOT_FOUND));
-    //}
+//    public DocumentBodyDto findById(long id) {
+//        Optional<DocumentBodyEntity> documentBody = documentBodyRepository.findById(id);
+//        return documentBody.map(mapperUtiliti::mapToDocumentHeaderDto)
+//                .orElseThrow(() -> new NotFoundException(MESSAGE_NOT_FOUND));
+//    }
 
     /**
      * выбор документов по вхождению в номер документа

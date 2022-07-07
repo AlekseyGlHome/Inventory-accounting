@@ -241,7 +241,12 @@ public class DocumentsHeaderService {
         return mapperUtiliti.mapToDocumentHeaderDto(documentHeaderRepository.save(documentHeaderEntity));
     }
 
-    // заполнить документ из запросса
+    /**
+     * заполнить документ из запросса
+     * @param documentHeaderEntity
+     * @param request
+     * @return DocumentHeaderEntity
+     */
     private DocumentHeaderEntity fillDocumentHeader(DocumentHeaderEntity documentHeaderEntity, DocumentHeaderRequest request) {
         documentHeaderEntity.setAmount(request.getAmount());
         documentHeaderEntity.setComment(request.getComment());
