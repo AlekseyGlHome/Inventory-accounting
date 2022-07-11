@@ -1,32 +1,16 @@
 package ru.home.inventoryaccounting.service;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-import ru.home.inventoryaccounting.api.request.DocumentHeaderRequest;
-import ru.home.inventoryaccounting.api.request.RequestParametersForDocBody;
-import ru.home.inventoryaccounting.api.request.RequestParametersForDocHeader;
-import ru.home.inventoryaccounting.api.response.DtoResponse;
-import ru.home.inventoryaccounting.domain.dto.DocumentBodyDto;
-import ru.home.inventoryaccounting.domain.dto.DocumentHeaderDto;
-import ru.home.inventoryaccounting.domain.entity.DocumentBodyEntity;
-import ru.home.inventoryaccounting.domain.entity.DocumentHeaderEntity;
-import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
-import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
-import ru.home.inventoryaccounting.exception.NotFoundException;
-import ru.home.inventoryaccounting.repository.DocumentBodyRepository;
-import ru.home.inventoryaccounting.repository.DocumentHeaderRepository;
-import ru.home.inventoryaccounting.util.PageRequestUtil;
-
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import ru.home.inventoryaccounting.domain.entity.DocumentBodyEntity;
+import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
+import ru.home.inventoryaccounting.repository.DocumentBodyRepository;
 
 @Service
 @RequiredArgsConstructor
 public class DocumentsBodyService {
+
     private final String MESSAGE_NOT_FOUND = "Данные по документу с Id: %s не найдены.";
     private final String MESSAGE_BAD_REQUESR = "Неверный параметр запроса";
 
@@ -34,6 +18,14 @@ public class DocumentsBodyService {
 
     private final MapperUtiliti mapperUtiliti;
 
+    
+    public Collection<DocumentBodyEntity> save(Collection<DocumentBodyEntity> documentBodyEntitys){
+        return documentBodyRepository.saveAll(documentBodyEntitys);
+    }
+    
+    public void delete(Collection<DocumentBodyEntity> bodyEntitys){
+        documentBodyRepository.deleteAll(bodyEntitys);
+    }
     /**
      * выбор документа по идентификатору
      */
@@ -42,7 +34,6 @@ public class DocumentsBodyService {
 //        return documentBody.map(mapperUtiliti::mapToDocumentHeaderDto)
 //                .orElseThrow(() -> new NotFoundException(MESSAGE_NOT_FOUND));
 //    }
-
     /**
      * выбор документов по вхождению в номер документа
      */
@@ -57,7 +48,6 @@ public class DocumentsBodyService {
 //        return new DtoResponse<>(documentHeaders.getTotalElements(),
 //                mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
 //    }
-
     /**
      * удалить (переменную is_deleted в true)
      */
@@ -67,19 +57,16 @@ public class DocumentsBodyService {
 //            throw new NotFoundException(String.format(MESSAGE_NOT_FOUND, id));
 //        }
 //    }
-
     // добавить документ
 //    public DocumentHeaderDto add(DocumentHeaderRequest request) {
 //        DocumentHeaderEntity documentHeaderEntity = fillDocumentHeader(new DocumentHeaderEntity(), request);
 //        return mapperUtiliti.mapToDocumentHeaderDto(documentHeaderRepository.save(documentHeaderEntity));
 //    }
-
     // обновить документ
 //    public DocumentHeaderDto update(long id, DocumentHeaderRequest request) {
 //        DocumentHeaderEntity documentHeaderEntity = fillDocumentHeader(mapperUtiliti.mapToDocumentHeaderEntity(findById(id)), request);
 //        return mapperUtiliti.mapToDocumentHeaderDto(documentHeaderRepository.save(documentHeaderEntity));
 //    }
-
     // заполнить документ из запросса
 //    private DocumentHeaderEntity fillDocumentHeader(DocumentHeaderEntity documentHeaderEntity, DocumentHeaderRequest request) {
 //        documentHeaderEntity.setAmount(request.getAmount());
@@ -98,6 +85,4 @@ public class DocumentsBodyService {
 //
 //        return documentHeaderEntity;
 //    }
-
-
 }

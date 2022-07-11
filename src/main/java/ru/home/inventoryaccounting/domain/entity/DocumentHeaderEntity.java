@@ -63,7 +63,9 @@ public class DocumentHeaderEntity {
 //    @OneToMany(mappedBy = "documentHeader", fetch = FetchType.LAZY)
 //    private Collection<DocumentBodyEntity> documentBody;
 
-    //@OneToMany(mappedBy = "receiptDocument",fetch = FetchType.LAZY)
-    //private Collection<DocumentBodyEntity> expenseDocuments = new ArrayList<>();
+    @OneToMany(mappedBy = "documentHeader", fetch = FetchType.LAZY)
+    private Collection<DocumentBodyEntity> bodyEntitys;
+//    @OneToMany(mappedBy = "receiptDocument",fetch = FetchType.LAZY)
+//    private Collection<DocumentBodyEntity> expenseDocuments = new ArrayList<>();
 
 }

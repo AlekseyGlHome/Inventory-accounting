@@ -1,32 +1,31 @@
-package ru.home.inventoryaccounting.api.request;
+package ru.home.inventoryaccounting.domain.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collection;
-import ru.home.inventoryaccounting.domain.dto.DocumentBodyDto;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DocumentHeaderRequest {
+public class DocumentHeaderAndBodyDto implements DtoInterface {
     private Long id;
     private BigDecimal amount;
     private String comment;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     private LocalDate date;
     private Boolean isDeleted;
     private String documentNumber;
     private Boolean isRegistered;
-    private Long partnerId;
-    private Long userId;
-    private Long warehouseId;
-    private Long warehouseRecipientId;
+    private PartnerDto partner;
+    private UserDto user;
+    private WarehouseDto warehouse;
+    private WarehouseDto warehouseRecipient;
     private Integer typeDok;
-    private Collection<DocumentBodyRequest> bodyDto;
+    private Collection<DocumentBodyDto> documentBody;
+
 }

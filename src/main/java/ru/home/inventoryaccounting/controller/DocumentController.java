@@ -7,17 +7,18 @@ import ru.home.inventoryaccounting.api.request.DocumentHeaderRequest;
 import ru.home.inventoryaccounting.api.request.RequestParametersForDocHeader;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.DocumentHeaderDto;
-import ru.home.inventoryaccounting.service.DocumentsHeaderService;
+import ru.home.inventoryaccounting.service.DocumentService;
 import ru.home.inventoryaccounting.util.RequestParameterUtil;
 
 import java.time.LocalDate;
 import java.util.List;
+import ru.home.inventoryaccounting.domain.dto.DocumentHeaderAndBodyDto;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/documents/header")
-public class DocumentHeaderController {
-    private final DocumentsHeaderService documentsHeaderService;
+@RequestMapping("/v1/documents")
+public class DocumentController {
+    private final DocumentService documentsHeaderService;
 
     @GetMapping()
     public ResponseEntity<DtoResponse<DocumentHeaderDto>> getByAllOrFilter(
@@ -38,18 +39,18 @@ public class DocumentHeaderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DtoResponse<DocumentHeaderDto>> getById(@PathVariable long id) {
-        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(documentsHeaderService.findById(id))));
+    public ResponseEntity<DtoResponse<DocumentHeaderAndBodyDto>> getById(@PathVariable long id) {
+        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(documentsHeaderService.getFullById(id))));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DtoResponse<DocumentHeaderDto>> update(@PathVariable long id,
+    public ResponseEntity<DtoResponse<DocumentHeaderAndBodyDto>> update(@PathVariable long id,
                                                           @RequestBody DocumentHeaderRequest request) {
         return ResponseEntity.ok(new DtoResponse<>(1L, List.of(documentsHeaderService.update(id, request))));
     }
 
     @PostMapping()
-    public ResponseEntity<DtoResponse<DocumentHeaderDto>> add(@RequestBody DocumentHeaderRequest request) {
+    public ResponseEntity<DtoResponse<DocumentHeaderAndBodyDto>> add(@RequestBody DocumentHeaderRequest request) {
         return ResponseEntity.ok(new DtoResponse<>(1L, List.of(documentsHeaderService.add(request))));
     }
 

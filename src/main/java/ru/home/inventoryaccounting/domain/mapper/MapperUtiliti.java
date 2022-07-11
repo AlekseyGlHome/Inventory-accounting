@@ -8,13 +8,18 @@ import ru.home.inventoryaccounting.domain.entity.*;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import ru.home.inventoryaccounting.api.request.DocumentBodyRequest;
+import ru.home.inventoryaccounting.service.InventoryService;
 
 @Component
 @NoArgsConstructor
 public class MapperUtiliti {
-
+    
     /**
      * Инвентарь Из Entity в Dto
+     * @param inventoryEntity
+     * @return 
      */
     public InventoryDto mapToInventoryDto(InventoryEntity inventoryEntity) {
         return InventoryDto.builder()
@@ -28,6 +33,8 @@ public class MapperUtiliti {
 
     /**
      * Инвентарь Из Dto в Entity
+     * @param inventoryDto
+     * @return 
      */
     public InventoryEntity mapToInventoryEntity(InventoryDto inventoryDto) {
         InventoryEntity inventoryEntity = new InventoryEntity();
@@ -41,6 +48,8 @@ public class MapperUtiliti {
 
     /**
      * Папка инвентаря Из Entity в Dto
+     * @param inventoryFolderEntity
+     * @return 
      */
     public InventoryFolderDto mapToInventoryFolderDto(InventoryFolderEntity inventoryFolderEntity) {
         return InventoryFolderDto.builder()
@@ -52,6 +61,8 @@ public class MapperUtiliti {
 
     /**
      * Папка инвентаря Из Dto в Entity
+     * @param inventoryFolderDto
+     * @return 
      */
     public InventoryFolderEntity mapToInventoryFolderEntity(InventoryFolderDto inventoryFolderDto) {
         InventoryFolderEntity inventoryFolderEntity = new InventoryFolderEntity();
@@ -63,6 +74,8 @@ public class MapperUtiliti {
 
     /**
      * Единица измерения Из Entity в Dto
+     * @param unitEntity
+     * @return 
      */
     public UnitDto mapToUnitDto(UnitEntity unitEntity) {
         return UnitDto.builder()
@@ -74,6 +87,8 @@ public class MapperUtiliti {
 
     /**
      * Единица измерения Из Dto в Entity
+     * @param unitDto
+     * @return 
      */
     public UnitEntity mapToUnitEntity(UnitDto unitDto) {
         UnitEntity unitEntity = new UnitEntity();
@@ -85,6 +100,8 @@ public class MapperUtiliti {
 
     /**
      * Склад Из Entity в Dto
+     * @param warehouseEntity
+     * @return 
      */
     public WarehouseDto mapToWarehouseDto(WarehouseEntity warehouseEntity) {
         return WarehouseDto.builder()
@@ -98,6 +115,8 @@ public class MapperUtiliti {
 
     /**
      * Склад Из Dto в Entity
+     * @param warehouseDto
+     * @return 
      */
     public WarehouseEntity mapToWarehouseEntity(WarehouseDto warehouseDto) {
         WarehouseEntity warehouseEntity = new WarehouseEntity();
@@ -111,6 +130,8 @@ public class MapperUtiliti {
 
     /**
      * Пользователь Из Entity в Dto
+     * @param userEntity
+     * @return 
      */
     public UserDto mapToUserDto(UserEntity userEntity) {
         return UserDto.builder()
@@ -123,6 +144,8 @@ public class MapperUtiliti {
 
     /**
      * Пользователь Из Dto в Entity
+     * @param userDto
+     * @return 
      */
     public UserEntity mapToUserEntity(UserDto userDto) {
         UserEntity userEntity = new UserEntity();
@@ -135,6 +158,8 @@ public class MapperUtiliti {
 
     /**
      * Партнер Из Entity в Dto
+     * @param partnerEntity
+     * @return 
      */
     public PartnerDto mapToPartnerDto(PartnerEntity partnerEntity) {
         return PartnerDto.builder()
@@ -146,6 +171,8 @@ public class MapperUtiliti {
 
     /**
      * Партнер Из Dto в Entity
+     * @param partnerDto
+     * @return 
      */
     public PartnerEntity mapToPartnerEntity(PartnerDto partnerDto) {
         PartnerEntity partnerEntity = new PartnerEntity();
@@ -157,6 +184,8 @@ public class MapperUtiliti {
 
     /**
      * Документ шапка Из Entity в Dto
+     * @param documentHeaderEntity
+     * @return 
      */
     public DocumentHeaderDto mapToDocumentHeaderDto(DocumentHeaderEntity documentHeaderEntity) {
         DocumentHeaderDto documentHeaderDto = DocumentHeaderDto.builder()
@@ -181,7 +210,38 @@ public class MapperUtiliti {
     }
 
     /**
+     * Документ шапка Из Entity в Dto
+     * @param documentHeaderEntity
+     * @return 
+     */
+    public DocumentHeaderAndBodyDto mapToDocumentHeaderAndBodyDto(DocumentHeaderEntity documentHeaderEntity) {
+        DocumentHeaderAndBodyDto documentHeaderAndBodyDto = DocumentHeaderAndBodyDto.builder()
+                .id(documentHeaderEntity.getId())
+                .amount(documentHeaderEntity.getAmount())
+                .comment(documentHeaderEntity.getComment())
+                .date(documentHeaderEntity.getDate())
+                .isDeleted(documentHeaderEntity.getIsDeleted())
+                .documentNumber(documentHeaderEntity.getDocumentNumber())
+                .isRegistered(documentHeaderEntity.getIsRegistered())
+                .partner(mapToPartnerDto(documentHeaderEntity.getPartner()))
+                .user(mapToUserDto(documentHeaderEntity.getUser()))
+                .warehouse(mapToWarehouseDto(documentHeaderEntity.getWarehouse()))
+//                .warehouseRecipient(mapToWarehouseDto(documentHeaderEntity.getWarehouseRecipient()))
+                .documentBody(mapToCollectionDocumentBodyDto(documentHeaderEntity.getBodyEntitys()))
+                .typeDok(documentHeaderEntity.getTypeDok())
+                .build(); 
+        if (documentHeaderEntity.getWarehouseRecipient() != null) {
+            documentHeaderAndBodyDto.setWarehouseRecipient(mapToWarehouseDto(documentHeaderEntity.getWarehouseRecipient()));
+        }
+        //documentHeaderAndBodyDto.setDocumentBody(mapToCollectionDocumentBodyDto(documentHeaderEntity.getBodyEntitys()));
+        return documentHeaderAndBodyDto;
+    }
+    
+    
+    /**
      * Документ шапка Из Dto в Entity
+     * @param documentHeaderDto
+     * @return 
      */
     public DocumentHeaderEntity mapToDocumentHeaderEntity(DocumentHeaderDto documentHeaderDto) {
         DocumentHeaderEntity documentHeaderEntity = new DocumentHeaderEntity();
@@ -207,16 +267,20 @@ public class MapperUtiliti {
 
     /**
      * Документ коллекцию тело Из Entity в Dto
+     * @param collection
+     * @return 
      */
-    public Collection<DocumentBodyDto> mapToCollectionDocumentBodyDto(Collection<DocumentBodyEntity> collection,
-                                                                      DocumentHeaderDto documentHeaderDto) {
+    public Collection<DocumentBodyDto> mapToCollectionDocumentBodyDto(Collection<DocumentBodyEntity> collection) {
         return collection.stream()
-                .map((d) -> this.mapToDocumentBodyDto(d, documentHeaderDto))
+                .map((d) -> this.mapToDocumentBodyDto(d))
                 .collect(Collectors.toList());
     }
 
     /**
      * Документ коллекцию тело Из Dto в Entity
+     * @param collection
+     * @param documentHeaderEntity
+     * @return 
      */
     public Collection<DocumentBodyEntity> mapToCollectionDocumentBodyEntity(Collection<DocumentBodyDto> collection,
                                                                             DocumentHeaderEntity documentHeaderEntity) {
@@ -228,6 +292,8 @@ public class MapperUtiliti {
 
     /**
      * Документ коллекцию заголовок Из Entity в Dto
+     * @param collection
+     * @return 
      */
     public Collection<DocumentHeaderDto> mapToCollectionDocumentHeaderDto(Collection<DocumentHeaderEntity> collection) {
         return collection.stream()
@@ -237,6 +303,8 @@ public class MapperUtiliti {
 
     /**
      * Документ коллекцию Папок Инвентаря Из Entity в Dto
+     * @param collection
+     * @return 
      */
     public Collection<InventoryFolderDto> mapToCollectionInventoryFolderDto(Collection<InventoryFolderEntity> collection) {
         return collection.stream()
@@ -246,6 +314,8 @@ public class MapperUtiliti {
 
     /**
      * Документ коллекцию Инвентаря Из Entity в Dto
+     * @param collection
+     * @return 
      */
     public Collection<InventoryDto> mapToCollectionInventoryDto(Collection<InventoryEntity> collection) {
         return collection.stream()
@@ -255,6 +325,8 @@ public class MapperUtiliti {
 
     /**
      * Документ коллекцию Партнеров Из Entity в Dto
+     * @param collection
+     * @return 
      */
     public Collection<PartnerDto> mapToCollectionPartnerDto(Collection<PartnerEntity> collection) {
         return collection.stream()
@@ -264,6 +336,8 @@ public class MapperUtiliti {
 
     /**
      * Документ коллекцию Единиц измерения Из Entity в Dto
+     * @param collection
+     * @return 
      */
     public Collection<UnitDto> mapToCollectionUnitDto(Collection<UnitEntity> collection) {
         return collection.stream()
@@ -273,6 +347,8 @@ public class MapperUtiliti {
 
     /**
      * Документ коллекцию Пользователей Из Entity в Dto
+     * @param collection
+     * @return 
      */
     public Collection<UserDto> mapToCollectionUserDto(Collection<UserEntity> collection) {
         return collection.stream()
@@ -283,6 +359,8 @@ public class MapperUtiliti {
 
     /**
      * Документ коллекцию Складов Из Entity в Dto
+     * @param collection
+     * @return 
      */
     public Collection<WarehouseDto> mapToCollectionWarehouseDto(Collection<WarehouseEntity> collection) {
         return collection.stream()
@@ -293,8 +371,10 @@ public class MapperUtiliti {
 
     /**
      * Документ тело Из Entity в Dto
+     * @param documentBodyEntity
+     * @return 
      */
-    public DocumentBodyDto mapToDocumentBodyDto(DocumentBodyEntity documentBodyEntity, DocumentHeaderDto documentHeaderDto) {
+    public DocumentBodyDto mapToDocumentBodyDto(DocumentBodyEntity documentBodyEntity) {
         return DocumentBodyDto.builder()
                 .id(documentBodyEntity.getId())
                 .amount(documentBodyEntity.getAmount())
@@ -305,13 +385,16 @@ public class MapperUtiliti {
                 //.receiptDocument(mapToDocumentHeaderDto(documentBodyEntity.getReceiptDocument()))
                 //.serialDocumentBody(mapToDocumentBodyDto(documentBodyEntity.getSerialDocumentBody(),
                 //        mapToDocumentHeaderDto(documentBodyEntity.getSerialDocumentBody().getDocumentHeader())))
-                .documentHeader(documentHeaderDto)
+//                .documentHeader(documentHeaderDto)
                 .build();
     }
 
 
     /**
      * Документ тело Из Dto в Entity
+     * @param documentBodyDto
+     * @param documentHeaderEntity
+     * @return 
      */
     public DocumentBodyEntity mapToDocumentBodyEntity(DocumentBodyDto documentBodyDto, DocumentHeaderEntity documentHeaderEntity) {
         DocumentBodyEntity documentBodyEntity = new DocumentBodyEntity();
@@ -321,6 +404,22 @@ public class MapperUtiliti {
         documentBodyEntity.setPrice(documentBodyDto.getPrice());
         documentBodyEntity.setQuantity(documentBodyDto.getQuantity());
         documentBodyEntity.setInventory(mapToInventoryEntity(documentBodyDto.getInventory()));
+        //documentBodyEntity.setReceiptDocument(mapToDocumentHeaderEntity(documentBodyDto.getReceiptDocument()));
+        //documentBodyEntity.setSerialDocumentBody(mapToDocumentBodyEntity(documentBodyDto.getSerialDocumentBody(),
+        //        mapToDocumentHeaderEntity(documentBodyDto.getSerialDocumentBody().getDocumentHeader())));
+        documentBodyEntity.setDocumentHeader(documentHeaderEntity);
+
+        return documentBodyEntity;
+    }
+    
+    public DocumentBodyEntity mapToDocumentBodyEntity(DocumentBodyRequest documentBodyRequest, InventoryDto inventoryDto, DocumentHeaderEntity documentHeaderEntity) {
+        DocumentBodyEntity documentBodyEntity = new DocumentBodyEntity();
+        documentBodyEntity.setId(documentBodyRequest.getId());
+        documentBodyEntity.setAmount(documentBodyRequest.getAmount());
+        documentBodyEntity.setIsDeleted(documentBodyRequest.getIsDeleted());
+        documentBodyEntity.setPrice(documentBodyRequest.getPrice());
+        documentBodyEntity.setQuantity(documentBodyRequest.getQuantity());
+        documentBodyEntity.setInventory(mapToInventoryEntity(inventoryDto));
         //documentBodyEntity.setReceiptDocument(mapToDocumentHeaderEntity(documentBodyDto.getReceiptDocument()));
         //documentBodyEntity.setSerialDocumentBody(mapToDocumentBodyEntity(documentBodyDto.getSerialDocumentBody(),
         //        mapToDocumentHeaderEntity(documentBodyDto.getSerialDocumentBody().getDocumentHeader())));
