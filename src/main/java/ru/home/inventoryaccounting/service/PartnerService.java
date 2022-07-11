@@ -32,9 +32,9 @@ public class PartnerService {
      * выбор партнера по идентификатору
      *
      */
-    public PartnerDto findById(long id) {
+    public PartnerEntity findById(long id) {
         Optional<PartnerEntity> partner = partnerRepository.findById(id);
-        return partner.map(mapperUtiliti::mapToPartnerDto)
+        return partner
                 .orElseThrow(() -> new NotFoundException(String.format(MESSAGE_NOT_FOUND, id)));
     }
 
@@ -87,7 +87,7 @@ public class PartnerService {
 
     // обновить карточку
     public PartnerDto update(long id, PartnerRequest request) {
-        PartnerEntity partnerEntity = fill(mapperUtiliti.mapToPartnerEntity(findById(id)), request);
+        PartnerEntity partnerEntity = fill(findById(id), request);
         return mapperUtiliti.mapToPartnerDto(partnerRepository.save(partnerEntity));
     }
 

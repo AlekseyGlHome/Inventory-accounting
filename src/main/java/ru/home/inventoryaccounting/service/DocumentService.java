@@ -264,12 +264,12 @@ public class DocumentService {
     public DocumentHeaderAndBodyDto update(long id, DocumentHeaderRequest request) {
         DocumentHeaderEntity oldHeaderEntity = getById(id);
         documentsBodyService.delete(oldHeaderEntity.getBodyEntitys());
-        DocumentHeaderEntity newHeaderEntity = 
-                fillDocumentHeader(oldHeaderEntity, request);
-        documentHeaderRepository.save(newHeaderEntity);
-        
-        documentsBodyService.save(newHeaderEntity.getBodyEntitys());
-        return mapperUtiliti.mapToDocumentHeaderAndBodyDto(newHeaderEntity);
+        //DocumentHeaderEntity newHeaderEntity =
+        oldHeaderEntity = fillDocumentHeader(oldHeaderEntity, request);
+        documentsBodyService.save(oldHeaderEntity.getBodyEntitys());
+        documentHeaderRepository.save(oldHeaderEntity);
+
+        return mapperUtiliti.mapToDocumentHeaderAndBodyDto(oldHeaderEntity);
     }
 
     /**
@@ -285,11 +285,11 @@ public class DocumentService {
         documentHeaderEntity.setIsDeleted(request.getIsDeleted());
         documentHeaderEntity.setDocumentNumber(request.getDocumentNumber());
         documentHeaderEntity.setIsRegistered(request.getIsRegistered());
-        documentHeaderEntity.setPartner(mapperUtiliti.mapToPartnerEntity(partnerService.findById(request.getPartnerId())));
-        documentHeaderEntity.setUser(mapperUtiliti.mapToUserEntity(userService.findById(request.getUserId())));
-        documentHeaderEntity.setWarehouse(mapperUtiliti.mapToWarehouseEntity(warehouseService.findById(request.getWarehouseId())));
+        documentHeaderEntity.setPartner(partnerService.findById(request.getPartnerId()));
+        documentHeaderEntity.setUser(userService.findById(request.getUserId()));
+        documentHeaderEntity.setWarehouse(warehouseService.findById(request.getWarehouseId()));
         if (request.getWarehouseRecipientId() != null) {
-            documentHeaderEntity.setWarehouseRecipient(mapperUtiliti.mapToWarehouseEntity(warehouseService.findById(request.getWarehouseRecipientId())));
+            documentHeaderEntity.setWarehouseRecipient(warehouseService.findById(request.getWarehouseRecipientId()));
         }
         documentHeaderEntity.setTypeDok(request.getTypeDok());
         documentHeaderEntity.setBodyEntitys(fillDocumentBody(request,documentHeaderEntity));

@@ -31,9 +31,9 @@ public class UserService {
     /**
      * выбор пользователя по идентификатору
      */
-    public UserDto findById(long id) {
+    public UserEntity findById(long id) {
         Optional<UserEntity> user = userRepository.findById(id);
-        return user.map(mapperUtiliti::mapToUserDto)
+        return user
                 .orElseThrow(() -> new NotFoundException(String.format(MESSAGE_NOT_FOUND, id)));
     }
 
@@ -90,7 +90,7 @@ public class UserService {
 
     // обновить карточку
     public UserDto update(long id, UserRequest request) {
-        UserEntity userEntity = fillInventory(mapperUtiliti.mapToUserEntity(findById(id)), request);
+        UserEntity userEntity = fillInventory(findById(id), request);
         return mapperUtiliti.mapToUserDto(userRepository.save(userEntity));
     }
 

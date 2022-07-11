@@ -7,6 +7,7 @@ import ru.home.inventoryaccounting.api.request.PartnerRequest;
 import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.PartnerDto;
+import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.service.PartnerService;
 import ru.home.inventoryaccounting.util.RequestParameterUtil;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @RequestMapping("/v1/partner")
 public class PartnerController {
     private final PartnerService partnerService;
+    private final MapperUtiliti mapperUtiliti;
 
     @GetMapping()
     public ResponseEntity<DtoResponse<PartnerDto>> getByAllOrFilter(
@@ -31,7 +33,7 @@ public class PartnerController {
 
     @GetMapping("/{id}")
     public ResponseEntity<DtoResponse<PartnerDto>> getById(@PathVariable long id) {
-        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(partnerService.findById(id))));
+        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(mapperUtiliti.mapToPartnerDto(partnerService.findById(id)))));
     }
 
     @PutMapping("/{id}")

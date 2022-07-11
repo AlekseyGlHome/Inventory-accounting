@@ -30,9 +30,9 @@ public class WarehouseService {
     /**
      * выбор склада по идентификатору
      */
-    public WarehouseDto findById(long id) {
+    public WarehouseEntity findById(long id) {
         Optional<WarehouseEntity> warehouse = warehouseRepository.findById(id);
-        return warehouse.map(mapperUtiliti::mapToWarehouseDto)
+        return warehouse
                 .orElseThrow(() -> new NotFoundException(String.format(MESSAGE_NOT_FOUND, id)));
     }
 
@@ -80,7 +80,7 @@ public class WarehouseService {
 
     // обновить карточку
     public WarehouseDto update(long id, WarehouseRequest request) {
-        WarehouseEntity warehouseEntity = fillInventory(mapperUtiliti.mapToWarehouseEntity(findById(id)), request);
+        WarehouseEntity warehouseEntity = fillInventory(findById(id), request);
         return mapperUtiliti.mapToWarehouseDto(warehouseRepository.save(warehouseEntity));
     }
 

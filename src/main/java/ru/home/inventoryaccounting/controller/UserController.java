@@ -7,6 +7,7 @@ import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.request.UserRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.UserDto;
+import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.service.UserService;
 import ru.home.inventoryaccounting.util.RequestParameterUtil;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @RequestMapping("/v1/user")
 public class UserController {
     private final UserService userService;
+    private final MapperUtiliti mapperUtiliti;
 
     @GetMapping()
     public ResponseEntity<DtoResponse<UserDto>> getByAllOrFilter(
@@ -32,7 +34,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<DtoResponse<UserDto>> getById(@PathVariable long id) {
-        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(userService.findById(id))));
+        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(mapperUtiliti.mapToUserDto(userService.findById(id)))));
     }
 
     @PutMapping("/{id}")
