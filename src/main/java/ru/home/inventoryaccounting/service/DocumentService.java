@@ -1,26 +1,25 @@
 package ru.home.inventoryaccounting.service;
 
-import java.util.Collection;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.home.inventoryaccounting.api.request.DocumentHeaderRequest;
 import ru.home.inventoryaccounting.api.request.RequestParametersForDocHeader;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
+import ru.home.inventoryaccounting.domain.dto.DocumentHeaderAndBodyDto;
 import ru.home.inventoryaccounting.domain.dto.DocumentHeaderDto;
+import ru.home.inventoryaccounting.domain.entity.DocumentBodyEntity;
 import ru.home.inventoryaccounting.domain.entity.DocumentHeaderEntity;
-import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.DocumentHeaderRepository;
 import ru.home.inventoryaccounting.util.PageRequestUtil;
 
+import java.util.Collection;
 import java.util.Optional;
-import ru.home.inventoryaccounting.domain.dto.DocumentBodyDto;
-import ru.home.inventoryaccounting.domain.dto.DocumentHeaderAndBodyDto;
-import ru.home.inventoryaccounting.domain.entity.DocumentBodyEntity;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,41 +32,32 @@ public class DocumentService {
     private final PartnerService partnerService;
     private final UserService userService;
     private final WarehouseService warehouseService;
-    private final MapperUtiliti mapperUtiliti;
-    private final InventoryService inventoryService; 
+    private final InventoryService inventoryService;
     private final DocumentsBodyService documentsBodyService;
+
     /**
      * выбор заголовка документа по идентификатору
-     * @param id
-     * @return 
+     *
      */
-//    public DocumentHeaderDto getById(long id) {
-//        Optional<DocumentHeaderEntity> documentsHeader = documentHeaderRepository.findById(id);
-//        return documentsHeader.map(mapperUtiliti::mapToDocumentHeaderDto)
-//                .orElseThrow(() -> new NotFoundException(MESSAGE_NOT_FOUND));
-//    }
-    
     public DocumentHeaderEntity getById(long id) {
         Optional<DocumentHeaderEntity> documentsHeader = documentHeaderRepository.findById(id);
-        return documentsHeader.orElseThrow(() -> new NotFoundException(MESSAGE_NOT_FOUND));
+        return documentsHeader.orElseThrow(() -> new NotFoundException(String.format(MESSAGE_NOT_FOUND, id)));
     }
-    
+
     /**
      * выбор документа с телом по идентификатору
-     * @param id
-     * @return 
+     *
      */
     public DocumentHeaderAndBodyDto getFullById(long id) {
         Optional<DocumentHeaderEntity> documentsHeader = documentHeaderRepository.findById(id);
-        return documentsHeader.map(mapperUtiliti::mapToDocumentHeaderAndBodyDto)
-                .orElseThrow(() -> new NotFoundException(MESSAGE_NOT_FOUND));
+        return documentsHeader.map(DocumentHeaderAndBodyDto::new)
+                .orElseThrow(() -> new NotFoundException(String.format(MESSAGE_NOT_FOUND, id)));
     }
-    
+
 
     /**
-     * выбор заголовков документов по вхождению в номер документа 
-     * @param request
-     * @return 
+     * выбор заголовков документов по вхождению в номер документа
+     *
      */
     public DtoResponse<DocumentHeaderDto> findByDocumentNumber(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);// getPageRequest(request.getOffset(), request.getLimit());
@@ -78,13 +68,12 @@ public class DocumentService {
             throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
         return new DtoResponse<>(documentHeaders.getTotalElements(),
-                mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
+                documentHeaders.getContent().stream().map(DocumentHeaderDto::new).collect(Collectors.toList()));
     }
 
     /**
      * выбор заголовков документов за интервал по типу документа
-     * @param request
-     * @return 
+     *
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndTypeDok(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -96,13 +85,12 @@ public class DocumentService {
             throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
         return new DtoResponse<>(documentHeaders.getTotalElements(),
-                mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
+                documentHeaders.getContent().stream().map(DocumentHeaderDto::new).collect(Collectors.toList()));
     }
 
     /**
      * выбор заголовков документов за интервал по типу документа и по складу
-     * @param request
-     * @return 
+     *
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndTypeDokAndWarehouse(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -115,13 +103,12 @@ public class DocumentService {
             throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
         return new DtoResponse<>(documentHeaders.getTotalElements(),
-                mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
+                documentHeaders.getContent().stream().map(DocumentHeaderDto::new).collect(Collectors.toList()));
     }
 
     /**
      * выбор заголовков документов за интервал и по партнеру
-     * @param request
-     * @return 
+     *
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndPartner(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -133,13 +120,12 @@ public class DocumentService {
             throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
         return new DtoResponse<>(documentHeaders.getTotalElements(),
-                mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
+                documentHeaders.getContent().stream().map(DocumentHeaderDto::new).collect(Collectors.toList()));
     }
 
     /**
      * выбор заголовков документов за интервал по партнеру и типу документа
-     * @param request
-     * @return 
+     *
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndPartnerAndTypeDok(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -155,26 +141,24 @@ public class DocumentService {
             throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
         return new DtoResponse<>(documentHeaders.getTotalElements(),
-                mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
+                documentHeaders.getContent().stream().map(DocumentHeaderDto::new).collect(Collectors.toList()));
     }
 
     /**
      * выбор заголовков документов за интервал
-     * @param request
-     * @return 
+     *
      */
     public DtoResponse<DocumentHeaderDto> findByDate(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
         Page<DocumentHeaderEntity> documentHeaders;
         documentHeaders = documentHeaderRepository.findByDate(request.getIntervalStart(), request.getIntervalEnd(), pageRequest);
         return new DtoResponse<>(documentHeaders.getTotalElements(),
-                mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
+                documentHeaders.getContent().stream().map(DocumentHeaderDto::new).collect(Collectors.toList()));
     }
 
     /**
      * выбор заголовков документов за интервал и по складу
-     * @param request
-     * @return 
+     *
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndWarehouse(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -192,13 +176,12 @@ public class DocumentService {
             throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
         return new DtoResponse<>(documentHeaders.getTotalElements(),
-                mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
+                documentHeaders.getContent().stream().map(DocumentHeaderDto::new).collect(Collectors.toList()));
     }
 
     /**
      * выбор заголовков документов за интервал по партнеру и по складу
-     * @param request
-     * @return 
+     *
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndPartnerAndWarehouse(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -211,13 +194,12 @@ public class DocumentService {
             throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
         return new DtoResponse<>(documentHeaders.getTotalElements(),
-                mapperUtiliti.mapToCollectionDocumentHeaderDto(documentHeaders.getContent()));
+                documentHeaders.getContent().stream().map(DocumentHeaderDto::new).collect(Collectors.toList()));
     }
 
     /**
      * общий запрос
-     * @param request
-     * @return 
+     *
      */
     public DtoResponse<DocumentHeaderDto> selectQuery(RequestParametersForDocHeader request) {
 
@@ -232,7 +214,7 @@ public class DocumentService {
                 return findByDateAndPartner(request);// выборка за интервал и по партнеру
             } else if ((request.getPartnerId() > 0) && (request.getWarehouseId() == 0) && (request.getTypeDok() > 0)) {
                 return findByDateAndPartnerAndTypeDok(request);// выборка за интервал по партнеру и типу документа
-            }else if ((request.getPartnerId() == 0) && (request.getWarehouseId() > 0) && (request.getTypeDok() > 0)) {
+            } else if ((request.getPartnerId() == 0) && (request.getWarehouseId() > 0) && (request.getTypeDok() > 0)) {
                 return findByDateAndTypeDokAndWarehouse(request);// выборка за интервал по типу документа и по складу
             } else if ((request.getPartnerId() == 0) && (request.getWarehouseId() == 0) && (request.getTypeDok() > 0)) {
                 return findByDateAndTypeDok(request);// выборка за интервал по типу документа
@@ -243,7 +225,7 @@ public class DocumentService {
 
     /**
      * удалить (переменную is_deleted в true)
-     * @param id
+     *
      */
     public void deleteById(long id) {
         int countDelete = documentHeaderRepository.updateIsDeleteToTrueById(id);
@@ -253,30 +235,29 @@ public class DocumentService {
     }
 
     // добавить документ
+    @Transactional
     public DocumentHeaderAndBodyDto add(DocumentHeaderRequest request) {
         DocumentHeaderEntity documentHeaderEntity = fillDocumentHeader(new DocumentHeaderEntity(), request);
         documentHeaderRepository.save(documentHeaderEntity);
         documentsBodyService.save(documentHeaderEntity.getBodyEntitys());
-        return mapperUtiliti.mapToDocumentHeaderAndBodyDto(documentHeaderEntity);
+        return new DocumentHeaderAndBodyDto(documentHeaderEntity);
     }
 
     // обновить документ
+    @Transactional
     public DocumentHeaderAndBodyDto update(long id, DocumentHeaderRequest request) {
         DocumentHeaderEntity oldHeaderEntity = getById(id);
         documentsBodyService.delete(oldHeaderEntity.getBodyEntitys());
-        //DocumentHeaderEntity newHeaderEntity =
-        oldHeaderEntity = fillDocumentHeader(oldHeaderEntity, request);
+        fillDocumentHeader(oldHeaderEntity, request);
         documentsBodyService.save(oldHeaderEntity.getBodyEntitys());
         documentHeaderRepository.save(oldHeaderEntity);
 
-        return mapperUtiliti.mapToDocumentHeaderAndBodyDto(oldHeaderEntity);
+        return new DocumentHeaderAndBodyDto(oldHeaderEntity);
     }
 
     /**
      * заполнить документ из запросса
-     * @param documentHeaderEntity
-     * @param request
-     * @return DocumentHeaderEntity
+     *
      */
     private DocumentHeaderEntity fillDocumentHeader(DocumentHeaderEntity documentHeaderEntity, DocumentHeaderRequest request) {
         documentHeaderEntity.setAmount(request.getAmount());
@@ -292,18 +273,19 @@ public class DocumentService {
             documentHeaderEntity.setWarehouseRecipient(warehouseService.findById(request.getWarehouseRecipientId()));
         }
         documentHeaderEntity.setTypeDok(request.getTypeDok());
-        documentHeaderEntity.setBodyEntitys(fillDocumentBody(request,documentHeaderEntity));
+        documentHeaderEntity.setBodyEntitys(fillDocumentBody(request, documentHeaderEntity));
         return documentHeaderEntity;
     }
 
-    private Collection<DocumentBodyEntity> fillDocumentBody(DocumentHeaderRequest request, DocumentHeaderEntity headerEntity){
-       
+    private Collection<DocumentBodyEntity> fillDocumentBody(DocumentHeaderRequest request, DocumentHeaderEntity headerEntity) {
+
         return request.getBodyDto()
                 .stream()
-                .map((d) -> mapperUtiliti.mapToDocumentBodyEntity(d,inventoryService.findById(d.getInventoryId()), headerEntity))
-                .toList();
+                .map((d) -> new DocumentBodyEntity(d, inventoryService.findById(d.getInventoryId()), headerEntity))
+                .collect(Collectors.toList());
+
     }
-    
+
 
     // создать страницу пагинации
 //    private PageRequest getPageRequest(int offset, int limit) {

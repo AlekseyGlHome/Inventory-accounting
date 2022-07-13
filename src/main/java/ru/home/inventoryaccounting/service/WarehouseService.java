@@ -9,22 +9,21 @@ import ru.home.inventoryaccounting.api.request.WarehouseRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.WarehouseDto;
 import ru.home.inventoryaccounting.domain.entity.WarehouseEntity;
-import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.WarehouseRepository;
 import ru.home.inventoryaccounting.util.PageRequestUtil;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class WarehouseService {
 
-    private final MapperUtiliti mapperUtiliti;
     private final WarehouseRepository warehouseRepository;
 
-    private final String MESSAGE_NOT_FOUND = "Склад с Id: %s не найдена.";
+    private final String MESSAGE_NOT_FOUND = "Склад с Id: %s не найден.";
     private final String MESSAGE_BAD_REQUESR = "Неверный параметр запроса";
 
     /**
@@ -48,7 +47,7 @@ public class WarehouseService {
             throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
         return new DtoResponse<>(warehouses.getTotalElements(),
-                mapperUtiliti.mapToCollectionWarehouseDto(warehouses.getContent()));
+                warehouses.getContent().stream().map(WarehouseDto::new).collect(Collectors.toList()));
     }
 
     /**
@@ -59,7 +58,7 @@ public class WarehouseService {
         Page<WarehouseEntity> warehouses;
         warehouses = warehouseRepository.findAll(pageRequest);
         return new DtoResponse<>(warehouses.getTotalElements(),
-                mapperUtiliti.mapToCollectionWarehouseDto(warehouses.getContent()));
+                warehouses.getContent().stream().map(WarehouseDto::new).collect(Collectors.toList()));
     }
 
     /**
@@ -75,13 +74,13 @@ public class WarehouseService {
     // добавить карточку
     public WarehouseDto add(WarehouseRequest request){
         WarehouseEntity warehouseEntity = fillInventory(new WarehouseEntity(), request);
-        return mapperUtiliti.mapToWarehouseDto(warehouseRepository.save(warehouseEntity));
+        return new WarehouseDto(warehouseRepository.save(warehouseEntity));
     }
 
     // обновить карточку
     public WarehouseDto update(long id, WarehouseRequest request) {
         WarehouseEntity warehouseEntity = fillInventory(findById(id), request);
-        return mapperUtiliti.mapToWarehouseDto(warehouseRepository.save(warehouseEntity));
+        return new WarehouseDto(warehouseRepository.save(warehouseEntity));
     }
 
     // заполнить карточку из запросса

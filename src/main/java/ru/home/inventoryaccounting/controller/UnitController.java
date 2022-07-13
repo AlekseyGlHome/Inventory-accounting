@@ -31,7 +31,7 @@ public class UnitController {
 
     @GetMapping("/{id}")
     public ResponseEntity<DtoResponse<UnitDto>> getById(@PathVariable long id) {
-        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(unitService.findById(id))));
+        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(new UnitDto(unitService.findById(id)))));
     }
 
     @PutMapping("/{id}")

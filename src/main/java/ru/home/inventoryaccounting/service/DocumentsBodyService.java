@@ -1,11 +1,11 @@
 package ru.home.inventoryaccounting.service;
 
-import java.util.Collection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.home.inventoryaccounting.domain.entity.DocumentBodyEntity;
-import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.repository.DocumentBodyRepository;
+
+import java.util.Collection;
 
 @Service
 @RequiredArgsConstructor
@@ -15,8 +15,6 @@ public class DocumentsBodyService {
     private final String MESSAGE_BAD_REQUESR = "Неверный параметр запроса";
 
     private final DocumentBodyRepository documentBodyRepository;
-
-    private final MapperUtiliti mapperUtiliti;
 
     
     public Collection<DocumentBodyEntity> save(Collection<DocumentBodyEntity> documentBodyEntitys){

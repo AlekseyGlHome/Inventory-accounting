@@ -32,7 +32,7 @@ public class InventoryFolderController {
     @GetMapping("/{id}")
     public ResponseEntity<DtoResponse<InventoryFolderDto>> getById(@PathVariable long id) {
 
-        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(inventoryFolderService.findById(id))));
+        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(new InventoryFolderDto(inventoryFolderService.findById(id)))));
     }
 
     @PutMapping("/{id}")

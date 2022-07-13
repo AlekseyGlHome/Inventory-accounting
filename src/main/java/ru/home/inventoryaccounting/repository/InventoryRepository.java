@@ -15,9 +15,9 @@ import java.util.Optional;
 public interface InventoryRepository extends JpaRepository<InventoryEntity, Long> {
 
     // выбрать по id
-    @Query("select i from InventoryEntity i where i.isDeleted = false and i.id = :id")
-    @Override
-    Optional<InventoryEntity> findById(Long id);
+//    @Query("select i from InventoryEntity i where i.isDeleted = false and i.id = :id")
+//    @Override
+//    Optional<InventoryEntity> findById(Long id);
 
     // выбрать весь неудаленный инвентарь
     @Query("select i from InventoryEntity i where i.isDeleted = false")

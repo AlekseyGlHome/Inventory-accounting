@@ -16,9 +16,9 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     // выбрать по id
-    @Query("select u from UserEntity u where u.isDeleted = false and u.id = :id")
-    @Override
-    Optional<UserEntity> findById(Long id);
+//    @Query("select u from UserEntity u where u.isDeleted = false and u.id = :id")
+//    @Override
+//    Optional<UserEntity> findById(Long id);
 
     // выбрать всех неудаленных пользователей
     @Query("select u from UserEntity u where u.isDeleted = false ")

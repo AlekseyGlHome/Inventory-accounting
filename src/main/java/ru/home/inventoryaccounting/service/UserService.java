@@ -9,24 +9,23 @@ import ru.home.inventoryaccounting.api.request.UserRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.UserDto;
 import ru.home.inventoryaccounting.domain.entity.UserEntity;
-import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.UserRepository;
 import ru.home.inventoryaccounting.util.PageRequestUtil;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
-    private final MapperUtiliti mapperUtiliti;
 
-    private final String MESSAGE_NOT_FOUND = "Пользователь с Id: %s не найдена.";
+    private final String MESSAGE_NOT_FOUND = "Пользователь с Id: %s не найден.";
     private final String MESSAGE_BAD_REQUESR = "Неверный параметр запроса";
-    private final String MESSAGE_NOT_FOUND_NAME = "Пользователь Name: %s не найдена.";
+    private final String MESSAGE_NOT_FOUND_NAME = "Пользователь Name: %s не найден.";
 
     /**
      * выбор пользователя по идентификатору
@@ -50,7 +49,8 @@ public class UserService {
             throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
 
-        return new DtoResponse<>(users.getTotalElements(), mapperUtiliti.mapToCollectionUserDto(users.getContent()));
+        return new DtoResponse<>(users.getTotalElements(),
+                users.getContent().stream().map(UserDto::new).collect(Collectors.toList()));
     }
 
     /**
@@ -59,7 +59,8 @@ public class UserService {
     public DtoResponse<UserDto> findAll(RequestParametersForDirectories request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<UserEntity> users = userRepository.findAll(pageRequest);
-        return new DtoResponse<>(users.getTotalElements(), mapperUtiliti.mapToCollectionUserDto(users.getContent()));
+        return new DtoResponse<>(users.getTotalElements(),
+                users.getContent().stream().map(UserDto::new).collect(Collectors.toList()));
     }
 
     /**
@@ -77,7 +78,7 @@ public class UserService {
      */
     public UserDto findByName(RequestParametersForDirectories request) {
         Optional<UserEntity> user = userRepository.findByName(request.getQuery());
-        return user.map(mapperUtiliti::mapToUserDto)
+        return user.map(UserDto::new)
                 .orElseThrow(() -> new NotFoundException(String.format(MESSAGE_NOT_FOUND_NAME, request.getQuery())));
     }
 
@@ -85,13 +86,13 @@ public class UserService {
     // добавить карточку
     public UserDto add(UserRequest request) {
         UserEntity userEntity = fillInventory(new UserEntity(), request);
-        return mapperUtiliti.mapToUserDto(userRepository.save(userEntity));
+        return new UserDto(userRepository.save(userEntity));
     }
 
     // обновить карточку
     public UserDto update(long id, UserRequest request) {
         UserEntity userEntity = fillInventory(findById(id), request);
-        return mapperUtiliti.mapToUserDto(userRepository.save(userEntity));
+        return new UserDto(userRepository.save(userEntity));
     }
 
     // заполнить карточку из запросса

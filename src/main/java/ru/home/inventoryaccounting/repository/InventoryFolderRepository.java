@@ -15,9 +15,9 @@ import java.util.Optional;
 public interface InventoryFolderRepository extends JpaRepository<InventoryFolderEntity, Long> {
 
     // выбрать по id
-    @Query("select i from InventoryFolderEntity i where i.isDeleted = false and i.id = :id")
-    @Override
-    Optional<InventoryFolderEntity> findById(Long id);
+//    @Query("select i from InventoryFolderEntity i where i.isDeleted = false and i.id = :id")
+//    @Override
+//    Optional<InventoryFolderEntity> findById(Long id);
 
     // выбрать все неудаленные папки
     @Query("select i from InventoryFolderEntity i where i.isDeleted = false ")

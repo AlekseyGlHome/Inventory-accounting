@@ -3,6 +3,7 @@ package ru.home.inventoryaccounting.domain.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.home.inventoryaccounting.domain.dto.InventoryFolderDto;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -27,5 +28,11 @@ public class InventoryFolderEntity {
 
     @OneToMany(mappedBy = "folder",fetch = FetchType.LAZY)
     private Collection<InventoryEntity> inventories = new ArrayList<>();
+
+    public InventoryFolderEntity(InventoryFolderDto inventoryFolderDto){
+        setId(inventoryFolderDto.getId());
+        setIsDeleted(inventoryFolderDto.getIsDeleted());
+        setName(inventoryFolderDto.getName());
+    }
 
 }

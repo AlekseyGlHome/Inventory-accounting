@@ -34,7 +34,7 @@ public class InventoryController {
 
     @GetMapping("/{id}")
     public ResponseEntity<DtoResponse<InventoryDto>> getById(@PathVariable long id) {
-        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(inventoryService.findById(id))));
+        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(new InventoryDto(inventoryService.findById(id)))));
     }
 
     @PutMapping("/{id}")

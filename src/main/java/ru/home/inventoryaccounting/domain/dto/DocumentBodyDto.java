@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.home.inventoryaccounting.domain.entity.DocumentBodyEntity;
 
 import java.math.BigDecimal;
 
@@ -22,5 +23,14 @@ public class DocumentBodyDto implements DtoInterface {
 //    private MovementDto receiptDocument;
     //private DocumentBodyDto serialDocumentBody;
 
+
+    public DocumentBodyDto(DocumentBodyEntity documentBodyEntity){
+        setId(documentBodyEntity.getId());
+        setAmount(documentBodyEntity.getAmount());
+        setIsDeleted(documentBodyEntity.getIsDeleted());
+        setPrice(documentBodyEntity.getPrice());
+        setQuantity(documentBodyEntity.getQuantity());
+        setInventory(new InventoryDto(documentBodyEntity.getInventory()));
+    }
 
 }

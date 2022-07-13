@@ -16,9 +16,9 @@ import java.util.Optional;
 public interface PartnerRepository extends JpaRepository<PartnerEntity, Long> {
 
     // выбрать по id
-    @Query("select p from PartnerEntity p where p.isDeleted = false and p.id = :id")
-    @Override
-    Optional<PartnerEntity> findById(Long id);
+//    @Query("select p from PartnerEntity p where p.isDeleted = false and p.id = :id")
+//    @Override
+//    Optional<PartnerEntity> findById(Long id);
 
     // выбрать всех неудаленных партнеров
     @Query("select p from PartnerEntity p where p.isDeleted = false ")

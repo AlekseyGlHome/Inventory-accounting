@@ -3,6 +3,7 @@ package ru.home.inventoryaccounting.domain.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.home.inventoryaccounting.domain.dto.PartnerDto;
 
 import javax.persistence.*;
 
@@ -22,5 +23,11 @@ public class PartnerEntity {
 
     @Column(name = "name", nullable = false, length = 250)
     private String name;
+
+    public PartnerEntity(PartnerDto partnerDto){
+        setId(partnerDto.getId());
+        setIsDeleted(partnerDto.getIsDeleted());
+        setName(partnerDto.getName());
+    }
 
 }

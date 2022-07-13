@@ -4,24 +4,23 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.request.PartnerRequest;
+import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.PartnerDto;
 import ru.home.inventoryaccounting.domain.entity.PartnerEntity;
-import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.PartnerRepository;
 import ru.home.inventoryaccounting.util.PageRequestUtil;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class PartnerService {
 
-    private final MapperUtiliti mapperUtiliti;
     private final PartnerRepository partnerRepository;
 
     private final String MESSAGE_NOT_FOUND = "Партнер с Id: %s не найден.";
@@ -54,7 +53,7 @@ public class PartnerService {
         }
 
         return new DtoResponse<>(partners.getTotalElements(),
-                mapperUtiliti.mapToCollectionPartnerDto(partners.getContent()));
+                partners.getContent().stream().map(PartnerDto::new).collect(Collectors.toList()));
     }
 
     /**
@@ -66,7 +65,7 @@ public class PartnerService {
         Page<PartnerEntity> partners;
         partners = partnerRepository.findAll(pageRequest);
         return new DtoResponse<>(partners.getTotalElements(),
-                mapperUtiliti.mapToCollectionPartnerDto(partners.getContent()));
+                partners.getContent().stream().map(PartnerDto::new).collect(Collectors.toList()));
     }
 
     /**
@@ -82,13 +81,13 @@ public class PartnerService {
     // добавить карточку
     public PartnerDto add(PartnerRequest request) {
         PartnerEntity partnerEntity = fill(new PartnerEntity(), request);
-        return mapperUtiliti.mapToPartnerDto(partnerRepository.save(partnerEntity));
+        return new PartnerDto(partnerRepository.save(partnerEntity));
     }
 
     // обновить карточку
     public PartnerDto update(long id, PartnerRequest request) {
         PartnerEntity partnerEntity = fill(findById(id), request);
-        return mapperUtiliti.mapToPartnerDto(partnerRepository.save(partnerEntity));
+        return new PartnerDto(partnerRepository.save(partnerEntity));
     }
 
     // заполнить карточку из запросса

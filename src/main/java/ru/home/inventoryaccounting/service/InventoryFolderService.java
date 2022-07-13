@@ -9,13 +9,13 @@ import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.InventoryFolderDto;
 import ru.home.inventoryaccounting.domain.entity.InventoryFolderEntity;
-import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.InventoryFolderRepository;
 import ru.home.inventoryaccounting.util.PageRequestUtil;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +24,7 @@ public class InventoryFolderService {
     private final String MESSAGE_NOT_FOUND = "Папка инвентаря с Id: %s не найдена.";
     private final String MESSAGE_BAD_REQUESR = "Неверный параметр запроса";
 
-    private final MapperUtiliti mapperUtiliti;
+
     private final InventoryFolderRepository inventoryFolderRepository;
 
 
@@ -33,9 +33,9 @@ public class InventoryFolderService {
      * @param id
      * @return 
      */
-    public InventoryFolderDto findById(long id) {
+    public InventoryFolderEntity findById(long id) {
         Optional<InventoryFolderEntity> inventoryFolder = inventoryFolderRepository.findById(id);
-        return inventoryFolder.map(mapperUtiliti::mapToInventoryFolderDto)
+        return inventoryFolder
                 .orElseThrow(() -> new NotFoundException(String.format(MESSAGE_NOT_FOUND, id)));
     }
 
@@ -51,7 +51,7 @@ public class InventoryFolderService {
             throw new InvalidRequestParameteException(MESSAGE_BAD_REQUESR);
         }
         return new DtoResponse<>(inventoryFolders.getTotalElements(),
-                mapperUtiliti.mapToCollectionInventoryFolderDto(inventoryFolders.getContent()));
+                inventoryFolders.getContent().stream().map(InventoryFolderDto::new).collect(Collectors.toList()));
     }
 
     /**
@@ -62,7 +62,7 @@ public class InventoryFolderService {
         Page<InventoryFolderEntity> inventoryFolders;
         inventoryFolders = inventoryFolderRepository.findAll(pageRequest);
         return new DtoResponse<>(inventoryFolders.getTotalElements(),
-                mapperUtiliti.mapToCollectionInventoryFolderDto(inventoryFolders.getContent()));
+                inventoryFolders.getContent().stream().map(InventoryFolderDto::new).collect(Collectors.toList()));
     }
 
 
@@ -80,13 +80,13 @@ public class InventoryFolderService {
     // добавить карточку
     public InventoryFolderDto add(InventoryFoldeRequest request) {
         InventoryFolderEntity inventoryFolderEntity = fillInventory(new InventoryFolderEntity(), request);
-        return mapperUtiliti.mapToInventoryFolderDto(inventoryFolderRepository.save(inventoryFolderEntity));
+        return new InventoryFolderDto(inventoryFolderRepository.save(inventoryFolderEntity));
     }
 
     // обновить карточку
     public InventoryFolderDto update(long id, InventoryFoldeRequest request) {
-        InventoryFolderEntity inventoryFolderEntity = fillInventory(mapperUtiliti.mapToInventoryFolderEntity(findById(id)), request);
-        return mapperUtiliti.mapToInventoryFolderDto(inventoryFolderRepository.save(inventoryFolderEntity));
+        InventoryFolderEntity inventoryFolderEntity = fillInventory(findById(id), request);
+        return new InventoryFolderDto(inventoryFolderRepository.save(inventoryFolderEntity));
     }
 
     // заполнить карточку из запросса

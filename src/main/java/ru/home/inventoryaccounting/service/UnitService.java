@@ -9,19 +9,19 @@ import ru.home.inventoryaccounting.api.request.UnitRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.UnitDto;
 import ru.home.inventoryaccounting.domain.entity.UnitEntity;
-import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.UnitRepository;
 import ru.home.inventoryaccounting.util.PageRequestUtil;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UnitService {
 
-    private final MapperUtiliti mapperUtiliti;
+
     private final UnitRepository unitRepository;
 
     private final String MESSAGE_NOT_FOUND = "Единица измерения с Id: %s не найдена.";
@@ -30,11 +30,10 @@ public class UnitService {
     /**
      * выбор единицы измерения по идентификатору
      */
-    public UnitDto findById(long id) {
+    public UnitEntity findById(long id) {
         try {
             Optional<UnitEntity> unit = unitRepository.findById(id);
-            return unit.map(mapperUtiliti::mapToUnitDto)
-                    .orElseThrow(() -> new NotFoundException(String.format(MESSAGE_NOT_FOUND, id)));
+            return unit.orElseThrow(() -> new NotFoundException(String.format(MESSAGE_NOT_FOUND, id)));
         }catch (Exception ex){
             throw new InvalidRequestParameteException(ex.getMessage());
         }
@@ -56,7 +55,7 @@ public class UnitService {
         }
 
         return new DtoResponse<>(units.getTotalElements(),
-                mapperUtiliti.mapToCollectionUnitDto(units.getContent()));
+                units.getContent().stream().map(UnitDto::new).collect(Collectors.toList()));
     }
 
     /**
@@ -67,7 +66,7 @@ public class UnitService {
         Page<UnitEntity> units;
         units = unitRepository.findAll(pageRequest);
         return new DtoResponse<>(units.getTotalElements(),
-                mapperUtiliti.mapToCollectionUnitDto(units.getContent()));
+                units.getContent().stream().map(UnitDto::new).collect(Collectors.toList()));
     }
 
     /**
@@ -83,13 +82,13 @@ public class UnitService {
     // добавить карточку
     public UnitDto add(UnitRequest request) {
         UnitEntity unitEntity = fill(new UnitEntity(), request);
-        return mapperUtiliti.mapToUnitDto(unitRepository.save(unitEntity));
+        return new UnitDto(unitRepository.save(unitEntity));
     }
 
     // обновить карточку
     public UnitDto update(long id, UnitRequest request) {
-        UnitEntity unitEntity = fill(mapperUtiliti.mapToUnitEntity(findById(id)), request);
-        return mapperUtiliti.mapToUnitDto(unitRepository.save(unitEntity));
+        UnitEntity unitEntity = fill(findById(id), request);
+        return new UnitDto(unitRepository.save(unitEntity));
     }
 
     // заполнить карточку из запросса

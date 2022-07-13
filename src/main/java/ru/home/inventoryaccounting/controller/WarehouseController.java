@@ -7,7 +7,6 @@ import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.request.WarehouseRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.WarehouseDto;
-import ru.home.inventoryaccounting.domain.mapper.MapperUtiliti;
 import ru.home.inventoryaccounting.service.WarehouseService;
 import ru.home.inventoryaccounting.util.RequestParameterUtil;
 
@@ -18,7 +17,6 @@ import java.util.List;
 @RequestMapping("/v1/warehouse")
 public class WarehouseController {
     private final WarehouseService warehouseService;
-    private final MapperUtiliti mapperUtiliti;
 
     @GetMapping()
     public ResponseEntity<DtoResponse<WarehouseDto>> getByAllOrFilter(
@@ -33,7 +31,7 @@ public class WarehouseController {
 
     @GetMapping("/{id}")
     public ResponseEntity<DtoResponse<WarehouseDto>> getById(@PathVariable long id) {
-        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(mapperUtiliti.mapToWarehouseDto(warehouseService.findById(id)))));
+        return ResponseEntity.ok(new DtoResponse<>(1L, List.of(new WarehouseDto(warehouseService.findById(id)))));
     }
 
     @PutMapping("/{id}")

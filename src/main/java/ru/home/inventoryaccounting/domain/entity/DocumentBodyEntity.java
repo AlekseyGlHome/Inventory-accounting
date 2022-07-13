@@ -3,6 +3,9 @@ package ru.home.inventoryaccounting.domain.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.home.inventoryaccounting.api.request.DocumentBodyRequest;
+import ru.home.inventoryaccounting.domain.dto.DocumentBodyDto;
+import ru.home.inventoryaccounting.domain.dto.InventoryDto;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -42,8 +45,26 @@ public class DocumentBodyEntity {
     @JoinColumn(name = "receipt_id")
     private MovementEntity receiptDocument;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
+    //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "serial_document_body_id")
 //    private DocumentBodyEntity serialDocumentBody;
 
+    public DocumentBodyEntity(DocumentBodyDto documentBodyDto, DocumentHeaderEntity documentHeaderEntity) {
+        setId(documentBodyDto.getId());
+        setAmount(documentBodyDto.getAmount());
+        setIsDeleted(documentBodyDto.getIsDeleted());
+        setPrice(documentBodyDto.getPrice());
+        setQuantity(documentBodyDto.getQuantity());
+        setDocumentHeader(documentHeaderEntity);
+        setInventory(new InventoryEntity(documentBodyDto.getInventory()));
+    }
+    public DocumentBodyEntity(DocumentBodyRequest documentBodyRequest, InventoryEntity inventoryEntity, DocumentHeaderEntity documentHeaderEntity) {
+        setId(documentBodyRequest.getId());
+        setAmount(documentBodyRequest.getAmount());
+        setIsDeleted(documentBodyRequest.getIsDeleted());
+        setPrice(documentBodyRequest.getPrice());
+        setQuantity(documentBodyRequest.getQuantity());
+        setDocumentHeader(documentHeaderEntity);
+        setInventory(inventoryEntity);
+    }
 }
