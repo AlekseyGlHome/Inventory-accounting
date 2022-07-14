@@ -15,10 +15,9 @@ import java.util.Optional;
 @Repository
 public interface WarehouseRepository extends JpaRepository<WarehouseEntity, Long> {
 
-    // выбрать по id
-//    @Query("select w from WarehouseEntity w where w.isDeleted = false and w.id = :id")
-//    @Override
-//    Optional<WarehouseEntity> findById(Long id);
+
+    // выбрать все помеченые на удаление записи
+    Page<WarehouseEntity> getByIsDeletedTrue(Pageable pageable);
 
     // выбрать все неудаленные склады
     @Query("select w from WarehouseEntity w where w.isDeleted = false ")

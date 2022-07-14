@@ -7,6 +7,7 @@ import ru.home.inventoryaccounting.api.request.InventoryRequest;
 import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.InventoryDto;
+import ru.home.inventoryaccounting.domain.dto.UserDto;
 import ru.home.inventoryaccounting.service.InventoryService;
 import ru.home.inventoryaccounting.util.RequestParameterUtil;
 
@@ -54,4 +55,11 @@ public class InventoryController {
         return ResponseEntity.ok("Запись удалена");
     }
 
+    @GetMapping("/deleting")
+    public ResponseEntity<DtoResponse<InventoryDto>> getDeleted(
+            @RequestParam(name = "offset", defaultValue = "0") int offset,
+            @RequestParam(name = "limit", defaultValue = "10") int limit) {
+        RequestParametersForDirectories parameter = RequestParameterUtil.getObjectOfRequestParameters(offset, limit, "", new String[]{"name"}, "ASC");
+        return ResponseEntity.ok(inventoryService.getDeleted(parameter));
+    }
 }

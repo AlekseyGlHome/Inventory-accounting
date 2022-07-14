@@ -102,4 +102,11 @@ public class WarehouseService {
     }
 
 
+    public DtoResponse<WarehouseDto> getDeleted(RequestParametersForDirectories request) {
+        PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
+        Page<WarehouseEntity> warehousesEntities;
+        warehousesEntities = warehouseRepository.getByIsDeletedTrue(pageRequest);
+        return new DtoResponse<>(warehousesEntities.getTotalElements(),
+                warehousesEntities.getContent().stream().map(WarehouseDto::new).collect(Collectors.toList()));
+    }
 }

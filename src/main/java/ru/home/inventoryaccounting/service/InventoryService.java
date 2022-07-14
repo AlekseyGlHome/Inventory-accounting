@@ -8,7 +8,9 @@ import ru.home.inventoryaccounting.api.request.InventoryRequest;
 import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.InventoryDto;
+import ru.home.inventoryaccounting.domain.dto.UserDto;
 import ru.home.inventoryaccounting.domain.entity.InventoryEntity;
+import ru.home.inventoryaccounting.domain.entity.UserEntity;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.InventoryRepository;
@@ -137,4 +139,11 @@ public class InventoryService {
         return inventoryEntity;
     }
 
+    public DtoResponse<InventoryDto> getDeleted(RequestParametersForDirectories request) {
+        PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
+        Page<InventoryEntity> inventoryEntities;
+        inventoryEntities = inventoryRepository.getByIsDeletedTrue(pageRequest);
+        return new DtoResponse<>(inventoryEntities.getTotalElements(),
+                inventoryEntities.getContent().stream().map(InventoryDto::new).collect(Collectors.toList()));
+    }
 }

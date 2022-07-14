@@ -9,12 +9,17 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.home.inventoryaccounting.domain.entity.DocumentHeaderEntity;
+import ru.home.inventoryaccounting.domain.entity.UserEntity;
 import ru.home.inventoryaccounting.domain.entity.WarehouseEntity;
 
 import java.time.LocalDate;
 
 @Repository
 public interface DocumentHeaderRepository extends JpaRepository<DocumentHeaderEntity, Long> {
+
+    // выбрать все помеченые на удаление записи
+    Page<DocumentHeaderEntity> getByIsDeletedTrue(Pageable pageable);
+
     // выбор документов за интервал
     @Query("select d from DocumentHeaderEntity d where d.isDeleted=false and d.date between :dateStart and :dateEnd ")
     Page<DocumentHeaderEntity> findByDate(LocalDate dateStart, LocalDate dateEnd, Pageable pageable);
@@ -28,11 +33,6 @@ public interface DocumentHeaderRepository extends JpaRepository<DocumentHeaderEn
     @Query("select d from DocumentHeaderEntity d where d.date between :dateStart and :dateEnd " +
             "and d.isDeleted = false and d.partner.id = :partnerId and d.typeDok=:typeDok ")
     Page<DocumentHeaderEntity> findByDateAndPartnerAndTypeDok(LocalDate dateStart, LocalDate dateEnd, Long partnerId, Integer typeDok, Pageable pageable);
-
-    // выбор документов за интервал и по складу
-//    @Query("select d from DocumentHeaderEntity d where d.date between :dateStart and :dateEnd " +
-//            "and d.isDeleted = false and (d.warehouse.id = :warehouseId or d.warehouseRecipient.id = :warehouseId) ")
-//    Page<DocumentHeaderEntity> findByDateAndWarehouse(LocalDate dateStart, LocalDate dateEnd, Long warehouseId, Pageable pageable);
 
     // выбор документов за интервал и по складу
     @Query("""

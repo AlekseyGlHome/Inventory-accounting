@@ -7,6 +7,7 @@ import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.request.UserRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.UserDto;
+import ru.home.inventoryaccounting.domain.dto.WarehouseDto;
 import ru.home.inventoryaccounting.service.UserService;
 import ru.home.inventoryaccounting.util.RequestParameterUtil;
 
@@ -50,6 +51,14 @@ public class UserController {
     public ResponseEntity<String> deleteById(@PathVariable long id) {
         userService.deleteById(id);
         return ResponseEntity.ok("Запись удалена");
+    }
+
+    @GetMapping("/deleting")
+    public ResponseEntity<DtoResponse<UserDto>> getDeleted(
+            @RequestParam(name = "offset", defaultValue = "0") int offset,
+            @RequestParam(name = "limit", defaultValue = "10") int limit) {
+        RequestParametersForDirectories parameter = RequestParameterUtil.getObjectOfRequestParameters(offset, limit, "", new String[]{"name"}, "ASC");
+        return ResponseEntity.ok(userService.getDeleted(parameter));
     }
 
 }

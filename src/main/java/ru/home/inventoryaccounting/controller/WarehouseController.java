@@ -10,6 +10,7 @@ import ru.home.inventoryaccounting.domain.dto.WarehouseDto;
 import ru.home.inventoryaccounting.service.WarehouseService;
 import ru.home.inventoryaccounting.util.RequestParameterUtil;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -35,8 +36,7 @@ public class WarehouseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DtoResponse<WarehouseDto>> update(@PathVariable long id,
-                                                            @RequestBody WarehouseRequest request) {
+    public ResponseEntity<DtoResponse<WarehouseDto>> update(@PathVariable long id, @RequestBody WarehouseRequest request) {
         return ResponseEntity.ok(new DtoResponse<>(1L, List.of(warehouseService.update(id, request))));
     }
 
@@ -49,6 +49,14 @@ public class WarehouseController {
     public ResponseEntity<String> deleteById(@PathVariable long id) {
         warehouseService.deleteById(id);
         return ResponseEntity.ok("Запись удалена");
+    }
+
+    @GetMapping("/deleting")
+    public ResponseEntity<DtoResponse<WarehouseDto>> getDeleted(
+            @RequestParam(name = "offset", defaultValue = "0") int offset,
+            @RequestParam(name = "limit", defaultValue = "10") int limit) {
+        RequestParametersForDirectories parameter = RequestParameterUtil.getObjectOfRequestParameters(offset, limit, "", new String[]{"name"}, "ASC");
+        return ResponseEntity.ok(warehouseService.getDeleted(parameter));
     }
 
 }

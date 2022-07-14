@@ -15,10 +15,8 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    // выбрать по id
-//    @Query("select u from UserEntity u where u.isDeleted = false and u.id = :id")
-//    @Override
-//    Optional<UserEntity> findById(Long id);
+    // выбрать все помеченые на удаление записи
+    Page<UserEntity> getByIsDeletedTrue(Pageable pageable);
 
     // выбрать всех неудаленных пользователей
     @Query("select u from UserEntity u where u.isDeleted = false ")

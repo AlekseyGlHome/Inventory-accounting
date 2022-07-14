@@ -8,16 +8,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.home.inventoryaccounting.domain.entity.InventoryEntity;
+import ru.home.inventoryaccounting.domain.entity.UserEntity;
 
 import java.util.Optional;
 
 @Repository
 public interface InventoryRepository extends JpaRepository<InventoryEntity, Long> {
 
-    // выбрать по id
-//    @Query("select i from InventoryEntity i where i.isDeleted = false and i.id = :id")
-//    @Override
-//    Optional<InventoryEntity> findById(Long id);
+    // выбрать все помеченые на удаление записи
+    Page<InventoryEntity> getByIsDeletedTrue(Pageable pageable);
 
     // выбрать весь неудаленный инвентарь
     @Query("select i from InventoryEntity i where i.isDeleted = false")

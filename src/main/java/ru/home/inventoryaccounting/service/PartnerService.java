@@ -8,7 +8,9 @@ import ru.home.inventoryaccounting.api.request.PartnerRequest;
 import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.PartnerDto;
+import ru.home.inventoryaccounting.domain.dto.UserDto;
 import ru.home.inventoryaccounting.domain.entity.PartnerEntity;
+import ru.home.inventoryaccounting.domain.entity.UserEntity;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.PartnerRepository;
@@ -107,4 +109,11 @@ public class PartnerService {
         }
     }
 
+    public DtoResponse<PartnerDto> getDeleted(RequestParametersForDirectories request) {
+        PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
+        Page<PartnerEntity> partnerEntities;
+        partnerEntities = partnerRepository.getByIsDeletedTrue(pageRequest);
+        return new DtoResponse<>(partnerEntities.getTotalElements(),
+                partnerEntities.getContent().stream().map(PartnerDto::new).collect(Collectors.toList()));
+    }
 }

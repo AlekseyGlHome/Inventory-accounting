@@ -6,12 +6,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.home.inventoryaccounting.api.request.DocumentHeaderRequest;
+import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.request.RequestParametersForDocHeader;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.DocumentHeaderAndBodyDto;
 import ru.home.inventoryaccounting.domain.dto.DocumentHeaderDto;
+import ru.home.inventoryaccounting.domain.dto.UserDto;
 import ru.home.inventoryaccounting.domain.entity.DocumentBodyEntity;
 import ru.home.inventoryaccounting.domain.entity.DocumentHeaderEntity;
+import ru.home.inventoryaccounting.domain.entity.UserEntity;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.DocumentHeaderRepository;
@@ -286,6 +289,13 @@ public class DocumentService {
 
     }
 
+    public DtoResponse<DocumentHeaderDto> getDeleted(RequestParametersForDocHeader request) {
+        PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
+        Page<DocumentHeaderEntity> documentHeaderEntities;
+        documentHeaderEntities = documentHeaderRepository.getByIsDeletedTrue(pageRequest);
+        return new DtoResponse<>(documentHeaderEntities.getTotalElements(),
+                documentHeaderEntities.getContent().stream().map(DocumentHeaderDto::new).collect(Collectors.toList()));
+    }
 
     // создать страницу пагинации
 //    private PageRequest getPageRequest(int offset, int limit) {

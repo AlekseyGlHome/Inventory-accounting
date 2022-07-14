@@ -8,7 +8,9 @@ import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.request.UnitRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.UnitDto;
+import ru.home.inventoryaccounting.domain.dto.UserDto;
 import ru.home.inventoryaccounting.domain.entity.UnitEntity;
+import ru.home.inventoryaccounting.domain.entity.UserEntity;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.UnitRepository;
@@ -106,6 +108,14 @@ public class UnitService {
         if (unitRepository.updateIsDeleteToTrueById(id) <= 0) {
             throw new NotFoundException(String.format(MESSAGE_NOT_FOUND, id));
         }
+    }
+
+    public DtoResponse<UnitDto> getDeleted(RequestParametersForDirectories request) {
+        PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
+        Page<UnitEntity> unitEntities;
+        unitEntities = unitRepository.getByIsDeletedTrue(pageRequest);
+        return new DtoResponse<>(unitEntities.getTotalElements(),
+                unitEntities.getContent().stream().map(UnitDto::new).collect(Collectors.toList()));
     }
 
 }

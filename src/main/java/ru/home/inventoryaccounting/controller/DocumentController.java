@@ -4,14 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.home.inventoryaccounting.api.request.DocumentHeaderRequest;
+import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.request.RequestParametersForDocHeader;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.DocumentHeaderDto;
+import ru.home.inventoryaccounting.domain.dto.UserDto;
 import ru.home.inventoryaccounting.service.DocumentService;
 import ru.home.inventoryaccounting.util.RequestParameterUtil;
 
 import java.time.LocalDate;
 import java.util.List;
+
 import ru.home.inventoryaccounting.domain.dto.DocumentHeaderAndBodyDto;
 
 @RestController
@@ -45,7 +48,7 @@ public class DocumentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<DtoResponse<DocumentHeaderAndBodyDto>> update(@PathVariable long id,
-                                                          @RequestBody DocumentHeaderRequest request) {
+                                                                        @RequestBody DocumentHeaderRequest request) {
         return ResponseEntity.ok(new DtoResponse<>(1L, List.of(documentsHeaderService.update(id, request))));
     }
 
@@ -60,4 +63,13 @@ public class DocumentController {
         return ResponseEntity.ok("Запись удалена");
     }
 
+    @GetMapping("/deleting")
+    public ResponseEntity<DtoResponse<DocumentHeaderDto>> getDeleted(
+            @RequestParam(name = "offset", defaultValue = "0") int offset,
+            @RequestParam(name = "limit", defaultValue = "10") int limit) {
+        RequestParametersForDocHeader parameter =
+                RequestParameterUtil.getObjectOfRequestParametersOfDocumentHeader(offset, limit, "", null,
+                        null, null, null, null, new String[]{"date"}, "ASC");
+        return ResponseEntity.ok(documentsHeaderService.getDeleted(parameter));
+    }
 }
