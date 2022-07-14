@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+
+    <changeSet id="0012" author="AlekseyGl">
+        <sql>
+            CREATE TABLE `document_registration`
+            ( `id` bigint NOT NULL AUTO_INCREMENT,
+                `document_header_id` bigint NOT NULL,
+                PRIMARY KEY (`id`),
+                KEY `document_registration_FK` (`document_header_id`),
+                CONSTRAINT `document_registration_FK` FOREIGN KEY (`document_header_id`) REFERENCES `document_header` (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Очередь регистрации документов'
+        </sql>
+        <rollback>
+            <sql>
+                drop table document_registration;
+            </sql>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
