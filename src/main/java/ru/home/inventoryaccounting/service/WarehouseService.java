@@ -72,7 +72,7 @@ public class WarehouseService {
     }
 
     // добавить карточку
-    public WarehouseDto add(WarehouseRequest request){
+    public WarehouseDto add(WarehouseRequest request) {
         WarehouseEntity warehouseEntity = fillInventory(new WarehouseEntity(), request);
         return new WarehouseDto(warehouseRepository.save(warehouseEntity));
     }

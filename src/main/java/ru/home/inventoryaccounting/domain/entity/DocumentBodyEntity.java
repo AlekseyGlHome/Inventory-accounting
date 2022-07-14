@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.home.inventoryaccounting.api.request.DocumentBodyRequest;
 import ru.home.inventoryaccounting.domain.dto.DocumentBodyDto;
-import ru.home.inventoryaccounting.domain.dto.InventoryDto;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -58,6 +57,7 @@ public class DocumentBodyEntity {
         setDocumentHeader(documentHeaderEntity);
         setInventory(new InventoryEntity(documentBodyDto.getInventory()));
     }
+
     public DocumentBodyEntity(DocumentBodyRequest documentBodyRequest, InventoryEntity inventoryEntity, DocumentHeaderEntity documentHeaderEntity) {
         setId(documentBodyRequest.getId());
         setAmount(documentBodyRequest.getAmount());

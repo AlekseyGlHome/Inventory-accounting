@@ -26,10 +26,10 @@ public class InventoryFolderEntity {
     @Column(name = "name", nullable = false, length = 250)
     private String name;
 
-    @OneToMany(mappedBy = "folder",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "folder", fetch = FetchType.LAZY)
     private Collection<InventoryEntity> inventories = new ArrayList<>();
 
-    public InventoryFolderEntity(InventoryFolderDto inventoryFolderDto){
+    public InventoryFolderEntity(InventoryFolderDto inventoryFolderDto) {
         setId(inventoryFolderDto.getId());
         setIsDeleted(inventoryFolderDto.getIsDeleted());
         setName(inventoryFolderDto.getName());

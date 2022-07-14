@@ -8,10 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.home.inventoryaccounting.domain.entity.UnitEntity;
-import ru.home.inventoryaccounting.domain.entity.UserEntity;
-import ru.home.inventoryaccounting.domain.entity.WarehouseEntity;
-
-import java.util.Optional;
 
 @Repository
 public interface UnitRepository extends JpaRepository<UnitEntity, Long> {

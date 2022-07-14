@@ -1,10 +1,10 @@
 package ru.home.inventoryaccounting.api.request;
 
-import ru.home.inventoryaccounting.domain.dto.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.home.inventoryaccounting.domain.dto.DtoInterface;
 
 import java.math.BigDecimal;
 

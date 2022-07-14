@@ -17,7 +17,7 @@ public class WarehouseDto implements DtoInterface {
     private String name;
     private String person;
 
-    public WarehouseDto (WarehouseEntity warehouseEntity){
+    public WarehouseDto(WarehouseEntity warehouseEntity) {
         setId(warehouseEntity.getId());
         setCompany(warehouseEntity.getCompany());
         setIsDeleted(warehouseEntity.getIsDeleted());

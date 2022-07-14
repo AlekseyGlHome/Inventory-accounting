@@ -7,10 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.home.inventoryaccounting.domain.entity.InventoryEntity;
 import ru.home.inventoryaccounting.domain.entity.WarehouseEntity;
-
-import java.util.Optional;
 
 @Repository
 public interface WarehouseRepository extends JpaRepository<WarehouseEntity, Long> {

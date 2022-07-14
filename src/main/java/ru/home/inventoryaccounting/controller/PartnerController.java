@@ -7,7 +7,6 @@ import ru.home.inventoryaccounting.api.request.PartnerRequest;
 import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.PartnerDto;
-import ru.home.inventoryaccounting.domain.dto.UserDto;
 import ru.home.inventoryaccounting.service.PartnerService;
 import ru.home.inventoryaccounting.util.RequestParameterUtil;
 

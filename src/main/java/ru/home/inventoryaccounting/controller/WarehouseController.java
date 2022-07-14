@@ -10,7 +10,6 @@ import ru.home.inventoryaccounting.domain.dto.WarehouseDto;
 import ru.home.inventoryaccounting.service.WarehouseService;
 import ru.home.inventoryaccounting.util.RequestParameterUtil;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController

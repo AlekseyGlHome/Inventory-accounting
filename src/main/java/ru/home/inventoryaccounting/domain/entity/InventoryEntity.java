@@ -32,7 +32,7 @@ public class InventoryEntity {
     @JoinColumn(name = "unit_id", nullable = false)
     private UnitEntity unit;
 
-    public InventoryEntity(InventoryDto inventoryDto){
+    public InventoryEntity(InventoryDto inventoryDto) {
         setId(inventoryDto.getId());
         setIsDeleted(inventoryDto.isDeleted());
         setName(inventoryDto.getName());

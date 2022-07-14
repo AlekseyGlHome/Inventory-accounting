@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DocumentRegistryController {
 
     @PostMapping("/{id}")
-    public ResponseEntity<Boolean> registry(@PathVariable Long id){
+    public ResponseEntity<Boolean> registry(@PathVariable Long id) {
 
 
         return ResponseEntity.ok(true);

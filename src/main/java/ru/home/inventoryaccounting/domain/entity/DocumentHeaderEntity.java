@@ -8,7 +8,6 @@ import ru.home.inventoryaccounting.domain.enums.TypeDok;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collection;
 
 @Getter

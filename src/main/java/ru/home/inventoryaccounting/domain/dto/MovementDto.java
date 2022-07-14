@@ -1,12 +1,10 @@
 package ru.home.inventoryaccounting.domain.dto;
 
-import lombok.*;
-import ru.home.inventoryaccounting.domain.entity.DocumentBodyEntity;
-import ru.home.inventoryaccounting.domain.entity.DocumentHeaderEntity;
-import ru.home.inventoryaccounting.domain.entity.InventoryEntity;
-import ru.home.inventoryaccounting.domain.entity.WarehouseEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -14,7 +12,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MovementDto implements DtoInterface{
+public class MovementDto implements DtoInterface {
     private Long id;
     private BigDecimal amount;
     private LocalDate date;

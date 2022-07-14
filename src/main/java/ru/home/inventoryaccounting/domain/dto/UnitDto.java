@@ -15,7 +15,7 @@ public class UnitDto implements DtoInterface {
     private Boolean isDeleted;
     private String name;
 
-    public UnitDto(UnitEntity unitEntity){
+    public UnitDto(UnitEntity unitEntity) {
         setId(unitEntity.getId());
         setIsDeleted(unitEntity.getIsDeleted());
         setName(unitEntity.getName());

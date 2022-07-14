@@ -16,7 +16,7 @@ public class UserDto implements DtoInterface {
     private String name;
     private String password;
 
-    public UserDto(UserEntity userEntity){
+    public UserDto(UserEntity userEntity) {
         setId(userEntity.getId());
         setIsDeleted(userEntity.getIsDeleted());
         setName(userEntity.getName());

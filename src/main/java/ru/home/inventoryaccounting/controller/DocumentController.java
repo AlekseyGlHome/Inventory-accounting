@@ -4,18 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.home.inventoryaccounting.api.request.DocumentHeaderRequest;
-import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.request.RequestParametersForDocHeader;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
+import ru.home.inventoryaccounting.domain.dto.DocumentHeaderAndBodyDto;
 import ru.home.inventoryaccounting.domain.dto.DocumentHeaderDto;
-import ru.home.inventoryaccounting.domain.dto.UserDto;
 import ru.home.inventoryaccounting.service.DocumentService;
 import ru.home.inventoryaccounting.util.RequestParameterUtil;
 
 import java.time.LocalDate;
 import java.util.List;
-
-import ru.home.inventoryaccounting.domain.dto.DocumentHeaderAndBodyDto;
 
 @RestController
 @RequiredArgsConstructor

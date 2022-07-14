@@ -24,7 +24,7 @@ public class PartnerEntity {
     @Column(name = "name", nullable = false, length = 250)
     private String name;
 
-    public PartnerEntity(PartnerDto partnerDto){
+    public PartnerEntity(PartnerDto partnerDto) {
         setId(partnerDto.getId());
         setIsDeleted(partnerDto.getIsDeleted());
         setName(partnerDto.getName());

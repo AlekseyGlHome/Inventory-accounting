@@ -16,7 +16,7 @@ public class InventoryFolderDto implements DtoInterface {
     private Boolean isDeleted;
     private String name;
 
-    public InventoryFolderDto(InventoryFolderEntity folderEntity){
+    public InventoryFolderDto(InventoryFolderEntity folderEntity) {
         setId(folderEntity.getId());
         setIsDeleted(folderEntity.getIsDeleted());
         setName(folderEntity.getName());

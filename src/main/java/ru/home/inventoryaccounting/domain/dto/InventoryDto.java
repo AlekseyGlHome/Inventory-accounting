@@ -19,7 +19,7 @@ public class InventoryDto implements DtoInterface {
     private InventoryFolderDto folder;
     private UnitDto unit;
 
-    public InventoryDto(InventoryEntity inventoryEntity){
+    public InventoryDto(InventoryEntity inventoryEntity) {
         setId(inventoryEntity.getId());
         setDeleted(inventoryEntity.getIsDeleted());
         setName(inventoryEntity.getName());

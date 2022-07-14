@@ -27,7 +27,7 @@ public class UserEntity {
     @Column(name = "password", length = 250)
     private String password;
 
-    public UserEntity(UserDto userDto){
+    public UserEntity(UserDto userDto) {
         setId(userDto.getId());
         setIsDeleted(userDto.getIsDeleted());
         setName(userDto.getName());

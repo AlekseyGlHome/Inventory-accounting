@@ -8,7 +8,9 @@ import ru.home.inventoryaccounting.domain.enums.SortingDirection;
 import java.time.LocalDate;
 
 public class RequestParameterUtil {
-    public static RequestParametersForDirectories getObjectOfRequestParameters(int offset, int limit, String query, long folderId, String[] sortColumns,
+    public static RequestParametersForDirectories getObjectOfRequestParameters(int offset, int limit,
+                                                                               String query, long folderId,
+                                                                               String[] sortColumns,
                                                                                String sortingDirection) {
         return RequestParametersForDirectories.builder()
                 .offset(offset)
@@ -20,7 +22,10 @@ public class RequestParameterUtil {
                 .build();
     }
 
-    public static RequestParametersForDirectories getObjectOfRequestParameters(int offset, int limit, String query, String[] sortColumns, String sortingDirection) {
+    public static RequestParametersForDirectories getObjectOfRequestParameters(int offset, int limit,
+                                                                               String query,
+                                                                               String[] sortColumns,
+                                                                               String sortingDirection) {
         return getObjectOfRequestParameters(offset, limit, query, 0, sortColumns, sortingDirection);
     }
 
@@ -41,6 +46,7 @@ public class RequestParameterUtil {
                 .build();
 
     }
+
     public static RequestParametersForDocBody getObjectOfRequestParametersOfDocumentBody(
             Long documentHeaderId, String[] sortColumns, String sortingDirection) {
         return RequestParametersForDocBody.builder()

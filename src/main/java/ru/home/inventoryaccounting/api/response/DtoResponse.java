@@ -12,7 +12,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DtoResponse<T extends DtoInterface>{
+public class DtoResponse<T extends DtoInterface> {
     private Long numberOfRecord;
     private Collection<T> data;
 }

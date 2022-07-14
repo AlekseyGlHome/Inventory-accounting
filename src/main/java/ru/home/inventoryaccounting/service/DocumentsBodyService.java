@@ -16,12 +16,12 @@ public class DocumentsBodyService {
 
     private final DocumentBodyRepository documentBodyRepository;
 
-    
-    public Collection<DocumentBodyEntity> save(Collection<DocumentBodyEntity> documentBodyEntitys){
+
+    public Collection<DocumentBodyEntity> save(Collection<DocumentBodyEntity> documentBodyEntitys) {
         return documentBodyRepository.saveAll(documentBodyEntitys);
     }
-    
-    public void delete(Collection<DocumentBodyEntity> bodyEntitys){
+
+    public void delete(Collection<DocumentBodyEntity> bodyEntitys) {
         documentBodyRepository.deleteAll(bodyEntitys);
     }
 

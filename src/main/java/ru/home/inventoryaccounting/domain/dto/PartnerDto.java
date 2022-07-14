@@ -15,7 +15,7 @@ public class PartnerDto implements DtoInterface {
     private Boolean isDeleted;
     private String name;
 
-    public PartnerDto(PartnerEntity partnerEntity){
+    public PartnerDto(PartnerEntity partnerEntity) {
         setId(partnerEntity.getId());
         setIsDeleted(partnerEntity.getIsDeleted());
         setName(partnerEntity.getName());

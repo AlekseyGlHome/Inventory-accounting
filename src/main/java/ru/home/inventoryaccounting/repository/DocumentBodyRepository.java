@@ -15,5 +15,4 @@ public interface DocumentBodyRepository extends JpaRepository<DocumentBodyEntity
     List<DocumentBodyEntity> findByDocumentHeader_IdEquals(Long headerId);
 
 
-
 }

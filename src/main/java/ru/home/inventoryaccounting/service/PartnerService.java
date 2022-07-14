@@ -8,9 +8,7 @@ import ru.home.inventoryaccounting.api.request.PartnerRequest;
 import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
 import ru.home.inventoryaccounting.domain.dto.PartnerDto;
-import ru.home.inventoryaccounting.domain.dto.UserDto;
 import ru.home.inventoryaccounting.domain.entity.PartnerEntity;
-import ru.home.inventoryaccounting.domain.entity.UserEntity;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.PartnerRepository;
@@ -31,7 +29,6 @@ public class PartnerService {
 
     /**
      * выбор партнера по идентификатору
-     *
      */
     public PartnerEntity findById(long id) {
         Optional<PartnerEntity> partner = partnerRepository.findById(id);
@@ -42,7 +39,6 @@ public class PartnerService {
 
     /**
      * выбор партнеров по входждению в наименование
-     *
      */
     public DtoResponse<PartnerDto> findByNameLike(RequestParametersForDirectories request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
@@ -60,7 +56,6 @@ public class PartnerService {
 
     /**
      * выбор всех партнеров
-     *
      */
     public DtoResponse<PartnerDto> findAll(RequestParametersForDirectories request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);

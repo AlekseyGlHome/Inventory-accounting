@@ -10,7 +10,6 @@ public class PageRequestUtil {
 
     /**
      * создать страницу пагинации
-     *
      */
     public static PageRequest getPageToRequest(RequestParametersForDirectories request) {
         int numberPage = request.getOffset() / request.getLimit();

@@ -30,7 +30,7 @@ public class WarehouseEntity {
     @Column(name = "person", length = 200)
     private String person;
 
-    public WarehouseEntity(WarehouseDto warehouseDto){
+    public WarehouseEntity(WarehouseDto warehouseDto) {
         setId(warehouseDto.getId());
         setCompany(warehouseDto.getCompany());
         setIsDeleted(warehouseDto.getIsDeleted());

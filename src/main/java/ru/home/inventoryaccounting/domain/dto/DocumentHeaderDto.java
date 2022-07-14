@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.home.inventoryaccounting.domain.entity.DocumentBodyEntity;
 import ru.home.inventoryaccounting.domain.entity.DocumentHeaderEntity;
 import ru.home.inventoryaccounting.domain.enums.TypeDok;
 

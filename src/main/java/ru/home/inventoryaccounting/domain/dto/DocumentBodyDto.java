@@ -24,7 +24,7 @@ public class DocumentBodyDto implements DtoInterface {
     //private DocumentBodyDto serialDocumentBody;
 
 
-    public DocumentBodyDto(DocumentBodyEntity documentBodyEntity){
+    public DocumentBodyDto(DocumentBodyEntity documentBodyEntity) {
         setId(documentBodyEntity.getId());
         setAmount(documentBodyEntity.getAmount());
         setIsDeleted(documentBodyEntity.getIsDeleted());
