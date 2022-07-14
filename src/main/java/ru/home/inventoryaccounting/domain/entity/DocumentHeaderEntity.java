@@ -57,15 +57,9 @@ public class DocumentHeaderEntity {
     private WarehouseEntity warehouseRecipient;
 
     @Column(name = "type_dok")
-    //@Enumerated(EnumType.ORDINAL)
-    private Integer typeDok;
-
-//    @OneToMany(mappedBy = "documentHeader", fetch = FetchType.LAZY)
-//    private Collection<DocumentBodyEntity> documentBody;
+    @Enumerated(EnumType.ORDINAL)
+    private TypeDok typeDok;
 
     @OneToMany(mappedBy = "documentHeader", fetch = FetchType.LAZY)
     private Collection<DocumentBodyEntity> bodyEntitys;
-//    @OneToMany(mappedBy = "receiptDocument",fetch = FetchType.LAZY)
-//    private Collection<DocumentBodyEntity> expenseDocuments = new ArrayList<>();
-
 }

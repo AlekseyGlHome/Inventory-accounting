@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.home.inventoryaccounting.domain.entity.DocumentHeaderEntity;
+import ru.home.inventoryaccounting.domain.enums.TypeDok;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -27,10 +28,10 @@ public class DocumentHeaderAndBodyDto implements DtoInterface {
     private UserDto user;
     private WarehouseDto warehouse;
     private WarehouseDto warehouseRecipient;
-    private Integer typeDok;
+    private TypeDok typeDok;
     private Collection<DocumentBodyDto> documentBody;
 
-    public DocumentHeaderAndBodyDto(DocumentHeaderEntity documentHeaderEntity){
+    public DocumentHeaderAndBodyDto(DocumentHeaderEntity documentHeaderEntity) {
         setId(documentHeaderEntity.getId());
         setAmount(documentHeaderEntity.getAmount());
         setComment(documentHeaderEntity.getComment());
@@ -38,11 +39,13 @@ public class DocumentHeaderAndBodyDto implements DtoInterface {
         setIsDeleted(documentHeaderEntity.getIsDeleted());
         setDocumentNumber(documentHeaderEntity.getDocumentNumber());
         setIsRegistered(documentHeaderEntity.getIsRegistered());
-        setPartner(new PartnerDto(documentHeaderEntity.getPartner()));
+        if (documentHeaderEntity.getPartner() != null) {
+            setPartner(new PartnerDto(documentHeaderEntity.getPartner()));
+        }
         setUser(new UserDto(documentHeaderEntity.getUser()));
         setWarehouse(new WarehouseDto(documentHeaderEntity.getWarehouse()));
         setTypeDok(documentHeaderEntity.getTypeDok());
-        if (documentHeaderEntity.getWarehouseRecipient()!=null){
+        if (documentHeaderEntity.getWarehouseRecipient() != null) {
             setWarehouseRecipient(new WarehouseDto(documentHeaderEntity.getWarehouseRecipient()));
         }
         setDocumentBody(documentHeaderEntity.getBodyEntitys().stream().map(DocumentBodyDto::new).collect(Collectors.toList()));

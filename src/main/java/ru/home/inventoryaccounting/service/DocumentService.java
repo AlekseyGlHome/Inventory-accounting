@@ -40,7 +40,6 @@ public class DocumentService {
 
     /**
      * выбор заголовка документа по идентификатору
-     *
      */
     public DocumentHeaderEntity getById(long id) {
         Optional<DocumentHeaderEntity> documentsHeader = documentHeaderRepository.findById(id);
@@ -49,7 +48,6 @@ public class DocumentService {
 
     /**
      * выбор документа с телом по идентификатору
-     *
      */
     public DocumentHeaderAndBodyDto getFullById(long id) {
         Optional<DocumentHeaderEntity> documentsHeader = documentHeaderRepository.findById(id);
@@ -60,7 +58,6 @@ public class DocumentService {
 
     /**
      * выбор заголовков документов по вхождению в номер документа
-     *
      */
     public DtoResponse<DocumentHeaderDto> findByDocumentNumber(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);// getPageRequest(request.getOffset(), request.getLimit());
@@ -76,7 +73,6 @@ public class DocumentService {
 
     /**
      * выбор заголовков документов за интервал по типу документа
-     *
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndTypeDok(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -93,7 +89,6 @@ public class DocumentService {
 
     /**
      * выбор заголовков документов за интервал по типу документа и по складу
-     *
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndTypeDokAndWarehouse(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -111,7 +106,6 @@ public class DocumentService {
 
     /**
      * выбор заголовков документов за интервал и по партнеру
-     *
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndPartner(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -128,7 +122,6 @@ public class DocumentService {
 
     /**
      * выбор заголовков документов за интервал по партнеру и типу документа
-     *
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndPartnerAndTypeDok(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -149,7 +142,6 @@ public class DocumentService {
 
     /**
      * выбор заголовков документов за интервал
-     *
      */
     public DtoResponse<DocumentHeaderDto> findByDate(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -161,7 +153,6 @@ public class DocumentService {
 
     /**
      * выбор заголовков документов за интервал и по складу
-     *
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndWarehouse(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -184,7 +175,6 @@ public class DocumentService {
 
     /**
      * выбор заголовков документов за интервал по партнеру и по складу
-     *
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndPartnerAndWarehouse(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -202,7 +192,6 @@ public class DocumentService {
 
     /**
      * общий запрос
-     *
      */
     public DtoResponse<DocumentHeaderDto> selectQuery(RequestParametersForDocHeader request) {
 
@@ -228,7 +217,6 @@ public class DocumentService {
 
     /**
      * удалить (переменную is_deleted в true)
-     *
      */
     public void deleteById(long id) {
         int countDelete = documentHeaderRepository.updateIsDeleteToTrueById(id);
@@ -260,7 +248,6 @@ public class DocumentService {
 
     /**
      * заполнить документ из запросса
-     *
      */
     private DocumentHeaderEntity fillDocumentHeader(DocumentHeaderEntity documentHeaderEntity, DocumentHeaderRequest request) {
         documentHeaderEntity.setAmount(request.getAmount());
@@ -269,7 +256,9 @@ public class DocumentService {
         documentHeaderEntity.setIsDeleted(request.getIsDeleted());
         documentHeaderEntity.setDocumentNumber(request.getDocumentNumber());
         documentHeaderEntity.setIsRegistered(request.getIsRegistered());
-        documentHeaderEntity.setPartner(partnerService.findById(request.getPartnerId()));
+        if (request.getPartnerId() != null) {
+            documentHeaderEntity.setPartner(partnerService.findById(request.getPartnerId()));
+        }
         documentHeaderEntity.setUser(userService.findById(request.getUserId()));
         documentHeaderEntity.setWarehouse(warehouseService.findById(request.getWarehouseId()));
         if (request.getWarehouseRecipientId() != null) {

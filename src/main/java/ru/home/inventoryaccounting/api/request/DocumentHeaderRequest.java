@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collection;
 import ru.home.inventoryaccounting.domain.dto.DocumentBodyDto;
+import ru.home.inventoryaccounting.domain.enums.TypeDok;
 
 @Data
 @AllArgsConstructor
@@ -27,6 +28,6 @@ public class DocumentHeaderRequest {
     private Long userId;
     private Long warehouseId;
     private Long warehouseRecipientId;
-    private Integer typeDok;
+    private TypeDok typeDok;
     private Collection<DocumentBodyRequest> bodyDto;
 }
