@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.request.WarehouseRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
@@ -72,12 +73,14 @@ public class WarehouseService {
     }
 
     // добавить карточку
+    @Transactional
     public WarehouseDto add(WarehouseRequest request) {
         WarehouseEntity warehouseEntity = fillInventory(new WarehouseEntity(), request);
         return new WarehouseDto(warehouseRepository.save(warehouseEntity));
     }
 
     // обновить карточку
+    @Transactional
     public WarehouseDto update(long id, WarehouseRequest request) {
         WarehouseEntity warehouseEntity = fillInventory(findById(id), request);
         return new WarehouseDto(warehouseRepository.save(warehouseEntity));
@@ -95,6 +98,7 @@ public class WarehouseService {
     /**
      * удалить (переменную is_deleted в true)
      */
+    @Transactional
     public void deleteById(long id) {
         if (warehouseRepository.updateIsDeleteToTrueById(id) <= 0) {
             throw new NotFoundException(String.format(MESSAGE_NOT_FOUND, id));

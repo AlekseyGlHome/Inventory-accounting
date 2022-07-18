@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.request.UnitRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
@@ -80,12 +81,14 @@ public class UnitService {
     }
 
     // добавить карточку
+    @Transactional
     public UnitDto add(UnitRequest request) {
         UnitEntity unitEntity = fill(new UnitEntity(), request);
         return new UnitDto(unitRepository.save(unitEntity));
     }
 
     // обновить карточку
+    @Transactional
     public UnitDto update(long id, UnitRequest request) {
         UnitEntity unitEntity = fill(findById(id), request);
         return new UnitDto(unitRepository.save(unitEntity));
@@ -102,6 +105,7 @@ public class UnitService {
     /**
      * удалить (переменную is_deleted в true)
      */
+    @Transactional
     public void deleteById(long id) {
         if (unitRepository.updateIsDeleteToTrueById(id) <= 0) {
             throw new NotFoundException(String.format(MESSAGE_NOT_FOUND, id));

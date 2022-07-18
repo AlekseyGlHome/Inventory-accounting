@@ -1,7 +1,6 @@
 package ru.home.inventoryaccounting.util;
 
 import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
-import ru.home.inventoryaccounting.api.request.RequestParametersForDocBody;
 import ru.home.inventoryaccounting.api.request.RequestParametersForDocHeader;
 import ru.home.inventoryaccounting.domain.enums.SortingDirection;
 
@@ -41,16 +40,6 @@ public class RequestParameterUtil {
                 .partnerId(partnerId)
                 .warehouseId(warehouseId)
                 .typeDok(typeDok)
-                .sortColumns(sortColumns)
-                .sortingDirection(SortingDirection.valueOf(sortingDirection))
-                .build();
-
-    }
-
-    public static RequestParametersForDocBody getObjectOfRequestParametersOfDocumentBody(
-            Long documentHeaderId, String[] sortColumns, String sortingDirection) {
-        return RequestParametersForDocBody.builder()
-                .documentHeaderId(documentHeaderId)
                 .sortColumns(sortColumns)
                 .sortingDirection(SortingDirection.valueOf(sortingDirection))
                 .build();

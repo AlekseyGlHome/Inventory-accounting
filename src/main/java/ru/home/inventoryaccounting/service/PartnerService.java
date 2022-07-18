@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.home.inventoryaccounting.api.request.PartnerRequest;
 import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
@@ -76,12 +77,14 @@ public class PartnerService {
     }
 
     // добавить карточку
+    @Transactional
     public PartnerDto add(PartnerRequest request) {
         PartnerEntity partnerEntity = fill(new PartnerEntity(), request);
         return new PartnerDto(partnerRepository.save(partnerEntity));
     }
 
     // обновить карточку
+    @Transactional
     public PartnerDto update(long id, PartnerRequest request) {
         PartnerEntity partnerEntity = fill(findById(id), request);
         return new PartnerDto(partnerRepository.save(partnerEntity));
@@ -98,6 +101,7 @@ public class PartnerService {
     /**
      * удалить (переменную is_deleted в true)
      */
+    @Transactional
     public void deleteById(long id) {
         if (partnerRepository.updateIsDeleteToTrueById(id) <= 0) {
             throw new NotFoundException(String.format(MESSAGE_NOT_FOUND, id));

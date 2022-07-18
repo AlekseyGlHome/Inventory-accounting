@@ -11,8 +11,6 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class DocumentsBodyService {
 
-//    private final String MESSAGE_NOT_FOUND = "Данные по документу с Id: %s не найдены.";
-//    private final String MESSAGE_BAD_REQUESR = "Неверный параметр запроса";
 
     private final DocumentBodyRepository documentBodyRepository;
 

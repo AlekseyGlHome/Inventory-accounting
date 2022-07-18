@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.request.UserRequest;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
@@ -84,12 +85,14 @@ public class UserService {
 
 
     // добавить карточку
+    @Transactional
     public UserDto add(UserRequest request) {
         UserEntity userEntity = fillInventory(new UserEntity(), request);
         return new UserDto(userRepository.save(userEntity));
     }
 
     // обновить карточку
+    @Transactional
     public UserDto update(long id, UserRequest request) {
         UserEntity userEntity = fillInventory(findById(id), request);
         return new UserDto(userRepository.save(userEntity));
@@ -106,6 +109,7 @@ public class UserService {
     /**
      * удалить (переменную is_deleted в true)
      */
+    @Transactional
     public void deleteById(long id) {
         if (userRepository.updateIsDeleteToTrueById(id) <= 0) {
             throw new NotFoundException(String.format(MESSAGE_NOT_FOUND, id));

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.home.inventoryaccounting.api.request.InventoryRequest;
 import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
@@ -41,6 +42,7 @@ public class InventoryService {
     /**
      * удалить (переменную is_deleted в true)
      */
+    @Transactional
     public void deleteById(long id) {
         int countDelete = inventoryRepository.updateIsDeleteToTrueById(id);
         if (countDelete <= 0) {
@@ -117,12 +119,14 @@ public class InventoryService {
     }
 
     // добавить карточку
+    @Transactional
     public InventoryDto add(InventoryRequest request) {
         InventoryEntity inventoryEntity = fillInventory(new InventoryEntity(), request);
         return new InventoryDto(inventoryRepository.save(inventoryEntity));
     }
 
     // обновить карточку
+    @Transactional
     public InventoryDto update(long id, InventoryRequest request) {
         InventoryEntity inventoryEntity = fillInventory(findById(id), request);
         return new InventoryDto(inventoryRepository.save(inventoryEntity));

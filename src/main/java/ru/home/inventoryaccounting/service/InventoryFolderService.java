@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.home.inventoryaccounting.api.request.InventoryFoldeRequest;
 import ru.home.inventoryaccounting.api.request.RequestParametersForDirectories;
 import ru.home.inventoryaccounting.api.response.DtoResponse;
@@ -79,12 +80,14 @@ public class InventoryFolderService {
 
 
     // добавить карточку
+    @Transactional
     public InventoryFolderDto add(InventoryFoldeRequest request) {
         InventoryFolderEntity inventoryFolderEntity = fillInventory(new InventoryFolderEntity(), request);
         return new InventoryFolderDto(inventoryFolderRepository.save(inventoryFolderEntity));
     }
 
     // обновить карточку
+    @Transactional
     public InventoryFolderDto update(long id, InventoryFoldeRequest request) {
         InventoryFolderEntity inventoryFolderEntity = fillInventory(findById(id), request);
         return new InventoryFolderDto(inventoryFolderRepository.save(inventoryFolderEntity));
@@ -100,6 +103,7 @@ public class InventoryFolderService {
     /**
      * удалить (переменную is_deleted в true)
      */
+    @Transactional
     public void deleteById(long id) {
         if (inventoryFolderRepository.updateIsDeleteToTrueById(id) <= 0) {
             throw new NotFoundException(String.format(MESSAGE_NOT_FOUND, id));

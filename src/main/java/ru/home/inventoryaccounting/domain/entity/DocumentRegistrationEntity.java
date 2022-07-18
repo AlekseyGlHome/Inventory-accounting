@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "document_registration")
-public class DocumentRegistration {
+public class DocumentRegistrationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,5 +22,9 @@ public class DocumentRegistration {
     @OneToOne()
     @JoinColumn(name = "document_header_id")
     private DocumentHeaderEntity documentHeaderEntity;
+
+    public DocumentRegistrationEntity(DocumentHeaderEntity documentHeaderEntity) {
+        setDocumentHeaderEntity(documentHeaderEntity);
+    }
 
 }

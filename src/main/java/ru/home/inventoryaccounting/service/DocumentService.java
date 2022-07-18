@@ -215,6 +215,7 @@ public class DocumentService {
     /**
      * удалить (переменную is_deleted в true)
      */
+    @Transactional
     public void deleteById(long id) {
         int countDelete = documentHeaderRepository.updateIsDeleteToTrueById(id);
         if (countDelete <= 0) {
