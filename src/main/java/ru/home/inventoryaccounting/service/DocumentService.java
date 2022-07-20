@@ -39,7 +39,7 @@ public class DocumentService {
     private final DocumentRegistryRepository documentRegistryRepository;
 
     /**
-     * выбор заголовка документа по идентификатору
+     * Выбор заголовка документа по идентификатору
      */
     public DocumentHeaderEntity getById(long id) {
         Optional<DocumentHeaderEntity> documentsHeader = documentHeaderRepository.findById(id);
@@ -47,7 +47,7 @@ public class DocumentService {
     }
 
     /**
-     * выбор документа с телом по идентификатору
+     * Выбор документа с телом по идентификатору
      */
     public DocumentHeaderAndBodyDto getFullById(long id) {
         Optional<DocumentHeaderEntity> documentsHeader = documentHeaderRepository.findById(id);
@@ -57,7 +57,7 @@ public class DocumentService {
 
 
     /**
-     * выбор заголовков документов по вхождению в номер документа
+     * Выбор заголовков документов по вхождению в номер документа
      */
     public DtoResponse<DocumentHeaderDto> findByDocumentNumber(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);// getPageRequest(request.getOffset(), request.getLimit());
@@ -72,7 +72,7 @@ public class DocumentService {
     }
 
     /**
-     * выбор заголовков документов за интервал по типу документа
+     * Выбор заголовков документов за интервал по типу документа
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndTypeDok(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -88,7 +88,7 @@ public class DocumentService {
     }
 
     /**
-     * выбор заголовков документов за интервал по типу документа и по складу
+     * Выбор заголовков документов за интервал по типу документа и по складу
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndTypeDokAndWarehouse(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -105,7 +105,7 @@ public class DocumentService {
     }
 
     /**
-     * выбор заголовков документов за интервал и по партнеру
+     * Выбор заголовков документов за интервал и по партнеру
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndPartner(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -121,7 +121,7 @@ public class DocumentService {
     }
 
     /**
-     * выбор заголовков документов за интервал по партнеру и типу документа
+     * Выбор заголовков документов за интервал по партнеру и типу документа
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndPartnerAndTypeDok(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -141,7 +141,7 @@ public class DocumentService {
     }
 
     /**
-     * выбор заголовков документов за интервал
+     * Выбор заголовков документов за интервал
      */
     public DtoResponse<DocumentHeaderDto> findByDate(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -152,14 +152,12 @@ public class DocumentService {
     }
 
     /**
-     * выбор заголовков документов за интервал и по складу
+     * Выбор заголовков документов за интервал и по складу
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndWarehouse(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
         Page<DocumentHeaderEntity> documentHeaders;
         if (request.getWarehouseId() > 0) {
-//            documentHeaders = documentHeaderRepository.findByDateAndWarehouse(request.getIntervalStart(), request.getIntervalEnd(),
-//                    request.getWarehouseId(), pageRequest);
             documentHeaders = documentHeaderRepository
                     .findByDateBetweenAndWarehouseOrWarehouseRecipient(
                             request.getIntervalStart(),
@@ -174,7 +172,7 @@ public class DocumentService {
     }
 
     /**
-     * выбор заголовков документов за интервал по партнеру и по складу
+     * Выбор заголовков документов за интервал по партнеру и по складу
      */
     public DtoResponse<DocumentHeaderDto> findByDateAndPartnerAndWarehouse(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);//getPageRequest(request.getOffset(), request.getLimit());
@@ -191,7 +189,7 @@ public class DocumentService {
     }
 
     /**
-     * общий запрос
+     * Общий запрос
      */
     public DtoResponse<DocumentHeaderDto> selectQuery(RequestParametersForDocHeader request) {
 
@@ -216,7 +214,7 @@ public class DocumentService {
     }
 
     /**
-     * удалить (переменную is_deleted в true)
+     * Удалить (переменную is_deleted в true)
      */
     @Transactional
     public void deleteById(long id) {
@@ -225,8 +223,9 @@ public class DocumentService {
             throw new NotFoundException(String.format(MESSAGE_NOT_FOUND, id));
         }
     }
-
-    // добавить документ
+    /**
+     * Добавить документ
+     */
     @Transactional
     public DocumentHeaderAndBodyDto add(DocumentHeaderRequest request) {
         DocumentHeaderEntity documentHeaderEntity = fillDocumentHeader(new DocumentHeaderEntity(), request);
@@ -235,8 +234,9 @@ public class DocumentService {
         addToRegistration(documentHeaderEntity.getId());
         return new DocumentHeaderAndBodyDto(documentHeaderEntity);
     }
-
-    // обновить документ
+    /**
+     * Обновить документ
+     */
     @Transactional
     public DocumentHeaderAndBodyDto update(long id, DocumentHeaderRequest request) {
         DocumentHeaderEntity oldHeaderEntity = getById(id);
@@ -248,11 +248,12 @@ public class DocumentService {
         return new DocumentHeaderAndBodyDto(oldHeaderEntity);
     }
 
+    /**
+     * Добавить документ на регистрацию
+     */
     @Transactional
     public void addToRegistration(Long doc_id) {
         DocumentHeaderEntity documentHeaderEntity = getById(doc_id);
-
-
         long countRegDoc = documentRegistryRepository.countByDocumentHeaderEntity(documentHeaderEntity);
         if (countRegDoc <= 0) {
             DocumentRegistrationEntity documentRegistrationEntity = new DocumentRegistrationEntity(documentHeaderEntity);
@@ -260,6 +261,9 @@ public class DocumentService {
         }
     }
 
+    /**
+     * Получить список документов на регистрации
+     */
     public DtoResponse<DocumentHeaderDto> getDocumentRegistration(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<DocumentRegistrationEntity> documentHeaders;
@@ -300,6 +304,9 @@ public class DocumentService {
 
     }
 
+    /**
+     * Получить список удаленнных документов
+     */
     public DtoResponse<DocumentHeaderDto> getDeleted(RequestParametersForDocHeader request) {
         PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
         Page<DocumentHeaderEntity> documentHeaderEntities;
@@ -307,11 +314,4 @@ public class DocumentService {
         return new DtoResponse<>(documentHeaderEntities.getTotalElements(),
                 documentHeaderEntities.getContent().stream().map(DocumentHeaderDto::new).collect(Collectors.toList()));
     }
-
-    // создать страницу пагинации
-//    private PageRequest getPageRequest(int offset, int limit) {
-//        int numberPage = offset / limit;
-//
-//        return PageRequest.of(numberPage, limit);
-//    }
 }

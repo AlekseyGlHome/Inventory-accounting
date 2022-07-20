@@ -18,17 +18,13 @@ public class DocumentRegistryController {
 
     @PostMapping("/{id}")
     public ResponseEntity<Boolean> addToRegistration(@PathVariable Long id) {
-
         documentService.addToRegistration(id);
-
         return ResponseEntity.ok(true);
     }
 
     @GetMapping()
     public ResponseEntity<DtoResponse<DocumentHeaderDto>> getAllRegistration() {
-
         DtoResponse<DocumentHeaderDto> listDocReg = documentService.getDocumentRegistration(new RequestParametersForDocHeader(0,50,"",null,null,0L,0L,0,new String[]{"id"}, SortingDirection.ASC));
-
         return ResponseEntity.ok(listDocReg);
     }
 
