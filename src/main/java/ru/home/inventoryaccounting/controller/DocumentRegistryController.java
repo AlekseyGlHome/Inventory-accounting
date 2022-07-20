@@ -2,24 +2,36 @@ package ru.home.inventoryaccounting.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import ru.home.inventoryaccounting.service.DocumentRegistryService;
+import org.springframework.web.bind.annotation.*;
+import ru.home.inventoryaccounting.api.request.RequestParametersForDocHeader;
+import ru.home.inventoryaccounting.api.response.DtoResponse;
+import ru.home.inventoryaccounting.domain.dto.DocumentHeaderDto;
+import ru.home.inventoryaccounting.domain.enums.SortingDirection;
+import ru.home.inventoryaccounting.service.DocumentService;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/registration")
 public class DocumentRegistryController {
-    private final DocumentRegistryService documentRegistryService;
+    private final DocumentService documentService;
+   // private final
 
     @PostMapping("/{id}")
     public ResponseEntity<Boolean> addToRegistration(@PathVariable Long id) {
 
-        documentRegistryService.addToRegistration(id);
+        documentService.addToRegistration(id);
 
         return ResponseEntity.ok(true);
     }
+
+    @GetMapping()
+    public ResponseEntity<DtoResponse<DocumentHeaderDto>> getAllRegistration() {
+
+        DtoResponse<DocumentHeaderDto> listDocReg = documentService.getDocumentRegistration(new RequestParametersForDocHeader(0,50,"",null,null,0L,0L,0,new String[]{"id"}, SortingDirection.ASC));
+
+        return ResponseEntity.ok(listDocReg);
+    }
+
+
 
 }

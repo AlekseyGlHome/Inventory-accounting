@@ -12,9 +12,11 @@ import ru.home.inventoryaccounting.domain.dto.DocumentHeaderAndBodyDto;
 import ru.home.inventoryaccounting.domain.dto.DocumentHeaderDto;
 import ru.home.inventoryaccounting.domain.entity.DocumentBodyEntity;
 import ru.home.inventoryaccounting.domain.entity.DocumentHeaderEntity;
+import ru.home.inventoryaccounting.domain.entity.DocumentRegistrationEntity;
 import ru.home.inventoryaccounting.exception.InvalidRequestParameteException;
 import ru.home.inventoryaccounting.exception.NotFoundException;
 import ru.home.inventoryaccounting.repository.DocumentHeaderRepository;
+import ru.home.inventoryaccounting.repository.DocumentRegistryRepository;
 import ru.home.inventoryaccounting.util.PageRequestUtil;
 
 import java.util.Collection;
@@ -34,6 +36,7 @@ public class DocumentService {
     private final WarehouseService warehouseService;
     private final InventoryService inventoryService;
     private final DocumentsBodyService documentsBodyService;
+    private final DocumentRegistryRepository documentRegistryRepository;
 
     /**
      * выбор заголовка документа по идентификатору
@@ -229,6 +232,7 @@ public class DocumentService {
         DocumentHeaderEntity documentHeaderEntity = fillDocumentHeader(new DocumentHeaderEntity(), request);
         documentHeaderRepository.save(documentHeaderEntity);
         documentsBodyService.save(documentHeaderEntity.getBodyEntitys());
+        addToRegistration(documentHeaderEntity.getId());
         return new DocumentHeaderAndBodyDto(documentHeaderEntity);
     }
 
@@ -240,8 +244,28 @@ public class DocumentService {
         fillDocumentHeader(oldHeaderEntity, request);
         documentsBodyService.save(oldHeaderEntity.getBodyEntitys());
         documentHeaderRepository.save(oldHeaderEntity);
-
+        addToRegistration(oldHeaderEntity.getId());
         return new DocumentHeaderAndBodyDto(oldHeaderEntity);
+    }
+
+    @Transactional
+    public void addToRegistration(Long doc_id) {
+        DocumentHeaderEntity documentHeaderEntity = getById(doc_id);
+
+
+        long countRegDoc = documentRegistryRepository.countByDocumentHeaderEntity(documentHeaderEntity);
+        if (countRegDoc <= 0) {
+            DocumentRegistrationEntity documentRegistrationEntity = new DocumentRegistrationEntity(documentHeaderEntity);
+            documentRegistryRepository.save(documentRegistrationEntity);
+        }
+    }
+
+    public DtoResponse<DocumentHeaderDto> getDocumentRegistration(RequestParametersForDocHeader request) {
+        PageRequest pageRequest = PageRequestUtil.getPageToRequest(request);
+        Page<DocumentRegistrationEntity> documentHeaders;
+        documentHeaders = documentRegistryRepository.findAll(pageRequest);
+        return new DtoResponse<>(documentHeaders.getTotalElements(),
+                documentHeaders.getContent().stream().map((o)->new DocumentHeaderDto(o.getDocumentHeaderEntity())).collect(Collectors.toList()));
     }
 
     /**
