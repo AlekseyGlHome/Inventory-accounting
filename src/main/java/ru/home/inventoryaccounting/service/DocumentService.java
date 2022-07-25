@@ -295,13 +295,15 @@ public class DocumentService {
         return documentHeaderEntity;
     }
 
+    /**
+     * заполнить тело документа из запросса
+     */
     private Collection<DocumentBodyEntity> fillDocumentBody(DocumentHeaderRequest request, DocumentHeaderEntity headerEntity) {
 
         return request.getBodyDto()
                 .stream()
                 .map((d) -> new DocumentBodyEntity(d, inventoryService.findById(d.getInventoryId()), headerEntity))
                 .collect(Collectors.toList());
-
     }
 
     /**

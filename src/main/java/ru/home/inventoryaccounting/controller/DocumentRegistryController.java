@@ -14,7 +14,7 @@ import ru.home.inventoryaccounting.service.DocumentService;
 @RequestMapping("/v1/registration")
 public class DocumentRegistryController {
     private final DocumentService documentService;
-   // private final
+
 
     @PostMapping("/{id}")
     public ResponseEntity<Boolean> addToRegistration(@PathVariable Long id) {
